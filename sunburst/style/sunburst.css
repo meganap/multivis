@@ -1,0 +1,68 @@
+path {
+  stroke: #fff;
+  stroke-width: 1;
+ cursor: pointer;
+}
+
+text {
+  font: 15px sans-serif;
+  cursor: pointer;
+}
+
+body {
+  width: 100%;
+  margin: 0 auto;
+}
+
+div.tooltip {   
+  position: absolute;           
+  text-align: center;                           
+  height: 16px;                 
+  padding: 2px;             
+  font: 12px sans-serif;        
+  background: #fff;
+  border: 0px;      
+  border-radius: 5px;           
+  pointer-events: none;         
+}
+
+div.plot {
+	width: 50%;
+	float: left;
+}
+
+#sidebar {
+  float: right;
+  width: 100px;
+}
+
+#sequence {
+  width: 100%;
+  height: 70px;
+}
+
+#legend {
+  padding: 10px 0 0 3px;
+}
+
+#sequence text, #legend text {
+/*  font-weight: 600;*/
+  fill: #fff;
+}
+#explanation {
+  position: absolute;
+  top: 260px;
+  left: 305px;
+  width: 140px;
+  text-align: center;
+  color: #666;
+  z-index: -1;
+}
+
+#percentage {
+  font-size: 2.5em;
+}
+
+#endlabel {
+  font-weight: 600;
+}

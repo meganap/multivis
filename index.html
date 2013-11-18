@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+<link rel="stylesheet" type="text/css" href="style/multivis.css">
+<link rel="stylesheet" type="text/css" href="style/abundance.css">
+<link rel="stylesheet" type="text/css" href="sunburst/style/sunburst.css">
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/queue.v1.min.js"></script>
+<script src="js/rainbowvis.js"></script>
+<script src="js/jquery.xcolor.js"></script>
+<script src="sunburst/js/sunburst_singleplot.js"></script>
+<script src="sunburst/js/sunburst_compare.js"></script>
+<script src="stacked/js/stacked.js"></script>
+<script src="grouped/js/grouped.js"></script>
+<script src="donut/js/donut.js"></script>
+<script src="js/multivis.js"></script>
+</head>
+<body>
+	<div id="header">
+		<div id="title"><div class="left normal">multi</div><div class="left bold">vis</div></div>
+	</div>
+	<br />
+	<br />
+	<br />
+	<div id="visTypes" class="left">
+		<ul id="visList">
+			<li>
+				<h3>Hierarchical Data</h3>
+				<input type="button" value="Sunburst" onclick="sunburst()"/>
+				<input type="button" value="Comparative Sunburst" onclick="comparativeSunburst()"/>
+			</li>
+			<li>
+				<h3>Abundance Data</h3>
+				<input type="button" value="Stacked Bar" onclick="stackedBar()"/>
+				<input type="button" value="Normalized Stacked Bar" onclick="normStackedBar()"/>
+				<input type="button" value="Grouped Bar" onclick="groupedBar()"/>
+				<input type="button" value="Donut Charts" onclick="donuts()"/>
+			</li>
+		</ul>
+	</div>
+	<div id="visWrapper">
+	</div>
+	<script>
+	$(function() {
+	    $( "input[type=button], a, button" )
+	      .button()
+	      .click(function( event ) {
+	        event.preventDefault();
+	      });
+	  });
+	</script>
+</body>
