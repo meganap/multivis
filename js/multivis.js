@@ -61,7 +61,7 @@ function initAbundance() {
 	d3.select("#visWrapper").selectAll("div").remove()//get rid of old plots
 	d3.select("#visWrapper").html(abundancehtml)
   	queue()
-  		.defer(d3.json, "data/rich_sparse_otu_table.biom")
+  		.defer(d3.json, "data/AGbigmeta.biom")
   		.await(loadBiom);
 }
 

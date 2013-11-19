@@ -26,7 +26,7 @@ function StackedBar() {
 
 	this.initTaxonomyBarChart = function () {
 		margin = {top: 30, right: 20, bottom: 180, left: 60},
-		width = 650 - margin.left - margin.right,
+		width = 850 - margin.left - margin.right,
 		height = 600 - margin.top - margin.bottom;
 
 		x = d3.scale.ordinal()
@@ -205,7 +205,7 @@ function StackedBar() {
 		//sort by resets group by so set the index back to 0
 		document.getElementById('group_by_select').selectedIndex = 0
 		this.getTotalAbundances(data)
-		this.drawTaxonomyBarVis(data, true)
+		this.drawTaxonomyBarVis(data)
 	}
 
 	this.getTotalAbundances = function (data) {

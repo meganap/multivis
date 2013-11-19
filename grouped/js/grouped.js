@@ -204,7 +204,7 @@ function GroupedBar() {
 		//sort by resets group by so set the index back to 0
 		document.getElementById('group_by_select').selectedIndex = 0
 		this.getTotalAbundances(data)
-		this.drawTaxonomyBarVis(data, true)
+		this.drawTaxonomyBarVis(data)
 	}
 
 	this.getTotalAbundances = function (data) {
