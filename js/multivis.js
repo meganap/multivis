@@ -42,6 +42,11 @@ function stackedBar() {
 	initAbundance()
 }
 
+function normStackedBar() {
+	s = new NormalizedStackedBar()
+	initAbundance()
+}
+
 function groupedBar() {
 	s = new GroupedBar()
 	initAbundance()

@@ -12,7 +12,7 @@ function Sunburst(jsonPath) {
 	var root1;
 	var rainbow1 = new Rainbow();
 	var div;
-	var sunvar = this
+	var sunvar = this;
 
 	// Total size of all segments; we set this later, after loading the data.
 	var totalSize = 0; 
@@ -44,12 +44,8 @@ function Sunburst(jsonPath) {
 
 		var partition = d3.layout.partition()
 		   .value(function(d) { return d.length; });
-
-		arc = d3.svg.arc()
-		    .startAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x))); })
-		    .endAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x + d.dx))); })
-		    .innerRadius(function(d) { return Math.max(0, y(d.y)); })
-		    .outerRadius(function(d) { return Math.max(0, y(d.y + d.dy)); });
+		   
+		this.arc()
 
 		rainbow1.setSpectrum('red','blue')
 
@@ -70,6 +66,14 @@ function Sunburst(jsonPath) {
 	    // Add the mouseleave handler to the bounding circle
 	    d3.select("#container").on("mouseleave", this.mouseleave);
 		d3.select(self.frameElement).style("height", height + "px");
+	}
+	
+	this.arc = function () {
+		arc = d3.svg.arc()
+		    .startAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x))); })
+		    .endAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x + d.dx))); })
+		    .innerRadius(function(d) { return Math.max(0, y(d.y)); })
+		    .outerRadius(function(d) { return Math.max(0, y(d.y + d.dy)); });
 	}
 
 	this.setTotalSize = function () {
@@ -104,7 +108,7 @@ function Sunburst(jsonPath) {
 	  return function(d, i) {
 	    return i
 	        ? function(t) { return arc(d); }
-	        : function(t) { x.domain(xd(t)); y.domain(yd(t)).range(yr(t)); return this.arc(d); };
+	        : function(t) { x.domain(xd(t)); y.domain(yd(t)).range(yr(t)); return sunvar.arc(d); };
 	  };
 	}
 
@@ -294,12 +298,13 @@ function Sunburst(jsonPath) {
 	      .attr("dy", "0.35em")
 	      .attr("text-anchor", "middle")
 		  .on("mouseover", function(d){
+			console.log(d.name)
 			div.transition()
 				.style("opacity", .9);
-	      	div.html(d.name) 
+	      	div.html(d.name)
 	          .style("left", (d3.event.pageX) + "px")     
-	          .style("top", (d3.event.pageY - 8) + "px")}
-		  )
+	          .style("top", (d3.event.pageY - 8) + "px")
+		  })
 	      .on("mouseout", function(d) {
 	          this.style['opacity'] = 1;
 	         div.transition()            
@@ -311,8 +316,7 @@ function Sunburst(jsonPath) {
 			  	return d.name.slice(0,5) + '...'
 			  else
 			  	return d.name; 
-			}
-			);
+		  });
 
 	  // Set position for entering and updating nodes.
 	  g.attr("transform", function(d, i) {
