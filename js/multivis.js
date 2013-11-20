@@ -33,6 +33,26 @@ function comparativeSunburst() {
   		.await(function(error, r1, r2) { initComp(r1,r2) });
 }
 
+function treemap() {
+	s = new Treemap("sunburst/data/test.json")
+	d3.select("#visWrapper").selectAll("div").remove()//get rid of old plots
+	d3.select("#visWrapper").append("div")   
+		.attr("id", "plot");
+	d3.select("#visWrapper").append("div")   
+		.attr("id", "text_width");
+	s.initTreemap()
+}
+
+function partition() {
+	s = new Partition("sunburst/data/test.json")
+	d3.select("#visWrapper").selectAll("div").remove()//get rid of old plots
+	d3.select("#visWrapper").append("div")   
+		.attr("id", "plot");
+	d3.select("#visWrapper").append("div")   
+		.attr("id", "text_width");
+	s.initPartition()
+}
+
 function initComp(r1,r2) {
 	s.setVals(r1,r2)
 }

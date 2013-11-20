@@ -120,15 +120,16 @@ function NormalizedStackedBar() {
 
 	this.setMetadataTypes = function () {
 		metadataTypes = {}
-
-		for(var i = 0; i < d3.keys(data[d3.keys(data)[0]].metadata).length; i++)
-			metadataTypes[d3.keys(data[d3.keys(data)[0]].metadata)[i]] = null;
+		var keys = d3.keys(data[d3.keys(data)[0]].metadata)
+		for(var i = 0; i < keys.length; i++)
+			metadataTypes[keys[i]] = null;
 	
+		var firstKey = data[d3.keys(data)[0]]
 		for(var k in metadataTypes)
 		{
 			var metadataType;
 			//try to see if it is a number
-			var n = Number(data[d3.keys(data)[0]].metadata[k])
+			var n = Number(firstKey.metadata[k])
 			if(isNaN(n)) //not a number so has to be a string
 				metadataType = "string"
 			else
@@ -162,13 +163,13 @@ function NormalizedStackedBar() {
 		data.sort(
 			function(a, b) {
 				var sortval;
-				if(key == "SampleID")
+				if(key === "SampleID")
 					sortval = a.SampleID.localeCompare(b.SampleID);
-				else if(a.metadata[key] == 'NA' && b.metadata[key] == 'NA')
+				else if(a.metadata[key] === 'NA' && b.metadata[key] === 'NA')
 					sortval = 0
-				else if(a.metadata[key] == 'NA' && b.metadata[key] !== 'NA')
+				else if(a.metadata[key] === 'NA' && b.metadata[key] !== 'NA')
 					sortval = -1
-				else if(a.metadata[key] !== 'NA' && b.metadata[key] == 'NA')
+				else if(a.metadata[key] !== 'NA' && b.metadata[key] === 'NA')
 					sortval = 1
 				else if(metadataType === 'number')
 					sortval = a.metadata[key] - b.metadata[key];
@@ -177,7 +178,7 @@ function NormalizedStackedBar() {
 				else
 					sortval = 0
 			
-				if(sortval == 0)
+				if(sortval === 0)
 					return a.SampleID.localeCompare(b.SampleID);
 				else
 					return sortval

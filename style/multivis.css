@@ -1,6 +1,6 @@
 body,html {
     font-family: helvetica;
-    font-size: 12pt;
+    font-size: 11pt;
     background-color: #fff;
     width: 100%;
     height: 100%;
@@ -48,3 +48,18 @@ ul#visList {
 h3 {
 	font: 16pt helvetica;
 }
+
+rect {
+  stroke: #eee;
+  fill: #aaa;
+  fill-opacity: .8;
+}
+
+rect.parent {
+  cursor: pointer;
+  fill: steelblue;
+}
+
+/*text.treemaptext {
+	font-size: 11pt;
+}*/
