@@ -40,6 +40,7 @@ function Partition(jsonPath) {
 		      .attr("width", root.dy * kx)
 		      .attr("height", function(d) { return d.dx * ky; })
 		      .attr("class", function(d) { return d.children ? "parent" : "child"; })
+			  .attr("class", "map")
 		      .on("mouseover", function(d) {
 		          this.style['opacity'] = .6;
 		          div.transition()        

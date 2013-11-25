@@ -49,13 +49,13 @@ h3 {
 	font: 16pt helvetica;
 }
 
-rect {
+rect.map {
   stroke: #eee;
   fill: #aaa;
   fill-opacity: .8;
 }
 
-rect.parent {
+rect .map .parent {
   cursor: pointer;
   fill: steelblue;
 }
