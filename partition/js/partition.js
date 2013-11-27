@@ -1,3 +1,6 @@
+/* adapted from Mike Bostock's partition example on d3js.org, d3 example code Library released under BSD license. Copyright 2013 Mike Bostock.
+adapted code Copyright 2013 Meg Pirrung */
+
 function Partition(jsonPath) {
 	var w = 1120,
 	    h = 600,

@@ -1,3 +1,6 @@
+/* adapted from Mike Bostock's treemap example on d3js.org, d3 example code Library released under BSD license. Copyright 2013 Mike Bostock.
+adapted code Copyright 2013 Meg Pirrung */
+
 function Treemap(jsonPath) {
 	var w = 1000 - 80,
 	    h = 800 - 180,
@@ -50,6 +53,7 @@ function Treemap(jsonPath) {
 		      .on("click", function(d) { return plotVar.zoom(node == d.parent ? root : d.parent); });
 
 		  cell.append("svg:rect")
+		  	  .attr("class", "map")
 		      .attr("width", function(d) { return d.dx - 1; })
 		      .attr("height", function(d) { return d.dy - 1; })
 		      .style("fill", function(d) { return color(d.parent.name); })

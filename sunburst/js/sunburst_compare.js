@@ -1,3 +1,6 @@
+/* adapted from Mike Bostock's sunburst example on d3js.org, d3 example code Library released under BSD license. Copyright 2013 Mike Bostock.
+adapted code Copyright 2013 Meg Pirrung */
+
 function ComparativeSunburst() {
 	var x;
 	var y;

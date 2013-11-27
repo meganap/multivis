@@ -1,3 +1,5 @@
+/* adapted from Mike Bostock's normalized stacked bar chart example on d3js.org, d3 example code Library released under BSD license. Copyright 2013 Mike Bostock.
+adapted code Copyright 2013 Meg Pirrung */
 function NormalizedStackedBar() {
 	/*global vars*/
 	var margin;
@@ -397,6 +399,8 @@ function NormalizedStackedBar() {
 		document.getElementById("color_list").innerHTML = htmlstring;
 	}
 
+
+	/* dedupe function adapted from http://community.servicenow.com/blog/slightlyloony/4113 */
 	this.dedupe = function (tax) {
 	   var set = {};
 	   for (var i = 0; i < tax.length; i++)
