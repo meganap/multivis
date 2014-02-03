@@ -3,6 +3,7 @@ adapted code Copyright 2013 Meg Pirrung */
 function GroupedBar() {
 	/*global vars*/
 	var margin;
+	var windowWidth;
 	var width;
 	var height;
 	var x;
@@ -27,8 +28,9 @@ function GroupedBar() {
 	}
 
 	this.initTaxonomyBarChart = function () {
+		windowWidth = document.getElementById('visWrapper').offsetWidth
 		margin = {top: 30, right: 20, bottom: 180, left: 60},
-		width = 650 - margin.left - margin.right,
+		width = windowWidth*.8 - margin.left - margin.right,
 		height = 600 - margin.top - margin.bottom;
 
 		x0 = d3.scale.ordinal()

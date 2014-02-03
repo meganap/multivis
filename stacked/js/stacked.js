@@ -4,6 +4,7 @@ function StackedBar() {
 	/*global vars*/
 	var margin;
 	var width;
+	var windowWidth;
 	var height;
 	var x;
 	var y;
@@ -27,8 +28,9 @@ function StackedBar() {
 	}
 
 	this.initTaxonomyBarChart = function () {
+		windowWidth = document.getElementById('visWrapper').offsetWidth
 		margin = {top: 30, right: 20, bottom: 180, left: 60},
-		width = 850 - margin.left - margin.right,
+		width = windowWidth*.8 - margin.left - margin.right,
 		height = 600 - margin.top - margin.bottom;
 
 		x = d3.scale.ordinal()
