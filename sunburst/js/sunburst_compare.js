@@ -67,7 +67,7 @@ function ComparativeSunburst() {
 	// 	tips.push(tips2)
 	// 	this.initCanvas()
 	// }
-	
+
 	this.setVals = function(r1, r2) {
 		root1 = r1
 		tips1 = this.getTips(root1)
@@ -86,7 +86,7 @@ function ComparativeSunburst() {
 		    .attr("height", height)
 		    .append("g")
 		    .attr("transform", "translate(" + [radius + padding, radius + padding] + ")");
-	
+
 		var partition = d3.layout.partition()
 		//    .sort(null)
 		   .value(function(d) { return d.length; });
@@ -95,32 +95,32 @@ function ComparativeSunburst() {
 		      path.enter().append("path")
 		      .attr("d", arc)
 		      .attr("fill-rule", "evenodd")
-		      .style("fill", function(d) { return sunvar.getColor(d, tips); })
+		      .style("fill", function(d) { return '#'+sunvar.getColor(d, tips); })
 		      .on("mouseover", function(d) {
 		          this.style['opacity'] = .6;
-		          div.transition()        
-		              .duration(200)      
-		              .style("opacity", .9);      
-		          div .html(d.name)  
-		              .style("left", (d3.event.pageX) + "px")     
+		          div.transition()
+		              .duration(200)
+		              .style("opacity", .9);
+		          div .html(d.name)
+		              .style("left", (d3.event.pageX) + "px")
 		              .style("top", (d3.event.pageY - 28) + "px");
 		      })
 		      .on("mouseout", function(d) {
 		          this.style['opacity'] = 1;
-		         div.transition()        
-		             .duration(500)      
-		             .style("opacity", 0);   
+		         div.transition()
+		             .duration(500)
+		             .style("opacity", 0);
 		      })
 		      .on("click", function(d) {
 				  sunvar.click(d, plotIndex);
 		      });
-		  
+
 		  return path
 	}
 
 	this.initCanvas = function () {
-		div = d3.select("#visWrapper").append("div")   
-		.attr("class", "tooltip")               
+		div = d3.select("#visWrapper").append("div")
+		.attr("class", "tooltip")
 		.style("opacity", 0);
 
 		x = d3.scale.linear().range([0, 2 * Math.PI]);
@@ -142,8 +142,8 @@ function ComparativeSunburst() {
 		// 	var plotDiv = d3.select("#plot"+(i+1))
 		// 	paths[i] = drawSunburst(roots[i], tips[i], plotDiv, i)
 		// }
-		
-	
+
+
 		path1 = this.drawSunburst(root1, tips2, div1, 0)
 		paths[0] = path1
 		path2 = this.drawSunburst(root2, tips1, div2, 1)
@@ -176,7 +176,7 @@ function ComparativeSunburst() {
 			var color = colorArray[0]; //first child color
 			for(var c = 1; c < colorArray.length; c++) //start at 1 since we already have the first color
 				color = $.xcolor.average(color, colorArray[c])
-			
+
 			return color
 		}
 	}
@@ -194,9 +194,9 @@ function ComparativeSunburst() {
 	// 			colorWeights.push(1)
 	// 		}
 	// 	}
-	// 	
+	//
 	// 	for(var w = 0; w < colorWeights.length-1; w++) {
-	// 		
+	//
 	// 	}
 	// }
 
@@ -207,7 +207,7 @@ function ComparativeSunburst() {
 				tips.push(n.name)
 			return tips
 		}
-	
+
 		for(c in n.children)
 			tips.push.apply(tips, this.getTips(n.children[c]))
 		return tips
@@ -223,7 +223,7 @@ function ComparativeSunburst() {
 	this.click = function (d, plotIndex) {
 	  currentPath = paths[plotIndex];
 	  currentRoot = roots[plotIndex];
-	
+
 	  if(sync)
 	  {
 		  if(syncMode == "Location")
@@ -236,7 +236,7 @@ function ComparativeSunburst() {
 			  }
 	      }
 		  else
-		  {			
+		  {
 			  var nodeName = d.name
 			  for(var i = 0; i < roots.length; i++)
 			  {
@@ -316,7 +316,7 @@ function ComparativeSunburst() {
 			{
 			    paths[i].transition()
 			      .duration(750)
-			      .attrTween("d", this.arcTween(currentRoot));	
+			      .attrTween("d", this.arcTween(currentRoot));
 			}
 	    }
 		else

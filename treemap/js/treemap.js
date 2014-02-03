@@ -17,12 +17,12 @@ function Treemap(jsonPath) {
 	var cell;
 	var plotVar = this;
 	var div;
-	
+
 	this.initTreemap = function () {
-		div = d3.select("#visWrapper").append("div")   
-		.attr("class", "tooltip")               
+		div = d3.select("#visWrapper").append("div")
+		.attr("class", "tooltip")
 		.style("opacity", 0);
-		
+
 		treemap = d3.layout.treemap()
 		    .round(false)
 		    .size([w, h])
@@ -59,18 +59,18 @@ function Treemap(jsonPath) {
 		      .style("fill", function(d) { return color(d.parent.name); })
 		      .on("mouseover", function(d) {
 		          this.style['opacity'] = .6;
-		          div.transition()        
-		              .duration(200)      
-		              .style("opacity", .9);      
-		          div .html(d.name)  
-		              .style("left", (d3.event.pageX) + "px")     
+		          div.transition()
+		              .duration(200)
+		              .style("opacity", .9);
+		          div .html(d.name)
+		              .style("left", (d3.event.pageX) + "px")
 		              .style("top", (d3.event.pageY - 28) + "px");
 		      })
 		      .on("mouseout", function(d) {
 		          this.style['opacity'] = 1;
-		         div.transition()        
-		             .duration(500)      
-		             .style("opacity", 0);   
+		         div.transition()
+		             .duration(500)
+		             .style("opacity", 0);
 		      });
 
 		  cell.append("svg:text")
@@ -82,10 +82,10 @@ function Treemap(jsonPath) {
 				  if(d.name.width() > d.dx)
 				  	return d.name.slice(0,5) + '...'
 				  else
-				  	return d.name; 
+				  	return d.name;
 			  })
-		      .style("display", function(d) { 
-				  // d.w = this.getComputedTextLength(); 
+		      .style("display", function(d) {
+				  // d.w = this.getComputedTextLength();
 				   if(d.name.width() < d.dx)
 			   		return "block"
 				   else if( (d.name.slice(0,5) + '...').width() < d.dx)
@@ -101,7 +101,7 @@ function Treemap(jsonPath) {
 		  //   zoom(node);
 		  // });
 		});
-		
+
 	}
 
 	this.size = function(d) {
@@ -132,10 +132,10 @@ function Treemap(jsonPath) {
 			  if(d.name.width() > kx * d.dx - 1)
 			  	return d.name.slice(0,5) + '...'
 			  else
-			  	return d.name; 
+			  	return d.name;
 		  })
-	      .style("display", function(d) { 
-			  // d.w = this.getComputedTextLength(); 
+	      .style("display", function(d) {
+			  // d.w = this.getComputedTextLength();
 			   if(d.name.width() < kx * d.dx - 1)
 		   		return "block"
 			   else if( (d.name.slice(0,5) + '...').width() < kx * d.dx - 1)
@@ -147,7 +147,7 @@ function Treemap(jsonPath) {
 	  node = d;
 	  d3.event.stopPropagation();
 	}
-	
+
 	String.prototype.width = function(font) {
 	  var f = font || '11pt helvetica',
 	      o = $('<div>' + this + '</div>')
