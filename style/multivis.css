@@ -3,10 +3,12 @@ body,html {
     font-size: 11pt;
     background-color: #fff;
     width: 100%;
+	min-width: 1350px;
     height: 100%;
     margin: 0;
     padding: 0;
     text-align: center;
+	overflow: scroll;
 }
 
 div#header {
@@ -33,9 +35,10 @@ div#visWrapper {
 	margin-left: 2em;
 	margin-right: 2em;
 	background-color: #f5f5f5;
-	float: right;
+	float: left;
 	width: 75%;
-	height: 100%;
+	min-width: 1000px;
+	height: 700px;
 /*	border: 1px solid black;*/
 	border-radius: 10px;
 }
