@@ -21,8 +21,8 @@ var b = {
 
 function initSunburst() {
 
-	div = d3.select("body").append("div")   
-	.attr("class", "tooltip")               
+	div = d3.select("body").append("div")
+	.attr("class", "tooltip")
 	.style("opacity", 0);
 
 	x = d3.scale.linear().range([0, 2 * Math.PI]);
@@ -34,7 +34,7 @@ function initSunburst() {
 	    .attr("height", height)
 	    .append("g")
 	    .attr("transform", "translate(" + [radius + padding, radius + padding] + ")");
-	
+
 	var div2 = d3.select("#plot2");
 	var svg2 = div2.append("svg")
 	    .attr("width", width)
@@ -64,18 +64,18 @@ function initSunburst() {
 	      .style("fill", function(d) { return rainbow1.colorAt(d.depth); })
 	      // .on("mouseover", function(d) {
 	      //     this.style['opacity'] = .6;
-	      //     div.transition()        
-	      //         .duration(200)      
-	      //         .style("opacity", .9);      
-	      //     div .html(d.name)  
-	      //         .style("left", (d3.event.pageX) + "px")     
+	      //     div.transition()
+	      //         .duration(200)
+	      //         .style("opacity", .9);
+	      //     div .html(d.name)
+	      //         .style("left", (d3.event.pageX) + "px")
 	      //         .style("top", (d3.event.pageY - 28) + "px");
 	      // })
 	      // .on("mouseout", function(d) {
 	      //     this.style['opacity'] = 1;
-	      //    div.transition()        
-	      //        .duration(500)      
-	      //        .style("opacity", 0);   
+	      //    div.transition()
+	      //        .duration(500)
+	      //        .style("opacity", 0);
 	      // })
 	      .on("click", click)
 		  .on("mouseover", function(d){mouseover(d,svg1)});
@@ -89,21 +89,21 @@ function initSunburst() {
 	        .attr("d", arc)
 	        .attr("fill-rule", "evenodd")
 	  //      .style("fill", function(d) { return color((d.children ? d : d.parent).name); })
-	        .style("fill", function(d) { return rainbow2.colorAt(d.depth); })
+	        .style("fill", function(d) { return '#'+rainbow2.colorAt(d.depth); })
 	        // .on("mouseover", function(d) {
 	        //     this.style['opacity'] = .6;
-	        //     div.transition()        
-	        //         .duration(200)      
-	        //         .style("opacity", .9);      
-	        //     div .html(d.name)  
-	        //         .style("left", (d3.event.pageX) + "px")     
+	        //     div.transition()
+	        //         .duration(200)
+	        //         .style("opacity", .9);
+	        //     div .html(d.name)
+	        //         .style("left", (d3.event.pageX) + "px")
 	        //         .style("top", (d3.event.pageY - 28) + "px");
 	        // })
 	        // .on("mouseout", function(d) {
 	        //     this.style['opacity'] = 1;
-	        //    div.transition()        
-	        //        .duration(500)      
-	        //        .style("opacity", 0);   
+	        //    div.transition()
+	        //        .duration(500)
+	        //        .style("opacity", 0);
 	        // })
 	        .on("click", click)
 			.on("mouseover", function(d){mouseover(d,svg2)});
@@ -177,10 +177,10 @@ function mouseover(d, vis) {
   // if (percentage < 0.1) {
     // percentageString = "< 0.1%";
   // }
-  // 
+  //
   // d3.select("#percentage")
   //     .text(percentageString);
-  // 
+  //
   // d3.select("#explanation")
   //     .style("visibility", "");
 
@@ -279,7 +279,7 @@ function updateBreadcrumbs(nodeArray) {
 
   entering.append("svg:polygon")
       .attr("points", breadcrumbPoints)
-      .style("fill", function(d) { return rainbow1.colorAt(d.depth); });
+      .style("fill", function(d) { return '#'+rainbow1.colorAt(d.depth); });
 
   entering.append("svg:text")
       .attr("x", (b.w + b.t) / 2)
@@ -289,21 +289,21 @@ function updateBreadcrumbs(nodeArray) {
 	  .on("mouseover", function(d){
 		div.transition()
 			.style("opacity", .9);
-      	div.html(d.name) 
-          .style("left", (d3.event.pageX) + "px")     
+      	div.html(d.name)
+          .style("left", (d3.event.pageX) + "px")
           .style("top", (d3.event.pageY - 8) + "px")}
 	  )
       .on("mouseout", function(d) {
           this.style['opacity'] = 1;
-         div.transition()            
-             .style("opacity", 0);   
+         div.transition()
+             .style("opacity", 0);
       })
 	  .on("click",click)
       .text(function(d) {
 		  if(d.name.length > 8)
 			  return d.name.slice(0,5) + '...'
 		  else
-		  	return d.name; 
+		  	return d.name;
 		}
 		);
 

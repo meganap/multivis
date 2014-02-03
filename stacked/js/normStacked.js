@@ -42,18 +42,18 @@ function NormalizedStackedBar() {
 		xAxis = d3.svg.axis()
 		.scale(x)
 		.orient("bottom");
-	
+
 		yAxis = d3.svg.axis()
 		.scale(y)
 		.orient("left")
 		.tickFormat(d3.format(".0%"));
 
-		div = d3.select("#plot").append("div")   
-		.attr("class", "tooltip")               
+		div = d3.select("#plot").append("div")
+		.attr("class", "tooltip")
 		.style("opacity", 0);
 
 		var classification = ["Phylum","Class","Order","Family","Genus","Species"]
-	
+
 		vis = d3.select("#plot")
 		svg = vis.append("svg")
 		    .attr("width", width + margin.left + margin.right)
@@ -61,18 +61,18 @@ function NormalizedStackedBar() {
 		    .attr("id", "chart")
 		  .append("g")
 		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-  
+
 		  this.setData(0)
 		  this.setMetadataTypes()
 		  this.setSelect()
 	  	  this.buildKey(tax)
-	  
+
 		  x.domain(data.map(function(d) { return d.SampleID; }));
-	  
+
 		  svg.append("g")
 		      .attr("class", "y axis")
 		      .call(yAxis);
-      
+
 		  svg.append("text")
 		      .attr("class", "axisLabel")
 		      .attr("text-anchor", "middle")
@@ -81,13 +81,13 @@ function NormalizedStackedBar() {
 		      .attr("dy", ".75em")
 		      .attr("transform", "rotate(-90)")
 		      .text("Abundance");
-      
+
 		  samID = svg.selectAll(".SampleID")
 		      .data(data)
 		    .enter().append("g")
 		      .attr("class", "SampleID")
 		      .attr("transform", function(d) { return "translate(" + x(d.SampleID) + ",0)"; });
-	 
+
 		  this.sortChanged()
 	}
 
@@ -110,7 +110,7 @@ function NormalizedStackedBar() {
 		option.text = "SampleID"
 		groupSelect.add(option)
 		for(var m in biom['columns'][0]['metadata'])
-		{	
+		{
 			option=document.createElement("option");
 			option.text = m
 			sortSelect.add(option)
@@ -125,7 +125,7 @@ function NormalizedStackedBar() {
 		var keys = d3.keys(data[d3.keys(data)[0]].metadata)
 		for(var i = 0; i < keys.length; i++)
 			metadataTypes[keys[i]] = null;
-	
+
 		var firstKey = data[d3.keys(data)[0]]
 		for(var k in metadataTypes)
 		{
@@ -136,7 +136,7 @@ function NormalizedStackedBar() {
 				metadataType = "string"
 			else
 				metadataType = "number"
-		
+
 			for(var s in data)
 			{
 				var val = data[s].metadata[k]
@@ -148,7 +148,7 @@ function NormalizedStackedBar() {
 					testType = "string"
 				else
 					testType = "number"
-			
+
 				if(testType !== metadataType)
 				{
 					metadataType = "string"
@@ -160,7 +160,7 @@ function NormalizedStackedBar() {
 	}
 
 	this.sortChanged = function () {
-		var key = document.getElementById('sort_by_select')[document.getElementById('sort_by_select').selectedIndex].text;		
+		var key = document.getElementById('sort_by_select')[document.getElementById('sort_by_select').selectedIndex].text;
 		var metadataType = metadataTypes[key];
 		data.sort(
 			function(a, b) {
@@ -179,14 +179,14 @@ function NormalizedStackedBar() {
 					sortval = a.metadata[key].localeCompare(b.metadata[key]);
 				else
 					sortval = 0
-			
+
 				if(sortval === 0)
 					return a.SampleID.localeCompare(b.SampleID);
 				else
 					return sortval
 				}
 			);
-		
+
 		var groupsDict = {}
 		if(key !== "SampleID")
 		{
@@ -198,10 +198,10 @@ function NormalizedStackedBar() {
 					groupsDict[val]++
 			});
 		}
-	
+
 		// if((groupsDict.length !== data.length) && key !== "SampleID")
 		// 	this.drawSortHeaders(groupsDict)
-	
+
 		//sort by resets group by so set the index back to 0
 		document.getElementById('group_by_select').selectedIndex = 0
 		this.getTotalAbundances(data)
@@ -220,7 +220,7 @@ function NormalizedStackedBar() {
 				groupAbundances[row[i].name] += Math.abs(row[i].y0-row[i].y1)
 			}
 		}
-	
+
 		// groupAbundances.sort(
 		// 		function(a, b) {
 		// 			console.log("a:"+a)
@@ -234,9 +234,9 @@ function NormalizedStackedBar() {
 		var groupData = []
 		var groupCounts = {}
 		var temp = {}
-		var key = document.getElementById('group_by_select')[document.getElementById('group_by_select').selectedIndex].text;	
+		var key = document.getElementById('group_by_select')[document.getElementById('group_by_select').selectedIndex].text;
 		var sampleIDs = d3.keys(data)
-		
+
 		for(var i = 0; i < sampleIDs.length; i++)
 		{
 			var sampleID = sampleIDs[i]
@@ -245,11 +245,11 @@ function NormalizedStackedBar() {
 				val = data[sampleID].SampleID
 			if(!(val in temp))
 				temp[val] = {}
-		
+
 			if(!(val in groupCounts))
 				groupCounts[val] = 0
 			groupCounts[val] += 1
-		
+
 			var currentTaxonomy = d3.keys(data[sampleID].tax)
 			for(var j = 0; j < currentTaxonomy.length; j++)
 			{
@@ -259,7 +259,7 @@ function NormalizedStackedBar() {
 				temp[val][currentTax] += data[sampleID].tax[currentTax]
 			}
 		}
-	
+
 		var groups = d3.keys(temp)
 		var t;
 		for(var i = 0; i < groups.length; i++)
@@ -269,9 +269,9 @@ function NormalizedStackedBar() {
 			 t['count'] = groupCounts[groups[i]]
 			 groupData.push(t)
 		}
-	
+
 		var domain = d3.keys(data[d3.keys(data)[0]]['tax'])
-    
+
 	    groupData.forEach(function(d) {
 	      var y0 = 0;
 	      d.abundances = domain.map(function(name) { return {name: name, y0: y0, y1: y0 += +d['tax'][name]}; });
@@ -281,9 +281,9 @@ function NormalizedStackedBar() {
 	    });
 		y.domain([0, d3.max(groupData, function(d) { return d.total; })]);
 		rainbow.setNumberRange(0, domain.length);
-	
+
 		var metadataType = metadataTypes[key];
-	
+
 		//in this case the SampleID is actually the group name
 		groupData.sort(
 			function(a, b) {
@@ -311,9 +311,9 @@ function NormalizedStackedBar() {
 		var sampleIDs = []
 		var temp = {}
 		tax = []
-	
+
 		// getBiom()
-	
+
 		if(biom['matrix_type'] == 'dense')
 		{
 			for(var i = 0; i < biom['columns'].length; i++)
@@ -355,9 +355,9 @@ function NormalizedStackedBar() {
 					temp_hash[sampleID][classification] = 0.0
 				temp_hash[sampleID][classification] += value
 			}
-		
+
 			tax = this.dedupe(tax)
-		
+
 			for(o in temp_hash)
 			{
 				temp = {"SampleID":o}
@@ -377,7 +377,7 @@ function NormalizedStackedBar() {
 
 		// color.domain(d3.keys(data[d3.keys(data)[0]]['tax']));
 		var domain = d3.keys(data[d3.keys(data)[0]]['tax'])
-    
+
 	    data.forEach(function(d) {
 	      var y0 = 0;
 	      d.abundances = domain.map(function(name) { return {name: name, y0: y0, y1: y0 += +d['tax'][name]}; });
@@ -416,7 +416,7 @@ function NormalizedStackedBar() {
 
 	// function drawSortHeaders(groupsDict) {
 	// 	console.log("****")
-	// 
+	//
 	// 	var groups = svg.selectAll(".groups")
 	// 		.data(groupsDict)
 	// 	    .enter().append("g")
@@ -435,11 +435,11 @@ function NormalizedStackedBar() {
 		  samID.selectAll("rect").remove(); //clear old rects
 		  samID.selectAll("text").remove(); //remove old text that may be here
 		  svg.selectAll(".xAxisLabel").remove(); //remove old text
-	  
+
 		  samID = svg.selectAll(".SampleID")
 		      .data(plotdata)
-			  .attr("transform", function(d) { return "translate(" + x(d.SampleID) + ",0)"; });	  
-	  
+			  .attr("transform", function(d) { return "translate(" + x(d.SampleID) + ",0)"; });
+
 		  if(showLabels)
 		  {
 			  samID.append("text")
@@ -458,28 +458,28 @@ function NormalizedStackedBar() {
 			      .attr("y", height + 50)
 			      .text("Sample");
 		  }
-	  
+
 		  samID.selectAll("rect")
 		      .data(function(d) { return d.abundances; })
 		    .enter().append("rect")
 		      .attr("width", x.rangeBand())
 		      .attr("y", function(d) { return y(d.y1); })
 		      .attr("height", function(d) { return y(d.y0) - y(d.y1); })
-		      .style("fill", function(d) { return rainbow.colorAt(d3.keys(data[d3.keys(data)[0]]['tax']).indexOf(d.name)); })
+		      .style("fill", function(d) { return '#'+rainbow.colorAt(d3.keys(data[d3.keys(data)[0]]['tax']).indexOf(d.name)); })
 		      .on("mouseover", function(d) {
 		          this.style['opacity'] = .6;
-		          div.transition()        
-		              .duration(200)      
-		              .style("opacity", .9);      
-		          div .html(d.name + ": "+(Math.abs(d.y0-d.y1)*100).toFixed(2)+"%")  
-		              .style("left", (d3.event.pageX) + "px")     
+		          div.transition()
+		              .duration(200)
+		              .style("opacity", .9);
+		          div .html(d.name + ": "+(Math.abs(d.y0-d.y1)*100).toFixed(2)+"%")
+		              .style("left", (d3.event.pageX) + "px")
 		              .style("top", (d3.event.pageY - 28) + "px");
 		      })
 		      .on("mouseout", function(d) {
 		          this.style['opacity'] = 1;
-		         div.transition()        
-		             .duration(500)      
-		             .style("opacity", 0);   
+		         div.transition()
+		             .duration(500)
+		             .style("opacity", 0);
 		      });
 	}
 }

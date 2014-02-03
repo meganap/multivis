@@ -7,7 +7,6 @@ Unless required by applicable law or agreed to in writing, software distributed 
 and Mike Bostock's sunburst example on d3js.org, d3 example code Library released under BSD license. Copyright 2013 Mike Bostock.
 
 adapted code Copyright 2013 Meg Pirrung */
-*/
 
 function Sunburst(jsonPath) {
 	var x;
@@ -69,7 +68,7 @@ function Sunburst(jsonPath) {
 			     .attr("d", arc)
 			     .attr("fill-rule", "evenodd")
 				 .attr("display", function(d) { return d.depth ? null : "none"; })
-			     .style("fill", function(d) { return rainbow1.colorAt(d.depth); })
+			     .style("fill", function(d) { return '#'+rainbow1.colorAt(d.depth); })
 			     .on("click", function(d) { sunvar.click(d) })
 				 .on("mouseover", function(d){ sunvar.mouseover(d,svg1) });
 		});
@@ -296,7 +295,7 @@ function Sunburst(jsonPath) {
 	  // console.log(max_i)
 	  crumbs.append("svg:polygon")
 	      .attr("points", function(d,i) {return sunvar.breadcrumbPoints(d,i)})
-	      .style("fill", function(d) { return rainbow1.colorAt(d.depth); });
+	      .style("fill", function(d) { return '#'+rainbow1.colorAt(d.depth); });
 
 	  crumbs.append("svg:text")
 	      .attr("x", function(d,i) {

@@ -44,18 +44,18 @@ function GroupedBar() {
 	xAxis = d3.svg.axis()
 	.scale(x0)
 	.orient("bottom");
-	
+
 	yAxis = d3.svg.axis()
 	.scale(y)
 	.orient("left")
 	.tickFormat(d3.format(".2s"));
 
-	div = d3.select("#plot").append("div")   
-	.attr("class", "tooltip")               
+	div = d3.select("#plot").append("div")
+	.attr("class", "tooltip")
 	.style("opacity", 0);
 
 	var classification = ["Phylum","Class","Order","Family","Genus","Species"]
-	
+
 	vis = d3.select("#plot")
 	svg = vis.append("svg")
 	    .attr("width", width + margin.left + margin.right)
@@ -63,18 +63,18 @@ function GroupedBar() {
 	    .attr("id", "chart")
 	  .append("g")
 	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-  
+
 	  this.setData(0)
 	  this.setMetadataTypes()
 	  this.setSelect()
   	  this.buildKey(tax)
-	  
+
 	  x0.domain(data.map(function(d) { return d.SampleID; }));
-	  
+
 	  svg.append("g")
 	      .attr("class", "y axis")
 	      .call(yAxis);
-      
+
 	  svg.append("text")
 	      .attr("class", "axisLabel")
 	      .attr("text-anchor", "middle")
@@ -83,13 +83,13 @@ function GroupedBar() {
 	      .attr("dy", ".75em")
 	      .attr("transform", "rotate(-90)")
 	      .text("Abundance");
-      
+
 	  samID = svg.selectAll(".SampleID")
 	      .data(data)
 	    .enter().append("g")
 	      .attr("class", "SampleID")
 	      .attr("transform", function(d) { return "translate(" + x0(d.SampleID) + ",0)"; });
-	 
+
 	  this.sortChanged()
 	}
 
@@ -112,7 +112,7 @@ function GroupedBar() {
 		option.text = "SampleID"
 		groupSelect.add(option)
 		for(var m in biom['columns'][0]['metadata'])
-		{	
+		{
 			option=document.createElement("option");
 			option.text = m
 			sortSelect.add(option)
@@ -127,7 +127,7 @@ function GroupedBar() {
 
 		for(var i = 0; i < d3.keys(data[d3.keys(data)[0]].metadata).length; i++)
 			metadataTypes[d3.keys(data[d3.keys(data)[0]].metadata)[i]] = null;
-	
+
 		for(var k in metadataTypes)
 		{
 			var metadataType;
@@ -137,7 +137,7 @@ function GroupedBar() {
 				metadataType = "string"
 			else
 				metadataType = "number"
-		
+
 			for(var s in data)
 			{
 				var val = data[s].metadata[k]
@@ -149,7 +149,7 @@ function GroupedBar() {
 					testType = "string"
 				else
 					testType = "number"
-			
+
 				if(testType !== metadataType)
 				{
 					metadataType = "string"
@@ -161,7 +161,7 @@ function GroupedBar() {
 	}
 
 	this.sortChanged = function () {
-		var key = document.getElementById('sort_by_select')[document.getElementById('sort_by_select').selectedIndex].text;		
+		var key = document.getElementById('sort_by_select')[document.getElementById('sort_by_select').selectedIndex].text;
 		var metadataType = metadataTypes[key];
 		data.sort(
 			function(a, b) {
@@ -180,14 +180,14 @@ function GroupedBar() {
 					sortval = a.metadata[key].localeCompare(b.metadata[key]);
 				else
 					sortval = 0
-			
+
 				if(sortval == 0)
 					return a.SampleID.localeCompare(b.SampleID);
 				else
 					return sortval
 				}
 			);
-		
+
 		var groupsDict = {}
 		if(key !== "SampleID")
 		{
@@ -199,10 +199,10 @@ function GroupedBar() {
 					groupsDict[val]++
 			});
 		}
-	
+
 		// if((groupsDict.length !== data.length) && key !== "SampleID")
 		// 	this.drawSortHeaders(groupsDict)
-	
+
 		//sort by resets group by so set the index back to 0
 		document.getElementById('group_by_select').selectedIndex = 0
 		this.getTotalAbundances(data)
@@ -221,7 +221,7 @@ function GroupedBar() {
 				groupAbundances[row[i].name] += Math.abs(row[i].y0-row[i].y1)
 			}
 		}
-	
+
 		// groupAbundances.sort(
 		// 		function(a, b) {
 		// 			console.log("a:"+a)
@@ -235,9 +235,9 @@ function GroupedBar() {
 		var groupData = []
 		var groupCounts = {}
 		var temp = {}
-		var key = document.getElementById('group_by_select')[document.getElementById('group_by_select').selectedIndex].text;	
+		var key = document.getElementById('group_by_select')[document.getElementById('group_by_select').selectedIndex].text;
 		var sampleIDs = d3.keys(data)
-		
+
 		for(var i = 0; i < sampleIDs.length; i++)
 		{
 			var sampleID = sampleIDs[i]
@@ -246,11 +246,11 @@ function GroupedBar() {
 				val = data[sampleID].SampleID
 			if(!(val in temp))
 				temp[val] = {}
-		
+
 			if(!(val in groupCounts))
 				groupCounts[val] = 0
 			groupCounts[val] += 1
-		
+
 			var currentTaxonomy = d3.keys(data[sampleID].tax)
 			for(var j = 0; j < currentTaxonomy.length; j++)
 			{
@@ -260,7 +260,7 @@ function GroupedBar() {
 				temp[val][currentTax] += data[sampleID].tax[currentTax]
 			}
 		}
-	
+
 		var groups = d3.keys(temp)
 		var t;
 		for(var i = 0; i < groups.length; i++)
@@ -270,18 +270,18 @@ function GroupedBar() {
 			 t['count'] = groupCounts[groups[i]]
 			 groupData.push(t)
 		}
-	
+
 		var domain = d3.keys(data[d3.keys(data)[0]]['tax'])
-    
+
 	    groupData.forEach(function(d) {
 	      var y0 = 0;
 	      d.abundances = domain.map(function(name) { return {name: name, value: +d['tax'][name]}; });
 		  d.total = d.abundances[d.abundances.length - 1].value;
 		  d.metadata = d['metadata']
 	    });
-	
+
 		var metadataType = metadataTypes[key];
-	
+
 		//in this case the SampleID is actually the group name
 		groupData.sort(
 			function(a, b) {
@@ -309,9 +309,9 @@ function GroupedBar() {
 		var sampleIDs = []
 		var temp = {}
 		tax = []
-	
+
 		// getBiom()
-	
+
 		if(biom['matrix_type'] == 'dense')
 		{
 			for(var i = 0; i < biom['columns'].length; i++)
@@ -353,9 +353,9 @@ function GroupedBar() {
 					temp_hash[sampleID][classification] = 0.0
 				temp_hash[sampleID][classification] += value
 			}
-		
+
 			tax = this.dedupe(tax)
-		
+
 			for(o in temp_hash)
 			{
 				temp = {"SampleID":o}
@@ -374,14 +374,14 @@ function GroupedBar() {
 		}
 
 		var domain = d3.keys(data[d3.keys(data)[0]]['tax'])
-    
+
 	    data.forEach(function(d) {
 	      var y0 = 0;
 	      d.abundances = domain.map(function(name) { return {name: name, value: +d['tax'][name]}; });
 		  d.total = d.abundances[d.abundances.length - 1].value;
 		  d.metadata = d['metadata']
 	    });
-		
+
 		rainbow.setNumberRange(0, domain.length);
 	}
 
@@ -409,7 +409,7 @@ function GroupedBar() {
 
 	// function drawSortHeaders(groupsDict) {
 	// 	console.log("****")
-	// 
+	//
 	// 	var groups = svg.selectAll(".groups")
 	// 		.data(groupsDict)
 	// 	    .enter().append("g")
@@ -426,27 +426,27 @@ function GroupedBar() {
 	this.drawTaxonomyBarVis = function (plotdata, showLabels) {
 	  x0.domain(plotdata.map(function(d) { return d.SampleID; }));
 	  x1.domain(tax).rangeRoundBands([0, x0.rangeBand()]);
-	  
+
 	  y.domain([0, d3.max(data, function(d) { return d3.max(d.abundances, function(d) { return d.value; })})]);
-	  
+
 	  samID.selectAll("rect").remove(); //clear old rects
 	  samID.selectAll("text").remove(); //remove old text that may be here
 	  svg.selectAll(".xAxisLabel").remove(); //remove old text
 	  svg.selectAll(".y.axis").remove(); //remove old y-axis
-	  
+
 	      yAxis = d3.svg.axis()
 	     	.scale(y)
 	     	.orient("left")
 	     	.tickFormat(d3.format(".2s"));
-	  
+
 	      svg.append("g")
 	        .attr("class", "y axis")
 	        .call(yAxis);
-	  
+
 		  samID = svg.selectAll(".SampleID")
 		      .data(plotdata)
-			  .attr("transform", function(d) { return "translate(" + x0(d.SampleID) + ",0)"; });	  
-	  
+			  .attr("transform", function(d) { return "translate(" + x0(d.SampleID) + ",0)"; });
+
 		  if(showLabels)
 		  {
 			  samID.append("text")
@@ -465,7 +465,7 @@ function GroupedBar() {
 			      .attr("y", height + 50)
 			      .text("Sample");
 		  }
-	  
+
 		  samID.selectAll("rect")
 		      .data(function(d) { return d.abundances; })
 		    .enter().append("rect")
@@ -473,21 +473,21 @@ function GroupedBar() {
 			  .attr("x", function(d) { return x1(d.name); })
 		      .attr("y", function(d) { return y(d.value); })
 		      .attr("height", function(d) { return height - y(d.value); })
-		      .style("fill", function(d) { return rainbow.colorAt(d3.keys(data[d3.keys(data)[0]]['tax']).indexOf(d.name)); })
+		      .style("fill", function(d) { return '#'+rainbow.colorAt(d3.keys(data[d3.keys(data)[0]]['tax']).indexOf(d.name)); })
 		      .on("mouseover", function(d) {
 		          this.style['opacity'] = .6;
-		          div.transition()        
+		          div.transition()
 		              .duration(200)
-		              .style("opacity", .9);      
-		          div .html(d.name + ": "+d.value)  
-		              .style("left", (d3.event.pageX) + "px")     
+		              .style("opacity", .9);
+		          div .html(d.name + ": "+d.value)
+		              .style("left", (d3.event.pageX) + "px")
 		              .style("top", (d3.event.pageY - 28) + "px");
 		      })
 		      .on("mouseout", function(d) {
 		          this.style['opacity'] = 1;
-		         div.transition()        
-		             .duration(500)      
-		             .style("opacity", 0);   
+		         div.transition()
+		             .duration(500)
+		             .style("opacity", 0);
 		      });
 	}
 }

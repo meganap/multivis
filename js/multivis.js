@@ -30,8 +30,8 @@ function comparativeSunburst() {
 		.attr("class", "plot");
 	
   	queue()
-  		.defer(d3.json, "sunburst/data/comptree1.json")
-  		.defer(d3.json, "sunburst/data/comptree2.json")
+  		.defer(d3.json, "data/comp_small_1.json")
+  		.defer(d3.json, "data/comp_small_2.json")
   		.await(function(error, r1, r2) { initComp(r1,r2) });
 }
 
