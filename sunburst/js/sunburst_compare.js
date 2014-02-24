@@ -95,7 +95,7 @@ function ComparativeSunburst() {
 		      path.enter().append("path")
 		      .attr("d", arc)
 		      .attr("fill-rule", "evenodd")
-		      .style("fill", function(d) { return '#'+sunvar.getColor(d, tips); })
+		      .style("fill", function(d) { return sunvar.getColor(d, tips); })
 		      .on("mouseover", function(d) {
 		          this.style['opacity'] = .6;
 		          div.transition()
