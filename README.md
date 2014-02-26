@@ -10,13 +10,13 @@
 
 Python is being used solely as an example.
 
-## Starting a Local Server
+### Starting a Local Server
 
 From within multivis directory:
 ```
 python -m SimpleHTTPServer 8888
 ```
 
-## Viewing `index.html`
+### Viewing `index.html`
 
 Open browser, navigate to `localhost:8888`, view pretty pictures.
