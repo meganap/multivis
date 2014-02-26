@@ -6,13 +6,13 @@ var abundancehtml = "<div id=\"breadcrumbs\"><ul><li id=\"classification0\" clas
 function sunburst() {
 	s = new Sunburst("sunburst/data/test.json")
 	d3.select("#visWrapper").selectAll("div").remove()//get rid of old plots
-	d3.select("#visWrapper").append("div")   
+	d3.select("#visWrapper").append("div")
 		.attr("id", "sequence");
-	d3.select("#visWrapper").append("div")   
+	d3.select("#visWrapper").append("div")
 		.attr("id", "plot");
-	d3.select("#visWrapper").append("div")   
+	d3.select("#visWrapper").append("div")
 		.attr("id", "text_width");
-	// d3.select("#visWrapper").append("input")   
+	// d3.select("#visWrapper").append("input")
 	// 	.attr("type", "button")
 	// 	.attr("value", "Zoom Out")
 	// 	.attr("click", function() {s.zoomOut()});
@@ -28,7 +28,7 @@ function comparativeSunburst() {
 	d3.select("#visWrapper").append("div")
 		.attr("id", "plot2")
 		.attr("class", "plot");
-	
+
   	queue()
   		.defer(d3.json, "data/comp_small_1.json")
   		.defer(d3.json, "data/comp_small_2.json")
@@ -38,9 +38,9 @@ function comparativeSunburst() {
 function treemap() {
 	s = new Treemap("sunburst/data/test.json")
 	d3.select("#visWrapper").selectAll("div").remove()//get rid of old plots
-	d3.select("#visWrapper").append("div")   
+	d3.select("#visWrapper").append("div")
 		.attr("id", "plot");
-	d3.select("#visWrapper").append("div")   
+	d3.select("#visWrapper").append("div")
 		.attr("id", "text_width");
 	s.initTreemap()
 }
@@ -48,15 +48,20 @@ function treemap() {
 function partition() {
 	s = new Partition("sunburst/data/test.json")
 	d3.select("#visWrapper").selectAll("div").remove()//get rid of old plots
-	d3.select("#visWrapper").append("div")   
+	d3.select("#visWrapper").append("div")
 		.attr("id", "plot");
-	d3.select("#visWrapper").append("div")   
+	d3.select("#visWrapper").append("div")
 		.attr("id", "text_width");
 	s.initPartition()
 }
 
 function initComp(r1,r2) {
 	s.setVals(r1,r2)
+}
+
+function area() {
+	s = new AreaChart()
+	initAbundance()
 }
 
 function stackedBar() {
