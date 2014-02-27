@@ -4,8 +4,6 @@
 + Very preliminary system for visualizing the same underlying data with different visualization techniques.
 + Parts of this will also be used in [QIIME](http://qiime.org) and the [American Gut Project](http://americangut.org)
 
-+ Only requirements are a local webserver to serve the pages. Start at index.html.
-
 #Getting Started
 
 Python is being used solely as an example.
