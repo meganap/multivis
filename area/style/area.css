@@ -5,8 +5,8 @@ body {
 .axis path,
 .axis line {
   fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
+/*  stroke: #000;*/
+/*  shape-rendering: crispEdges;*/
 }
 
 .browser text {

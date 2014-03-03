@@ -11,6 +11,7 @@ function AreaChart() {
 	var area;
 	var stack;
 	var taxons;
+	var taxon;
 	var color;
 	var xAxis;
 	var yAxis;
@@ -37,7 +38,7 @@ function AreaChart() {
 		height = 600 - margin.top - margin.bottom;
 
 		x = d3.scale.ordinal()
-		.range([0, width]);
+		.rangePoints([0, width]);
 
 		y = d3.scale.linear()
 		.range([height, 0]);
@@ -81,6 +82,7 @@ function AreaChart() {
 	  	  this.buildKey(tax)
 
 		  x.domain(data.map(function(d) { return d.SampleID; }));
+		  // x.domain(d3.extent(data, function(d) { return d.SampleID; }));
 
 		  svg.append("g")
 		      .attr("class", "y axis")
@@ -100,6 +102,12 @@ function AreaChart() {
 		    .enter().append("g")
 		      .attr("class", "SampleID")
 		      .attr("transform", function(d) { return "translate(" + x(d.SampleID) + ",0)"; });
+
+
+		  taxon = svg.selectAll(".taxon")
+		        .data(taxons)
+		      .enter().append("g")
+		        .attr("class", "taxon");
 
 		  this.sortChanged()
 	}
@@ -283,16 +291,30 @@ function AreaChart() {
 			 groupData.push(t)
 		}
 
-		var domain = d3.keys(data[d3.keys(data)[0]]['tax'])
+		var domain = d3.keys(groupData[d3.keys(data)[0]]['tax'])
 
 	    groupData.forEach(function(d) {
 	      var y0 = 0;
-	      d.abundances = domain.map(function(name) { return {name: name, y0: y0, y1: y0 += +d['tax'][name]}; });
-	      d.abundances.forEach(function(d) { d.y0 /= y0; d.y1 /= y0; });
+	      d.abundances = domain.map(function(name) { return { name: name, y0: y0, y1: y0 += +d['tax'][name]}; });
+	      // d.abundances.forEach(function(d) { d.y0 /= y0; d.y1 /= y0; });
 		  d.total = d.abundances[d.abundances.length - 1].y1;
 		  d.metadata = d['metadata']
 	    });
-		y.domain([0, d3.max(groupData, function(d) { return d.total; })]);
+
+  	    taxons = stack(domain.map(function(name) {
+  	        return {
+  	          name: name,
+  	          values: groupData.map(function(d) {
+  	            return {SampleID: d.SampleID, y: d['tax'][name] / d.total};
+  	          })
+  	        };
+  	      }));
+
+  		taxons.forEach(function(d) {
+  			d.values = d.values.sort(function(a, b) { return a.SampleID.localeCompare(b.SampleID); });
+  		}
+  		);
+
 		rainbow.setNumberRange(0, domain.length);
 
 		var metadataType = metadataTypes[key];
@@ -394,7 +416,6 @@ function AreaChart() {
 	    data.forEach(function(d) {
 	      var y0 = 0;
 	      d.abundances = domain.map(function(name) { return { name: name, y0: y0, y1: y0 += +d['tax'][name]}; });
-	      // d.abundances.forEach(function(d) { d.y0 /= y0; d.y1 /= y0; });
 		  d.total = d.abundances[d.abundances.length - 1].y1;
 		  d.metadata = d['metadata']
 	    });
@@ -403,15 +424,18 @@ function AreaChart() {
   	        return {
   	          name: name,
   	          values: data.map(function(d) {
-  	            return {SampleID: d.SampleID, y: d['tax'][name]};
+  	            return {SampleID: d.SampleID, y: d['tax'][name] / d.total};
   	          })
   	        };
   	      }));
 
-		// y.domain([0, d3.max(data, function(d) { return d.total; })]);
 		// data.sort(function(a, b) { return b.total - a.total; });
 		rainbow.setNumberRange(0, domain.length);
 
+		taxons.forEach(function(d) {
+			d.values = d.values.sort(function(a, b) { return a.SampleID.localeCompare(b.SampleID); });
+		}
+		);
 	}
 
 	this.buildKey = function (tax) {
@@ -456,41 +480,60 @@ function AreaChart() {
 
 	this.drawTaxonomyVis = function (plotdata, showLabels) {
 		  x.domain(plotdata.map(function(d) { return d.SampleID; }));
-		  // x.domain(d3.extent(plotdata, function(d) { return d.SampleID; }));
 
-		  // samID.selectAll("path").remove(); //clear old rects
-		  // samID.selectAll("text").remove(); //remove old text that may be here
-		  // svg.selectAll(".xAxisLabel").remove(); //remove old text
+		  taxon.selectAll("path").remove(); //clear old areas
+		  samID.selectAll("text").remove(); //remove old text that may be here
+		  svg.selectAll(".xAxisLabel").remove(); //remove old text
 
-		  var taxon = svg.selectAll(".taxon")
-		        .data(taxons)
-		      .enter().append("g")
-		        .attr("class", "taxon");
+		  samID = svg.selectAll(".SampleID")
+		      .data(plotdata)
+		  	  .attr("transform", function(d) { return "translate(" + x(d.SampleID) + ",0)"; });
 
-		  // samID = svg.selectAll(".SampleID")
-		  //     .data(plotdata);
-		  // 			  .attr("transform", function(d) { return "translate(" + x(d.SampleID) + ",0)"; });
+		  if(showLabels)
+		  {
+		  			  samID.append("text")
+		  			  		  .attr("y", function(d){ return x(d.sampleID); })
+		  			  		  .attr("x", -height-15)
+		  			  		  .attr("text-anchor", "end")
+		  			    	      .attr("transform", function(d) {
+		  			    	          return "rotate(-90)";
+		  			    	      })
+		  			  		  .text(function(d){ return (d.SampleID); });
+		  }else{
+		  			  svg.append("text")
+		  			      .attr("class", "xAxisLabel")
+		  			      .attr("text-anchor", "middle")
+		  			      .attr("x", width/2)
+		  			      .attr("y", height + 50)
+		  			      .text("Sample");
+		  }
 
-		  // if(showLabels)
-		  // {
-		  // 			  samID.append("text")
-		  // 			  		  .attr("y", x.rangeBand()/2)
-		  // 			  		  .attr("x", -height-15)
-		  // 			  		  .attr("text-anchor", "end")
-		  // 			    	      .attr("transform", function(d) {
-		  // 			    	          return "rotate(-90)";
-		  // 			    	      })
-		  // 			  		  .text(function(d){ return (d.SampleID); });
-		  // }else{
-		  // 			  svg.append("text")
-		  // 			      .attr("class", "xAxisLabel")
-		  // 			      .attr("text-anchor", "middle")
-		  // 			      .attr("x", width/2)
-		  // 			      .attr("y", height + 50)
-		  // 			      .text("Sample");
-		  // }
+		  taxon = svg.selectAll(".taxon")
+		        .data(taxons);
+		      // .enter().append("g")
+		      //   .attr("class", "taxon");
 
-		  taxon.append("path")
+			  taxon.append("path")
+			        .attr("class", "area")
+			        .attr("d", function(d) { return area(d.values); })
+			        .style("fill", function(d) { return '#'+rainbow.colorAt(d3.keys(data[d3.keys(data)[0]]['tax']).indexOf(d.name)); })
+		  		      .on("mouseover", function(d) {
+		  		          this.style['opacity'] = .6;
+		  		          div.transition()
+		  		              .duration(200)
+		  		              .style("opacity", .9);
+		  		          div .html(d.name)
+		  		              .style("left", (d3.event.pageX) + "px")
+		  		              .style("top", (d3.event.pageY - 28) + "px");
+		  		      })
+		  		      .on("mouseout", function(d) {
+		  		          this.style['opacity'] = 1;
+		  		         div.transition()
+		  		             .duration(500)
+		  		             .style("opacity", 0);
+		  		      });
+
+		  taxon.enter().append("path")
 		        .attr("class", "area")
 		        .attr("d", function(d) { return area(d.values); })
 		        .style("fill", function(d) { return '#'+rainbow.colorAt(d3.keys(data[d3.keys(data)[0]]['tax']).indexOf(d.name)); })
@@ -509,28 +552,5 @@ function AreaChart() {
 	  		             .duration(500)
 	  		             .style("opacity", 0);
 	  		      });
-
-		  // samID.selectAll("rect")
-		  //     .data(function(d) { return d.abundances; })
-		  //   .enter().append("rect")
-		  //     .attr("width", x.rangeBand())
-		  //     .attr("y", function(d) { return y(d.y1); })
-		  //     .attr("height", function(d) { return y(d.y0) - y(d.y1); })
-		  //     .style("fill", function(d) { return '#'+rainbow.colorAt(d3.keys(data[d3.keys(data)[0]]['tax']).indexOf(d.name)); })
-		  //     .on("mouseover", function(d) {
-		  //         this.style['opacity'] = .6;
-		  //         div.transition()
-		  //             .duration(200)
-		  //             .style("opacity", .9);
-		  //         div .html(d.name + ": "+(Math.abs(d.y0-d.y1)*100).toFixed(2)+"%")
-		  //             .style("left", (d3.event.pageX) + "px")
-		  //             .style("top", (d3.event.pageY - 28) + "px");
-		  //     })
-		  //     .on("mouseout", function(d) {
-		  //         this.style['opacity'] = 1;
-		  //        div.transition()
-		  //            .duration(500)
-		  //            .style("opacity", 0);
-		  //     });
 	}
 }
