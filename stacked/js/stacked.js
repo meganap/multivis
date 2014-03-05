@@ -218,8 +218,6 @@ function StackedBar() {
 
 		if((groupsDict.length !== data.length) && key !== "SampleID")
 			this.drawSortHeaders(groupsDict)
-		else
-			sortHeaders.selectAll("g").remove(); //remove sort labels if they exist
 	}
 
 	this.getTotalAbundances = function (data) {
@@ -439,11 +437,10 @@ function StackedBar() {
 			offset += groupsDict[i]
 		}
 
-		sortHeaders.selectAll("g").remove(); //remove old labels
+		var sh = sortHeaders.selectAll("g")
+			.data(groupsData, function(d) { return d.group; });
 
-		sortHeaders.selectAll("g")
-			.data(groupsData)
-			.enter().append("g")
+		sh.enter().append("g")
 				.attr("width", function(d){ return d.width })
 				.attr("height", 10)
 				.attr("x", function(d) { return d.offset})
@@ -456,22 +453,20 @@ function StackedBar() {
 					// document.getElementById(d.group+"Rect").style.opacity = 0;
 		        })
 
-	  		  .append("text")
-	  			.attr("class", "sortLabel")
-	  			.attr("x",function(d){ return d.textLocation })
-	  			.attr("y",-13)
-	  			.attr("text-anchor", "middle")
-	  			.text(function(d) { return d.group; });
+		 .append("text")
+			.attr("class", "sortLabel")
+			.attr("x",function(d){ return d.textLocation })
+			.attr("y",-13)
+			.attr("text-anchor", "middle")
+			.text(function(d) { return d.group; });
 
-		sortHeaders.selectAll("g")
-			  .append("rect")
+		sh.append("rect")
 				.attr("width", 1)
 				.attr("height", 5)
 				.attr("y", -10)
 				.attr("x", function(d) { return d.textLocation});
 
-		sortHeaders.selectAll("g")
-			  .append("rect")
+		sh.append("rect")
 				.attr("fill-opacity", "0")
 				.attr("stroke", "#000")
 				.attr("id", function(d){ return d.group+"Rect" })
@@ -481,6 +476,8 @@ function StackedBar() {
 				.attr("x", function(d) { return d.offset})
 				.attr("rx", 3)
 				.attr("ry", 3);
+
+		sh.exit().remove();
 	}
 
 	this.drawTaxonomyBarVis = function (plotdata, showLabels) {
