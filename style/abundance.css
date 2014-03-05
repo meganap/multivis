@@ -67,16 +67,16 @@ ul#key {
   shape-rendering: crispEdges;
 }
 
-div.tooltip {   
-  position: absolute;           
-  text-align: center;                           
-  height: 16px;                 
-  padding: 2px;             
-  font: 12px sans-serif;        
-  background: #fff;   
-  border: 0px;      
-  border-radius: 5px;           
-  pointer-events: none;         
+div.tooltip {
+  position: absolute;
+  text-align: center;
+  height: 16px;
+  padding: 2px;
+  font: 12px sans-serif;
+  background: #fff;
+  border: 0px;
+  border-radius: 5px;
+  pointer-events: none;
 }
 
 #breadcrumbs {
@@ -110,11 +110,12 @@ div.tooltip {
 
 #breadcrumbs ul li.selected_classification {
 	background-color: #fff;
-	cursor: pointer;
 	padding: 1em 2em;
 }
 
 #breadcrumbs ul li.selected_classification a{
+	pointer-events: none;
+	cursor: default;
 	color: #042a40;
 	text-transform:uppercase;
 	padding: 0px;
