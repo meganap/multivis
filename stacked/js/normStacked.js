@@ -31,7 +31,7 @@ function NormalizedStackedBar() {
 	this.initTaxonomyBarChart = function () {
 		windowWidth = document.getElementById('visWrapper').offsetWidth
 		margin = {top: 30, right: 20, bottom: 180, left: 60},
-		width = windowWidth*.8 - margin.left - margin.right,
+		width = windowWidth*.79 - margin.left - margin.right,
 		height = 600 - margin.top - margin.bottom;
 
 		x = d3.scale.ordinal()
@@ -40,7 +40,7 @@ function NormalizedStackedBar() {
 		y = d3.scale.linear()
 		.rangeRound([height, 0]);
 
-		rainbow.setSpectrum('lime','blue','red','yellow')
+		rainbow.setSpectrum('green','blue','red','yellow')
 
 		xAxis = d3.svg.axis()
 		.scale(x)
@@ -481,7 +481,6 @@ function NormalizedStackedBar() {
 				.attr("x", function(d) { return d.offset})
 				.attr("rx", 3)
 				.attr("ry", 3);
-
 	}
 
 	this.drawTaxonomyBarVis = function (plotdata, showLabels) {
