@@ -88,10 +88,10 @@ function StackedBar() {
 		      .text("Abundance");
 
 		  samID = svg.selectAll(".SampleID")
-		      .data(data)
+		      .data(data, function(d) { return d.SampleID; })
 		    .enter().append("g")
 		      .attr("class", "SampleID")
-		      .attr("transform", function(d) { return "translate(" + x(d.SampleID) + ",0)"; });
+		      .attr("transform", function(d) { return "translate(" + x(d) + ",0)"; });
 
 		  this.sortChanged()
 	}
@@ -433,9 +433,10 @@ function StackedBar() {
 	// }
 
 	this.drawTaxonomyBarVis = function (plotdata, showLabels) {
+		showLabels = true;
 		  x.domain(plotdata.map(function(d) { return d.SampleID; }));
-		  samID.selectAll("rect").remove(); //clear old rects
-		  samID.selectAll("text").remove(); //remove old text that may be here
+		  // samID.selectAll("rect").remove(); //clear old rects
+		  // samID.selectAll("text").remove(); //remove old text that may be here
 		  svg.selectAll(".xAxisLabel").remove(); //remove old text
 		  svg.selectAll(".y.axis").remove(); //remove old y-axis
 
@@ -449,19 +450,23 @@ function StackedBar() {
 	        .call(yAxis);
 
 		  samID = svg.selectAll(".SampleID")
-		      .data(plotdata)
+		      .data(plotdata, function(d) { return d.SampleID; })
 			  .attr("transform", function(d) { return "translate(" + x(d.SampleID) + ",0)"; });
 
 		  if(showLabels)
 		  {
-			  samID.append("text")
-			  		  .attr("y", x.rangeBand()/2)
-			  		  .attr("x", -height-15)
-			  		  .attr("text-anchor", "end")
-			    	      .attr("transform", function(d) {
-			    	          return "rotate(-90)";
-			    	      })
-			  		  .text(function(d){ return (d.SampleID); });
+			  var labels = samID.selectAll("text")
+			    .data(function(d) { return d.SampleID; });
+
+			  labels.append("text")
+	  		    .attr("y", x.rangeBand()/2)
+	  		    .attr("x", -height-15)
+	  		    .attr("text-anchor", "end")
+	    	        .attr("transform", function(d) {
+	    	            return "rotate(-90)";
+	    	        })
+	  		    .text(function(d){ console.log(d.SampleID); return d.SampleID; });
+			  labels.exit().remove();
 		  }else{
 			  svg.append("text")
 			      .attr("class", "xAxisLabel")
@@ -471,9 +476,10 @@ function StackedBar() {
 			      .text("Sample");
 		  }
 
-		  samID.selectAll("rect")
-		      .data(function(d) { return d.abundances; })
-		    .enter().append("rect")
+		 var rects = samID.selectAll("rect")
+		      .data(function(d) { return d.abundances; });
+
+		   rects.enter().append("rect")
 		      .attr("width", x.rangeBand())
 		      .attr("y", function(d) { return y(d.y1); })
 		      .attr("height", function(d) { return y(d.y0) - y(d.y1); })
@@ -493,5 +499,6 @@ function StackedBar() {
 		             .duration(500)
 		             .style("opacity", 0);
 		      });
+		  rects.exit().remove();
 	}
 }
