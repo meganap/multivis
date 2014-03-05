@@ -17,10 +17,13 @@ function GroupedBar() {
 	var metadataTypes;
 	var vis;
 	var svg;
-	var samID;
+	var samIDHolder;
 	var tax;
 	var xAxisLabel;
 	var rainbow = new Rainbow();
+	var currentLevel;
+	var groupByVal = "";
+	var sortByVal = "";
 
 	this.setBiom = function (root) {
 	  biom = root;
@@ -86,11 +89,11 @@ function GroupedBar() {
 	      .attr("transform", "rotate(-90)")
 	      .text("Abundance");
 
-	  samID = svg.selectAll(".SampleID")
-	      .data(data)
-	    .enter().append("g")
-	      .attr("class", "SampleID")
-	      .attr("transform", function(d) { return "translate(" + x0(d.SampleID) + ",0)"; });
+	  var labelHolder = [{SampleID: "Sample1"}]
+	  samIDHolder = svg.selectAll(".SampleID")
+	      .data(labelHolder)
+		.enter().append("g")
+		  .attr("class", "SampleID");
 
 	  this.sortChanged()
 	}
@@ -99,6 +102,7 @@ function GroupedBar() {
 		document.querySelectorAll('.selected_classification')[0].className = 'unselected_classification';
 		document.getElementById('classification'+taxonomic_level).className = 'selected_classification'
 		//reset stuff
+		currentLevel = taxonomic_level
 		this.setData(taxonomic_level)
 		this.buildKey(tax)
 		this.sortChanged()
@@ -164,6 +168,7 @@ function GroupedBar() {
 
 	this.sortChanged = function () {
 		var key = document.getElementById('sort_by_select')[document.getElementById('sort_by_select').selectedIndex].text;
+		sortByVal = key
 		var metadataType = metadataTypes[key];
 		data.sort(
 			function(a, b) {
@@ -238,6 +243,7 @@ function GroupedBar() {
 		var groupCounts = {}
 		var temp = {}
 		var key = document.getElementById('group_by_select')[document.getElementById('group_by_select').selectedIndex].text;
+		groupByVal = key
 		var sampleIDs = d3.keys(data)
 
 		for(var i = 0; i < sampleIDs.length; i++)
@@ -426,39 +432,46 @@ function GroupedBar() {
 	// }
 
 	this.drawTaxonomyBarVis = function (plotdata, showLabels) {
-	  x0.domain(plotdata.map(function(d) { return d.SampleID; }));
-	  x1.domain(tax).rangeRoundBands([0, x0.rangeBand()]);
+	    plotdata.forEach(function(d) {
+	    	d.uniquename = d.SampleID + currentLevel + groupByVal + sortByVal;
+	    });
+	    x0.domain(plotdata.map(function(d) { return d.SampleID; }));
+	    x1.domain(tax).rangeRoundBands([0, x0.rangeBand()]);
 
-	  y.domain([0, d3.max(data, function(d) { return d3.max(d.abundances, function(d) { return d.value; })})]);
+	    y.domain([0, d3.max(data, function(d) { return d3.max(d.abundances, function(d) { return d.value; })})]);
 
-	  samID.selectAll("rect").remove(); //clear old rects
-	  samID.selectAll("text").remove(); //remove old text that may be here
-	  svg.selectAll(".xAxisLabel").remove(); //remove old text
-	  svg.selectAll(".y.axis").remove(); //remove old y-axis
+	    samIDHolder.selectAll("text").remove(); //remove old text that may be here
+	    svg.selectAll(".xAxisLabel").remove(); //remove old text
+	    svg.selectAll(".y.axis").remove(); //remove old y-axis
 
-	      yAxis = d3.svg.axis()
-	     	.scale(y)
-	     	.orient("left")
-	     	.tickFormat(d3.format(".2s"));
+	    yAxis = d3.svg.axis()
+	    	.scale(y)
+	    	.orient("left")
+	    	.tickFormat(d3.format(".2s"));
 
-	      svg.append("g")
-	        .attr("class", "y axis")
-	        .call(yAxis);
+	    svg.append("g")
+	      .attr("class", "y axis")
+	      .call(yAxis);
 
-		  samID = svg.selectAll(".SampleID")
-		      .data(plotdata)
-			  .attr("transform", function(d) { return "translate(" + x0(d.SampleID) + ",0)"; });
+  	    var samID = samIDHolder.selectAll("g")
+  	      .data(plotdata, function(d) { return d.uniquename; });
+
+  		samID.enter().append("g")
+  		  	.attr("transform", function(d) { return "translate(" + x0(d.SampleID) + ",0)"; });
+
+  		if(plotdata.length < 100)
+  			showLabels = true;
 
 		  if(showLabels)
 		  {
 			  samID.append("text")
-			  		  .attr("y", x0.rangeBand()/2)
-			  		  .attr("x", -height-15)
-			  		  .attr("text-anchor", "end")
-			    	      .attr("transform", function(d) {
-			    	          return "rotate(-90)";
-			    	      })
-			  		  .text(function(d){ return (d.SampleID); });
+	  		    .attr("y", x0.rangeBand()/2)
+	  		    .attr("x", -height-15)
+	  		    .attr("text-anchor", "end")
+	    	        .attr("transform", function(d) {
+	    	            return "rotate(-90)";
+	    	        })
+	  		    .text(function(d){ return d.SampleID; });
 		  }else{
 			  svg.append("text")
 			      .attr("class", "xAxisLabel")
@@ -468,28 +481,32 @@ function GroupedBar() {
 			      .text("Sample");
 		  }
 
-		  samID.selectAll("rect")
-		      .data(function(d) { return d.abundances; })
-		    .enter().append("rect")
-		      .attr("width", x1.rangeBand())
+	  		var r = samID.selectAll("rect")
+	  		     .data(function(d) { return d.abundances; });
+
+	  		r.enter().append("rect")
+	  		  .attr("width", x1.rangeBand())
 			  .attr("x", function(d) { return x1(d.name); })
 		      .attr("y", function(d) { return y(d.value); })
 		      .attr("height", function(d) { return height - y(d.value); })
-		      .style("fill", function(d) { return '#'+rainbow.colorAt(d3.keys(data[d3.keys(data)[0]]['tax']).indexOf(d.name)); })
-		      .on("mouseover", function(d) {
-		          this.style['opacity'] = .6;
-		          div.transition()
-		              .duration(200)
-		              .style("opacity", .9);
-		          div .html(d.name + ": "+d.value)
-		              .style("left", (d3.event.pageX) + "px")
-		              .style("top", (d3.event.pageY - 28) + "px");
-		      })
-		      .on("mouseout", function(d) {
-		          this.style['opacity'] = 1;
-		         div.transition()
-		             .duration(500)
-		             .style("opacity", 0);
-		      });
+	  		     .style("fill", function(d) { return '#'+rainbow.colorAt(d3.keys(data[d3.keys(data)[0]]['tax']).indexOf(d.name)); })
+	  		     .on("mouseover", function(d) {
+	  		         this.style['opacity'] = .6;
+	  		         div.transition()
+	  		             .duration(200)
+	  		             .style("opacity", .9);
+	  		         div .html(d.name + ": " + d.value)
+	  		             .style("left", (d3.event.pageX) + "px")
+	  		             .style("top", (d3.event.pageY - 28) + "px");
+	  		     })
+	  		     .on("mouseout", function(d) {
+	  		         this.style['opacity'] = 1;
+	  		        div.transition()
+	  		            .duration(500)
+	  		            .style("opacity", 0);
+	  		     });
+
+	  		r.exit().remove();
+	  		samID.exit().remove();
 	}
 }
