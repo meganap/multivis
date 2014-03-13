@@ -16,7 +16,9 @@ function StackedBar() {
 	var data;
 	var metadataTypes;
 	var vis;
+	var axisVis;
 	var svg;
+	var axisSvg;
 	var samID;
 	var tax;
 	var xAxisLabel;
@@ -28,9 +30,11 @@ function StackedBar() {
 	}
 
 	this.initTaxonomyBarChart = function () {
-		windowWidth = document.getElementById('visWrapper').offsetWidth
-		margin = {top: 30, right: 20, bottom: 180, left: 60},
-		width = windowWidth*.8 - margin.left - margin.right,
+		windowWidth = document.getElementById('plot').offsetWidth;
+		margin = {top: 30, right: 20, bottom: 180, left: 60};
+
+		width = windowWidth*.97;
+
 		height = 600 - margin.top - margin.bottom;
 
 		x = d3.scale.ordinal()
@@ -59,13 +63,21 @@ function StackedBar() {
 
 		var classification = ["Phylum","Class","Order","Family","Genus","Species"]
 
+		axisVis = d3.select("#yaxisholder")
+		axisSvg = axisVis.append("svg")
+		    .attr("width", margin.left)
+		    .attr("height", height + margin.top + margin.bottom)
+		    .attr("id", "axis")
+		  .append("g")
+		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
 		vis = d3.select("#plot")
 		svg = vis.append("svg")
-		    .attr("width", width + margin.left + margin.right)
+		    .attr("width", width + margin.right)
 		    .attr("height", height + margin.top + margin.bottom)
 		    .attr("id", "chart")
 		  .append("g")
-		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+		    .attr("transform", "translate(" + 10 + "," + margin.top + ")");
 
 		  this.setData(0)
 		  this.setMetadataTypes()
@@ -74,11 +86,11 @@ function StackedBar() {
 
 		  x.domain(data.map(function(d) { return d.SampleID; }));
 
-		  svg.append("g")
+		  axisSvg.append("g")
 		      .attr("class", "y axis")
 		      .call(yAxis);
 
-		  svg.append("text")
+		  axisSvg.append("text")
 		      .attr("class", "axisLabel")
 		      .attr("text-anchor", "middle")
 		      .attr("y", -55)
@@ -437,14 +449,14 @@ function StackedBar() {
 		  samID.selectAll("rect").remove(); //clear old rects
 		  samID.selectAll("text").remove(); //remove old text that may be here
 		  svg.selectAll(".xAxisLabel").remove(); //remove old text
-		  svg.selectAll(".y.axis").remove(); //remove old y-axis
+		  axisSvg.selectAll(".y.axis").remove(); //remove old y-axis
 
 	      yAxis = d3.svg.axis()
 	     	.scale(y)
 	     	.orient("left")
 	     	.tickFormat(d3.format(".2s"));
 
-	      svg.append("g")
+	      axisSvg.append("g")
 	        .attr("class", "y axis")
 	        .call(yAxis);
 

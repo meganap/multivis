@@ -4,6 +4,11 @@ div#plot {
 	font: 10px sans-serif;
 	width: 70%;
 	float: left;
+	overflow: scroll;
+}
+
+div#yaxisholder {
+	float: left;
 }
 
 div#options {
