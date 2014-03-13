@@ -16,7 +16,9 @@ function NormalizedStackedBar() {
 	var data;
 	var metadataTypes;
 	var vis;
+	var axisVis;
 	var svg;
+	var axisSvg;
 	var samID;
 	var tax;
 	var xAxisLabel;
@@ -28,9 +30,9 @@ function NormalizedStackedBar() {
 	}
 
 	this.initTaxonomyBarChart = function () {
-		windowWidth = document.getElementById('visWrapper').offsetWidth
-		margin = {top: 30, right: 20, bottom: 180, left: 60},
-		width = windowWidth*.8 - margin.left - margin.right,
+		windowWidth = document.getElementById('plot').offsetWidth;
+		margin = {top: 30, right: 20, bottom: 180, left: 60};
+		width = windowWidth*.97;
 		height = 600 - margin.top - margin.bottom;
 
 		x = d3.scale.ordinal()
@@ -56,13 +58,21 @@ function NormalizedStackedBar() {
 
 		var classification = ["Phylum","Class","Order","Family","Genus","Species"]
 
+		YaxisVis = d3.select("#yaxisholder")
+		YaxisSvg = YaxisVis.append("svg")
+		    .attr("width", margin.left)
+		    .attr("height", height + margin.top + 10)
+		    .attr("id", "yaxis")
+		  .append("g")
+		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
 		vis = d3.select("#plot")
 		svg = vis.append("svg")
-		    .attr("width", width + margin.left + margin.right)
+		    .attr("width", width + margin.right)
 		    .attr("height", height + margin.top + margin.bottom)
 		    .attr("id", "chart")
 		  .append("g")
-		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+		    .attr("transform", "translate(" + 10 + "," + margin.top + ")");
 
 		  this.setData(0)
 		  this.setMetadataTypes()
@@ -71,11 +81,11 @@ function NormalizedStackedBar() {
 
 		  x.domain(data.map(function(d) { return d.SampleID; }));
 
-		  svg.append("g")
+		  YaxisSvg.append("g")
 		      .attr("class", "y axis")
 		      .call(yAxis);
 
-		  svg.append("text")
+		  YaxisSvg.append("text")
 		      .attr("class", "axisLabel")
 		      .attr("text-anchor", "middle")
 		      .attr("y", -55)
@@ -433,10 +443,27 @@ function NormalizedStackedBar() {
 	// }
 
 	this.drawTaxonomyBarVis = function (plotdata, showLabels) {
+		width = Math.max(windowWidth*.97, plotdata.length+10);
+		vis.selectAll("svg")
+		    .attr("width", width + margin.right);
+
+		x = d3.scale.ordinal()
+		.rangeRoundBands([0, width], .1);
+
 		  x.domain(plotdata.map(function(d) { return d.SampleID; }));
 		  samID.selectAll("rect").remove(); //clear old rects
 		  samID.selectAll("text").remove(); //remove old text that may be here
 		  svg.selectAll(".xAxisLabel").remove(); //remove old text
+		  YaxisSvg.selectAll(".y.axis").remove(); //remove old y-axis
+
+	      yAxis = d3.svg.axis()
+	     	.scale(y)
+	     	.orient("left")
+	     	.tickFormat(d3.format(".0%"));
+
+	      YaxisSvg.append("g")
+	        .attr("class", "y axis")
+	        .call(yAxis);
 
 		  samID = svg.selectAll(".SampleID")
 		      .data(plotdata)
@@ -453,12 +480,12 @@ function NormalizedStackedBar() {
 			    	      })
 			  		  .text(function(d){ return (d.SampleID); });
 		  }else{
-			  svg.append("text")
-			      .attr("class", "xAxisLabel")
-			      .attr("text-anchor", "middle")
-			      .attr("x", width/2)
-			      .attr("y", height + 50)
-			      .text("Sample");
+			  // svg.append("text")
+			  //     .attr("class", "xAxisLabel")
+			  //     .attr("text-anchor", "middle")
+			  //     .attr("x", width/2)
+			  //     .attr("y", height + 50)
+			  //     .text("Sample");
 		  }
 
 		  samID.selectAll("rect")
