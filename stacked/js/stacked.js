@@ -35,7 +35,7 @@ function StackedBar() {
 		height = 600 - margin.top - margin.bottom;
 
 		x = d3.scale.ordinal()
-		.rangeBands([0, width]);
+		.rangeBands([0, width], .1);
 
 		y = d3.scale.linear()
 		.rangeRound([height, 0]);
@@ -430,10 +430,10 @@ function StackedBar() {
 	this.drawSortHeaders = function (groupsDict) {
 		var groupsData = []
 		var offset = 0;
-		var barWidth = x.rangeBand(); //calculated width of bar + padding
+		var barWidth = x.rangeBand() + x.rangeBand()*.1; //calculated width of bar + padding
 		for(var i in groupsDict)
 		{
-			groupsData.push({ "group": i, "count": groupsDict[i], "offset":offset*barWidth, "textLocation": (offset*barWidth + (groupsDict[i]*barWidth)/2), "width": groupsDict[i]*barWidth})
+			groupsData.push({ "group": i, "count": groupsDict[i], "offset":offset*barWidth+x.rangeBand()*.1, "textLocation": (offset*barWidth+ x.rangeBand()*.1 + (groupsDict[i]*barWidth)/2), "width": groupsDict[i]*barWidth})
 			offset += groupsDict[i]
 		}
 

@@ -35,7 +35,7 @@ function GroupedBar() {
 		height = 600 - margin.top - margin.bottom;
 
 		x0 = d3.scale.ordinal()
-			.rangeBands([0, width]);
+			.rangeBands([0, width], .1);
 
 		x1 = d3.scale.ordinal();
 
@@ -440,10 +440,10 @@ function GroupedBar() {
 	this.drawSortHeaders = function (groupsDict) {
 		var groupsData = []
 		var offset = 0;
-		var barWidth = x0.rangeBand(); //calculated width of bar + padding
+		var barWidth = x0.rangeBand() + x0.rangeBand()*.1; //calculated width of bar + padding
 		for(var i in groupsDict)
 		{
-			groupsData.push({ "group": i, "count": groupsDict[i], "offset":offset*barWidth, "textLocation": (offset*barWidth + (groupsDict[i]*barWidth)/2), "width": groupsDict[i]*barWidth})
+			groupsData.push({ "group": i, "count": groupsDict[i], "offset":offset*barWidth+x0.rangeBand()*.1, "textLocation": (offset*barWidth+ x0.rangeBand()*.1 + (groupsDict[i]*barWidth)/2), "width": groupsDict[i]*barWidth})
 			offset += groupsDict[i]
 		}
 
