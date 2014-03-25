@@ -17,7 +17,9 @@ function GroupedBar() {
 	var data;
 	var metadataTypes;
 	var vis;
+	var YaxisVis;
 	var svg;
+	var YaxisSvg;
 	var samID;
 	var tax;
 	var xAxisLabel;
@@ -59,6 +61,14 @@ function GroupedBar() {
 
 	var classification = ["Phylum","Class","Order","Family","Genus","Species"]
 
+	YaxisVis = d3.select("#yaxisholder")
+	YaxisSvg = YaxisVis.append("svg")
+	    .attr("width", margin.left)
+	    .attr("height", height + margin.top + 10)
+	    .attr("id", "yaxis")
+	  .append("g")
+	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
 	vis = d3.select("#plot")
 	svg = vis.append("svg")
 	    .attr("width", width + margin.left + margin.right)
@@ -74,11 +84,11 @@ function GroupedBar() {
 
 	  x0.domain(data.map(function(d) { return d.SampleID; }));
 
-	  svg.append("g")
+	  YaxisSvg.append("g")
 	      .attr("class", "y axis")
 	      .call(yAxis);
 
-	  svg.append("text")
+	  YaxisSvg.append("text")
 	      .attr("class", "axisLabel")
 	      .attr("text-anchor", "middle")
 	      .attr("y", -55)
@@ -499,16 +509,16 @@ function GroupedBar() {
 	  samID.selectAll("rect").remove(); //clear old rects
 	  samID.selectAll("text").remove(); //remove old text that may be here
 	  svg.selectAll(".xAxisLabel").remove(); //remove old text
-	  svg.selectAll(".y.axis").remove(); //remove old y-axis
+	  YaxisSvg.selectAll(".y.axis").remove(); //remove old y-axis
 
-	      yAxis = d3.svg.axis()
-	     	.scale(y)
-	     	.orient("left")
-	     	.tickFormat(d3.format(".2s"));
+      yAxis = d3.svg.axis()
+     	.scale(y)
+     	.orient("left")
+     	.tickFormat(d3.format(".2s"));
 
-	      svg.append("g")
-	        .attr("class", "y axis")
-	        .call(yAxis);
+      YaxisSvg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis);
 
 		  samID = svg.selectAll(".SampleID")
 		      .data(plotdata)
