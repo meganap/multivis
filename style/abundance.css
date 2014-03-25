@@ -37,7 +37,7 @@ ul#key {
 }
 
 .groups {
-	stroke: lime;
+/*	stroke: lime;*/
 }
 
 .xAxisLabel {
@@ -60,6 +60,12 @@ ul#key {
 
 .x.axis path {
   display: none;
+}
+
+.sortRect {
+/*	opacity: 0;*/
+/*	stroke: #000;*/
+	border: 1px solid black;
 }
 
 .legend line {
