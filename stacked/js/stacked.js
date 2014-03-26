@@ -8,6 +8,7 @@ function StackedBar() {
 	var height;
 	var x;
 	var y;
+	var sortHeaders;
 	var color;
 	var xAxis;
 	var yAxis;
@@ -19,11 +20,14 @@ function StackedBar() {
 	var vis;
 	var YaxisVis;
 	var svg;
+	var samIDHolder;
 	var YaxisSvg;
-	var samID;
 	var tax;
 	var xAxisLabel;
 	var rainbow = new Rainbow();
+	var currentLevel;
+	var groupByVal = "";
+	var sortByVal = "";
 
 	this.setBiom = function (root) {
 	  biom = root;
@@ -70,14 +74,6 @@ function StackedBar() {
 		  .append("g")
 		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-		// XaxisVis = d3.select("#xaxisholder")
-		// XaxisSvg = XaxisVis.append("svg")
-		//     .attr("width", windowWidth*.97)
-		//     .attr("height", margin.bottom)
-		//     .attr("id", "xaxis")
-		//   .append("g")
-		//     .attr("transform", "translate(" + 10 + "," + margin.top + ")");
-
 		vis = d3.select("#plot")
 		svg = vis.append("svg")
 		    .attr("width", width + margin.right)
@@ -92,6 +88,13 @@ function StackedBar() {
 	  	  this.buildKey(tax)
 
 		  x.domain(data.map(function(d) { return d.SampleID; }));
+
+
+		  var labelHolder = [{SampleID: "Sample1"}]
+		  samIDHolder = svg.selectAll(".SampleID")
+		      .data(labelHolder)
+			.enter().append("g")
+			  .attr("class", "SampleID");
 
 		  YaxisSvg.append("g")
 		      .attr("class", "y axis")
@@ -113,12 +116,6 @@ function StackedBar() {
 		    .enter().append("g")
 	  		  .attr("class", "groups");
 
-		  samID = svg.selectAll(".SampleID")
-		      .data(data)
-		    .enter().append("g")
-		      .attr("class", "SampleID")
-		      .attr("transform", function(d) { return "translate(" + x(d.SampleID) + ",0)"; });
-
 		  this.sortChanged()
 	}
 
@@ -126,6 +123,7 @@ function StackedBar() {
 		document.querySelectorAll('.selected_classification')[0].className = 'unselected_classification';
 		document.getElementById('classification'+taxonomic_level).className = 'selected_classification'
 		//reset stuff
+		currentLevel = taxonomic_level
 		this.setData(taxonomic_level)
 		this.buildKey(tax)
 		this.sortChanged()
@@ -192,6 +190,7 @@ function StackedBar() {
 	this.sortChanged = function () {
 		var key = document.getElementById('sort_by_select')[document.getElementById('sort_by_select').selectedIndex].text;
 		var metadataType = metadataTypes[key];
+		sortByVal = key
 		data.sort(
 			function(a, b) {
 				var sortval;
@@ -265,6 +264,7 @@ function StackedBar() {
 		var groupCounts = {}
 		var temp = {}
 		var key = document.getElementById('group_by_select')[document.getElementById('group_by_select').selectedIndex].text;
+		sortByVal = key
 		var sampleIDs = d3.keys(data)
 
 		for(var i = 0; i < sampleIDs.length; i++)
@@ -305,11 +305,10 @@ function StackedBar() {
 	    groupData.forEach(function(d) {
 	      var y0 = 0;
 	      d.abundances = domain.map(function(name) { return {name: name, y0: y0, y1: y0 += +d['tax'][name]}; });
-	      // d.abundances.forEach(function(d) { d.y0 /= y0; d.y1 /= y0; });
 		  d.total = d.abundances[d.abundances.length - 1].y1;
 		  d.metadata = d['metadata']
 	    });
-		y.domain([0, d3.max(groupData, function(d) { return d.total; })]);
+
 		rainbow.setNumberRange(0, domain.length);
 
 		var metadataType = metadataTypes[key];
@@ -413,7 +412,6 @@ function StackedBar() {
 	    data.forEach(function(d) {
 	      var y0 = 0;
 	      d.abundances = domain.map(function(name) { return {name: name, y0: y0, y1: y0 += +d['tax'][name]}; });
-	      // d.abundances.forEach(function(d) { d.y0 /= y0; d.y1 /= y0; });
 		  d.total = d.abundances[d.abundances.length - 1].y1;
 		  d.metadata = d['metadata']
 	    });
@@ -506,67 +504,78 @@ function StackedBar() {
 		x = d3.scale.ordinal()
 		.rangeRoundBands([0, width], .1);
 
-		  x.domain(plotdata.map(function(d) { return d.SampleID; }));
-		  y.domain([0, d3.max(plotdata, function(d) { return d.total; })]);
+		plotdata.forEach(function(d) {
+			d.uniquename = d.SampleID + currentLevel + groupByVal + sortByVal;
+		});
+		x.domain(plotdata.map(function(d) { return d.SampleID; }));
+		y.domain([0, d3.max(plotdata, function(d) { return d.total; })]);
 
-		  samID.selectAll("rect").remove(); //clear old rects
-		  samID.selectAll("text").remove(); //remove old text that may be here
-		  // XaxisSvg.selectAll(".xAxisLabel").remove(); //remove old text
-		  YaxisSvg.selectAll(".y.axis").remove(); //remove old y-axis
+		svg.selectAll(".xAxisLabel").remove(); //remove old text
+		YaxisSvg.selectAll(".y.axis").remove(); //remove old y-axis
+		samIDHolder.selectAll("text").remove(); //remove old text that may be here
 
-	      yAxis = d3.svg.axis()
-	     	.scale(y)
-	     	.orient("left")
-	     	.tickFormat(d3.format(".2s"));
+      yAxis = d3.svg.axis()
+     	.scale(y)
+     	.orient("left")
+     	.tickFormat(d3.format(".2s"));
 
-	      YaxisSvg.append("g")
-	        .attr("class", "y axis")
-	        .call(yAxis);
+      YaxisSvg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis);
 
-		  samID = svg.selectAll(".SampleID")
-		      .data(plotdata)
-			  .attr("transform", function(d) { return "translate(" + x(d.SampleID) + ",0)"; });
+	    var samID = samIDHolder.selectAll("g")
+	      .data(plotdata, function(d) { return d.uniquename; });
 
-		  if(showLabels)
-		  {
+		samID.enter().append("g")
+		  	.attr("transform", function(d) { return "translate(" + x(d.SampleID) + ",0)"; });
+
+		if(plotdata.length < 100)
+			showLabels = true;
+
+		if(showLabels)
+		{
 			  samID.append("text")
-			  		  .attr("y", x.rangeBand()/2)
-			  		  .attr("x", -height-15)
-			  		  .attr("text-anchor", "end")
-			    	      .attr("transform", function(d) {
-			    	          return "rotate(-90)";
-			    	      })
-			  		  .text(function(d){ return (d.SampleID); });
-		  }else{
-			  // XaxisSvg.append("text")
-			  //     .attr("class", "xAxisLabel")
-			  //     .attr("text-anchor", "middle")
-			  //     .attr("x", width/2)
-			  //     .attr("y", height + 50)
-			  //     .text("Sample");
-		  }
+	  		    .attr("y", x.rangeBand()/2)
+	  		    .attr("x", -height-15)
+	  		    .attr("text-anchor", "end")
+	    	        .attr("transform", function(d) {
+	    	            return "rotate(-90)";
+	    	        })
+	  		    .text(function(d){ return d.SampleID; });
+		}else{
+			  svg.append("text")
+			      .attr("class", "xAxisLabel")
+			      .attr("text-anchor", "middle")
+			      .attr("x", width/2)
+			      .attr("y", height + 50)
+			      .text("Sample");
+		}
 
-		  samID.selectAll("rect")
-		      .data(function(d) { return d.abundances; })
-		    .enter().append("rect")
-		      .attr("width", x.rangeBand())
-		      .attr("y", function(d) { return y(d.y1); })
-		      .attr("height", function(d) { return y(d.y0) - y(d.y1); })
-		      .style("fill", function(d) { return '#'+rainbow.colorAt(d3.keys(data[d3.keys(data)[0]]['tax']).indexOf(d.name)); })
-		      .on("mouseover", function(d) {
-		          this.style['opacity'] = .6;
-		          div.transition()
-		              .duration(200)
-		              .style("opacity", .9);
-		          div .html(d.name + ": "+(Math.abs(d.y0-d.y1)))
-		              .style("left", (d3.event.pageX) + "px")
-		              .style("top", (d3.event.pageY - 28) + "px");
-		      })
-		      .on("mouseout", function(d) {
-		          this.style['opacity'] = 1;
+		var r = samID.selectAll("rect")
+		     .data(function(d) { return d.abundances; });
+
+		r.enter().append("rect")
+		     .attr("width", x.rangeBand())
+		     .attr("y", function(d) { return y(d.y1); })
+		     .attr("height", function(d) { return y(d.y0) - y(d.y1); })
+		     .style("fill", function(d) { return '#'+rainbow.colorAt(d3.keys(data[d3.keys(data)[0]]['tax']).indexOf(d.name)); })
+		     .on("mouseover", function(d) {
+		         this.style['opacity'] = .6;
 		         div.transition()
-		             .duration(500)
-		             .style("opacity", 0);
-		      });
+		             .duration(200)
+		             .style("opacity", .9);
+		         div .html(d.name + ": "+(Math.abs(d.y0-d.y1)))
+		             .style("left", (d3.event.pageX) + "px")
+		             .style("top", (d3.event.pageY - 28) + "px");
+		     })
+		     .on("mouseout", function(d) {
+		         this.style['opacity'] = 1;
+		        div.transition()
+		            .duration(500)
+		            .style("opacity", 0);
+		     });
+
+		r.exit().remove();
+		samID.exit().remove();
 	}
 }
