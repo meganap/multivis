@@ -11,12 +11,15 @@ function NormalizedStackedBar() {
 	var color;
 	var xAxis;
 	var yAxis;
+	var sortHeaders;
 	var div;
 	var biom;
 	var data;
 	var metadataTypes;
 	var vis;
+	var axisVis;
 	var svg;
+	var axisSvg;
 	var samID;
 	var tax;
 	var xAxisLabel;
@@ -28,13 +31,13 @@ function NormalizedStackedBar() {
 	}
 
 	this.initTaxonomyBarChart = function () {
-		windowWidth = document.getElementById('visWrapper').offsetWidth
-		margin = {top: 30, right: 20, bottom: 180, left: 60},
-		width = windowWidth - margin.left - margin.right,
+		windowWidth = document.getElementById('plot').offsetWidth;
+		margin = {top: 30, right: 20, bottom: 180, left: 60};
+		width = windowWidth*.97;
 		height = 600 - margin.top - margin.bottom;
 
 		x = d3.scale.ordinal()
-		.rangeRoundBands([0, width], .1);
+		.rangeBands([0, width], .1);
 
 		y = d3.scale.linear()
 		.rangeRound([height, 0]);
@@ -56,13 +59,21 @@ function NormalizedStackedBar() {
 
 		var classification = ["Phylum","Class","Order","Family","Genus","Species"]
 
+		YaxisVis = d3.select("#yaxisholder")
+		YaxisSvg = YaxisVis.append("svg")
+		    .attr("width", margin.left)
+		    .attr("height", height + margin.top + 10)
+		    .attr("id", "yaxis")
+		  .append("g")
+		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
 		vis = d3.select("#plot")
 		svg = vis.append("svg")
-		    .attr("width", width + margin.left + margin.right)
+		    .attr("width", width + margin.right)
 		    .attr("height", height + margin.top + margin.bottom)
 		    .attr("id", "chart")
 		  .append("g")
-		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+		    .attr("transform", "translate(" + 10 + "," + margin.top + ")");
 
 		  this.setData(0)
 		  // this.setMetadataTypes()
@@ -71,11 +82,11 @@ function NormalizedStackedBar() {
 
 		  x.domain(data.map(function(d) { return d.SampleID; }));
 
-		  svg.append("g")
+		  YaxisSvg.append("g")
 		      .attr("class", "y axis")
 		      .call(yAxis);
 
-		  svg.append("text")
+		  YaxisSvg.append("text")
 		      .attr("class", "axisLabel")
 		      .attr("text-anchor", "middle")
 		      .attr("y", -55)
@@ -83,6 +94,13 @@ function NormalizedStackedBar() {
 		      .attr("dy", ".75em")
 		      .attr("transform", "rotate(-90)")
 		      .text("Relative Abundance");
+
+		  var sortData = [{ 'group': 'SampleID'}]
+
+		  sortHeaders = svg.selectAll(".sortHeaders")
+		 	  .data(sortData)
+		    .enter().append("g")
+	  		  .attr("class", "groups");
 
 		  samID = svg.selectAll(".SampleID")
 		      .data(data)
@@ -421,28 +439,82 @@ function NormalizedStackedBar() {
 	// function changeColor(tax) {
 	// }
 
-	// function drawSortHeaders(groupsDict) {
-	// 	console.log("****")
-	//
-	// 	var groups = svg.selectAll(".groups")
-	// 		.data(groupsDict)
-	// 	    .enter().append("g")
-	// 	      .attr("class", "groups");
-	// 	groups.selectAll("rect")
-	// 		.data(groupsDict)
-	// 		.enter().append("rect")
-	// 		.attr("x",height)
-	// 		.attr("y",width)
-	// 		.attr("width",20)
-	// 		.attr("height",20);
-	// }
+	//draws headers over the groups when data is sorted by a certain category
+	this.drawSortHeaders = function (groupsDict) {
+		var groupsData = []
+		var offset = 0;
+		var barWidth = x.rangeBand() + x.rangeBand()*.1; //calculated width of bar + padding
+		for(var i in groupsDict)
+		{
+			groupsData.push({ "group": i, "count": groupsDict[i], "offset":offset*barWidth+x.rangeBand()*.1, "textLocation": (offset*barWidth+ x.rangeBand()*.1 + (groupsDict[i]*barWidth)/2), "width": groupsDict[i]*barWidth})
+			offset += groupsDict[i]
+		}
+
+		var sh = sortHeaders.selectAll("g")
+			.data(groupsData, function(d) { return d.group; });
+
+		sh.enter().append("g")
+				.attr("width", function(d){ return d.width })
+				.attr("height", 10)
+				.attr("x", function(d) { return d.offset})
+		        .on("mouseover", function(d) {
+		            // this.style['opacity'] = .6;
+					// document.getElementById(d.group+"Rect").style.opacity = 1;
+		        })
+		        .on("mouseout", function(d) {
+		            // this.style['opacity'] = 1;
+					// document.getElementById(d.group+"Rect").style.opacity = 0;
+		        })
+
+		 .append("text")
+			.attr("class", "sortLabel")
+			.attr("x",function(d){ return d.textLocation })
+			.attr("y",-13)
+			.attr("text-anchor", "middle")
+			.text(function(d) { return d.group; });
+
+		sh.append("rect")
+				.attr("width", 1)
+				.attr("height", 5)
+				.attr("y", -10)
+				.attr("x", function(d) { return d.textLocation});
+
+		sh.append("rect")
+				.attr("fill-opacity", "0")
+				.attr("stroke", "#000")
+				.attr("id", function(d){ return d.group+"Rect" })
+				.attr("width", function(d){ return d.width })
+				.attr("height", height + 5)
+				.attr("y", -5)
+				.attr("x", function(d) { return d.offset})
+				.attr("rx", 3)
+				.attr("ry", 3);
+
+		sh.exit().remove();
+	}
 
 	this.drawTaxonomyBarVis = function (plotdata, showLabels) {
 		showLabels = true;
+		width = Math.max(windowWidth*.97, plotdata.length+10);
+		vis.selectAll("svg")
+		    .attr("width", width + margin.right);
+
+		x = d3.scale.ordinal()
+		.rangeRoundBands([0, width], .1);
 		  x.domain(plotdata.map(function(d) { return d.SampleID; }));
 		  samID.selectAll("rect").remove(); //clear old rects
 		  samID.selectAll("text").remove(); //remove old text that may be here
 		  svg.selectAll(".xAxisLabel").remove(); //remove old text
+		  YaxisSvg.selectAll(".y.axis").remove(); //remove old y-axis
+
+	      yAxis = d3.svg.axis()
+	     	.scale(y)
+	     	.orient("left")
+	     	.tickFormat(d3.format(".0%"));
+
+	      YaxisSvg.append("g")
+	        .attr("class", "y axis")
+	        .call(yAxis);
 
 		  samID = svg.selectAll(".SampleID")
 		      .data(plotdata)
@@ -459,12 +531,12 @@ function NormalizedStackedBar() {
 			    	      })
 			  		  .text(function(d){ return (d.SampleID); });
 		  }else{
-			  svg.append("text")
-			      .attr("class", "xAxisLabel")
-			      .attr("text-anchor", "middle")
-			      .attr("x", width/2)
-			      .attr("y", height + 50)
-			      .text("Sample");
+			  // svg.append("text")
+			  //     .attr("class", "xAxisLabel")
+			  //     .attr("text-anchor", "middle")
+			  //     .attr("x", width/2)
+			  //     .attr("y", height + 50)
+			  //     .text("Sample");
 		  }
 
 		  samID.selectAll("rect")
