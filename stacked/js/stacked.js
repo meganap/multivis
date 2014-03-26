@@ -45,7 +45,7 @@ function StackedBar() {
 		// color = d3.scale.ordinal()
 		// .range(["#A50026", "#D73027", "#F46D43", "#FDAE61", "#FEE090", "#FFFFBF", "#E0F3F8", "#ABD9E9", "#74ADD1", "#4575B4", "#313695"]);
 
-		rainbow.setSpectrum('lime','blue','red','yellow')
+		rainbow.setSpectrum('lime','blue')
 
 		xAxis = d3.svg.axis()
 		.scale(x)
@@ -81,7 +81,7 @@ function StackedBar() {
 		vis = d3.select("#plot")
 		svg = vis.append("svg")
 		    .attr("width", width + margin.right)
-		    .attr("height", height + margin.top + margin.bottom)
+		    .attr("height", height + margin.top + 10)
 		    .attr("id", "chart")
 		  .append("g")
 		    .attr("transform", "translate(" + 10 + "," + margin.top + ")");
@@ -500,19 +500,20 @@ function StackedBar() {
 	// }
 
 	this.drawTaxonomyBarVis = function (plotdata, showLabels) {
-		showLabels = true;
+		// showLabels = true;
 		width = Math.max(windowWidth*.97, plotdata.length+10);
 		vis.selectAll("svg")
 		    .attr("width", width + margin.right);
 
 		x = d3.scale.ordinal()
 		.rangeRoundBands([0, width], .1);
+
 		  x.domain(plotdata.map(function(d) { return d.SampleID; }));
 		  y.domain([0, d3.max(plotdata, function(d) { return d.total; })]);
 
 		  samID.selectAll("rect").remove(); //clear old rects
 		  samID.selectAll("text").remove(); //remove old text that may be here
-		  // XaxisSvg.selectAll(".xAxisLabel").remove(); //remove old text
+		  // svg.selectAll(".xAxisLabel").remove(); //remove old text
 		  YaxisSvg.selectAll(".y.axis").remove(); //remove old y-axis
 
 	      yAxis = d3.svg.axis()
@@ -524,12 +525,12 @@ function StackedBar() {
 	        .attr("class", "y axis")
 	        .call(yAxis);
 
-		  samID = svg.selectAll(".SampleID")
-		      .data(plotdata)
-			  .attr("transform", function(d) { return "translate(" + x(d.SampleID) + ",0)"; });
+  		  samID = svg.selectAll(".SampleID")
+  		      .data(plotdata)
+  			  .attr("transform", function(d) { return "translate(" + x(d.SampleID) + ",0)"; });
 
-		  if(showLabels)
-		  {
+		  // if(showLabels)
+		  // {
 			  samID.append("text")
 			  		  .attr("y", x.rangeBand()/2)
 			  		  .attr("x", -height-15)
@@ -538,14 +539,14 @@ function StackedBar() {
 			    	          return "rotate(-90)";
 			    	      })
 			  		  .text(function(d){ return (d.SampleID); });
-		  }else{
-			  // XaxisSvg.append("text")
+		  // }else{
+			  // svg.append("text")
 			  //     .attr("class", "xAxisLabel")
 			  //     .attr("text-anchor", "middle")
 			  //     .attr("x", width/2)
 			  //     .attr("y", height + 50)
 			  //     .text("Sample");
-		  }
+		  // }
 
 		  samID.selectAll("rect")
 		      .data(function(d) { return d.abundances; })

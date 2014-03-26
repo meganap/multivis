@@ -42,7 +42,7 @@ function NormalizedStackedBar() {
 		y = d3.scale.linear()
 		.rangeRound([height, 0]);
 
-		rainbow.setSpectrum('lime','blue','red','yellow')
+		rainbow.setSpectrum('lime','blue')
 
 		xAxis = d3.svg.axis()
 		.scale(x)
@@ -502,6 +502,7 @@ function NormalizedStackedBar() {
 		x = d3.scale.ordinal()
 		.rangeRoundBands([0, width], .1);
 		  x.domain(plotdata.map(function(d) { return d.SampleID; }));
+
 		  samID.selectAll("rect").remove(); //clear old rects
 		  samID.selectAll("text").remove(); //remove old text that may be here
 		  svg.selectAll(".xAxisLabel").remove(); //remove old text

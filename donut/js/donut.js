@@ -24,7 +24,7 @@ function DonutCharts() {
 	}
 
 	this.initTaxonomyBarChart = function () {
-		rainbow.setSpectrum('lime','blue','red','yellow')
+		rainbow.setSpectrum('lime','blue')
 
 		div = d3.select("#plot").append("div")
 		.attr("class", "tooltip")
@@ -363,7 +363,7 @@ function DonutCharts() {
 		  d.metadata = d['metadata']
 	    });
 		// y.domain([0, d3.max(data, function(d) { return d.total; })]);
-		// data.sort(function(a, b) { return b.total - a.total; });
+		data.sort(function(a, b) { return a.SampleID.localeCompare(b.SampleID); });
 		rainbow.setNumberRange(0, domain.length);
 	}
 

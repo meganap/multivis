@@ -32,14 +32,20 @@ div#visTypes {
 }
 
 div#visWrapper {
-	margin-left: 2em;
-	margin-right: 2em;
 	background-color: #f5f5f5;
 	float: left;
-	width: 75%;
-	min-width: 1000px;
-	height: 700px;
+	width: 800px;
+	height: 530px;
 /*	border: 1px solid black;*/
+	border-radius: 10px;
+}
+
+div#surveyWrapper {
+	margin-left: 2em;
+	margin-right: 3em;
+	float: left;
+	width: 800px;
+	border: 1px solid black;
 	border-radius: 10px;
 }
 

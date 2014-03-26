@@ -10,6 +10,7 @@ div#plot {
 
 div#yaxisholder {
 	float: left;
+	margin-left: 5em;
 }
 
 div#xaxisholder {
