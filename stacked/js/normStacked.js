@@ -554,7 +554,7 @@ function NormalizedStackedBar() {
 		         div.transition()
 		             .duration(200)
 		             .style("opacity", .9);
-		         div .html(d.name + ": "+(Math.abs(d.y0-d.y1)))
+					 div .html(d.name + ": "+(Math.abs(d.y0-d.y1)*100).toFixed(2)+"%")
 		             .style("left", (d3.event.pageX) + "px")
 		             .style("top", (d3.event.pageY - 28) + "px");
 		     })

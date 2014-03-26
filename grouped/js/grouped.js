@@ -3,11 +3,12 @@ adapted code Copyright 2013 Meg Pirrung */
 function GroupedBar() {
 	/*global vars*/
 	var margin;
-	var windowWidth;
 	var width;
+	var windowWidth;
 	var height;
 	var x;
 	var y;
+	var sortHeaders;
 	var color;
 	var xAxis;
 	var yAxis;
@@ -19,12 +20,8 @@ function GroupedBar() {
 	var vis;
 	var YaxisVis;
 	var svg;
-<<<<<<< HEAD
 	var samIDHolder;
-=======
 	var YaxisSvg;
-	var samID;
->>>>>>> scalingPane
 	var tax;
 	var xAxisLabel;
 	var rainbow = new Rainbow();
@@ -38,9 +35,9 @@ function GroupedBar() {
 	}
 
 	this.initTaxonomyBarChart = function () {
-		windowWidth = document.getElementById('visWrapper').offsetWidth
+		windowWidth = document.getElementById('plot').offsetWidth;
 		margin = {top: 30, right: 20, bottom: 180, left: 60},
-		width = windowWidth*.79 - margin.left - margin.right,
+		width = windowWidth*.97;
 		height = 600 - margin.top - margin.bottom;
 
 		x0 = d3.scale.ordinal()
@@ -78,11 +75,11 @@ function GroupedBar() {
 
 	vis = d3.select("#plot")
 	svg = vis.append("svg")
-	    .attr("width", width + margin.left + margin.right)
+	    .attr("width", width + margin.right)
 	    .attr("height", height + margin.top + margin.bottom)
 	    .attr("id", "chart")
 	  .append("g")
-	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	    .attr("transform", "translate(" + 10 + "," + margin.top + ")");
 
 	  this.setData(0)
 	  this.setMetadataTypes()
@@ -104,26 +101,17 @@ function GroupedBar() {
 	      .attr("transform", "rotate(-90)")
 	      .text("Abundance");
 
-<<<<<<< HEAD
 	  var labelHolder = [{SampleID: "Sample1"}]
 	  samIDHolder = svg.selectAll(".SampleID")
 	      .data(labelHolder)
 		.enter().append("g")
 		  .attr("class", "SampleID");
-=======
-	  var sortData = [{ 'group': 'SampleID'}]
 
+	  var sortData = [{ 'group': 'SampleID'}]
 	  sortHeaders = svg.selectAll(".sortHeaders")
 	 	  .data(sortData)
 	    .enter().append("g")
   		  .attr("class", "groups");
-
-	  samID = svg.selectAll(".SampleID")
-	      .data(data)
-	    .enter().append("g")
-	      .attr("class", "SampleID")
-	      .attr("transform", function(d) { return "translate(" + x0(d.SampleID) + ",0)"; });
->>>>>>> scalingPane
 
 	  this.sortChanged()
 	}
@@ -448,22 +436,6 @@ function GroupedBar() {
 	// function changeColor(tax) {
 	// }
 
-	// function drawSortHeaders(groupsDict) {
-	// 	console.log("****")
-	//
-	// 	var groups = svg.selectAll(".groups")
-	// 		.data(groupsDict)
-	// 	    .enter().append("g")
-	// 	      .attr("class", "groups");
-	// 	groups.selectAll("rect")
-	// 		.data(groupsDict)
-	// 		.enter().append("rect")
-	// 		.attr("x",height)
-	// 		.attr("y",width)
-	// 		.attr("width",20)
-	// 		.attr("height",20);
-	// }
-
 	//draws headers over the groups when data is sorted by a certain category
 	this.drawSortHeaders = function (groupsDict) {
 		var groupsData = []
@@ -519,6 +491,13 @@ function GroupedBar() {
 	}
 
 	this.drawTaxonomyBarVis = function (plotdata, showLabels) {
+		width = Math.max(windowWidth*.97, plotdata.length+10);
+		vis.selectAll("svg")
+		    .attr("width", width + margin.right);
+
+		x = d3.scale.ordinal()
+		.rangeRoundBands([0, width], .1);
+
 	    plotdata.forEach(function(d) {
 	    	d.uniquename = d.SampleID + currentLevel + groupByVal + sortByVal;
 	    });
@@ -529,40 +508,22 @@ function GroupedBar() {
 
 	    samIDHolder.selectAll("text").remove(); //remove old text that may be here
 	    svg.selectAll(".xAxisLabel").remove(); //remove old text
-	    svg.selectAll(".y.axis").remove(); //remove old y-axis
+	    YaxisSvg.selectAll(".y.axis").remove(); //remove old y-axis
 
-<<<<<<< HEAD
-	    yAxis = d3.svg.axis()
-	    	.scale(y)
-	    	.orient("left")
-	    	.tickFormat(d3.format(".2s"));
+        yAxis = d3.svg.axis()
+       	.scale(y)
+       	.orient("left")
+       	.tickFormat(d3.format(".2s"));
 
-	    svg.append("g")
-	      .attr("class", "y axis")
-	      .call(yAxis);
+        YaxisSvg.append("g")
+          .attr("class", "y axis")
+          .call(yAxis);
 
   	    var samID = samIDHolder.selectAll("g")
   	      .data(plotdata, function(d) { return d.uniquename; });
 
   		samID.enter().append("g")
   		  	.attr("transform", function(d) { return "translate(" + x0(d.SampleID) + ",0)"; });
-=======
-	  y.domain([0, d3.max(plotdata, function(d) { return d3.max(d.abundances, function(d) { return d.value; })})]);
-
-	  samID.selectAll("rect").remove(); //clear old rects
-	  samID.selectAll("text").remove(); //remove old text that may be here
-	  svg.selectAll(".xAxisLabel").remove(); //remove old text
-	  YaxisSvg.selectAll(".y.axis").remove(); //remove old y-axis
-
-      yAxis = d3.svg.axis()
-     	.scale(y)
-     	.orient("left")
-     	.tickFormat(d3.format(".2s"));
-
-      YaxisSvg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis);
->>>>>>> scalingPane
 
   		if(plotdata.length < 100)
   			showLabels = true;
