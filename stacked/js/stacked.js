@@ -74,11 +74,11 @@ function StackedBar() {
 
 		vis = d3.select("#plot")
 		svg = vis.append("svg")
-		    .attr("width", width + margin.left + margin.right)
+		    .attr("width", width + margin.right)
 		    .attr("height", height + margin.top + margin.bottom)
 		    .attr("id", "chart")
 		  .append("g")
-		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+		    .attr("transform", "translate(" + 10 + "," + margin.top + ")");
 
 		  this.setData(0)
 		  this.setMetadataTypes()
@@ -86,19 +86,6 @@ function StackedBar() {
 	  	  this.buildKey(tax)
 
 		  x.domain(data.map(function(d) { return d.SampleID; }));
-
-		  svg.append("g")
-		      .attr("class", "y axis")
-		      .call(yAxis);
-
-		  svg.append("text")
-		      .attr("class", "axisLabel")
-		      .attr("text-anchor", "middle")
-		      .attr("y", -55)
-		      .attr("x", -height/2)
-		      .attr("dy", ".75em")
-		      .attr("transform", "rotate(-90)")
-		      .text("Abundance");
 
 		  var labelHolder = [{SampleID: "Sample1"}]
 		  samIDHolder = svg.selectAll(".SampleID")
