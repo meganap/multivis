@@ -58,7 +58,7 @@ function NormalizedStackedBar() {
 		yAxis = d3.svg.axis()
 		.scale(y)
 		.orient("left")
-		.tickFormat(d3.format("s"));
+		.tickFormat(d3.format(".0%"));
 
 		div = d3.select("#plot").append("div")
 		.attr("class", "tooltip")
