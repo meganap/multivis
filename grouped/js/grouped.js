@@ -504,7 +504,7 @@ function GroupedBar() {
 	    x0.domain(plotdata.map(function(d) { return d.SampleID; }));
 	    x1.domain(tax).rangeRoundBands([0, x0.rangeBand()]);
 
-	    y.domain([0, d3.max(data, function(d) { return d3.max(d.abundances, function(d) { return d.value; })})]);
+	  	y.domain([0, d3.max(plotdata, function(d) { return d3.max(d.abundances, function(d) { return d.value; })})]);
 
 	    samIDHolder.selectAll("text").remove(); //remove old text that may be here
 	    svg.selectAll(".xAxisLabel").remove(); //remove old text
