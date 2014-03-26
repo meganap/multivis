@@ -12,11 +12,13 @@ function StackedBar() {
 	var color;
 	var xAxis;
 	var yAxis;
+	var sortHeaders;
 	var div;
 	var biom;
 	var data;
 	var metadataTypes;
 	var vis;
+	var YaxisVis;
 	var svg;
 	var samIDHolder;
 	var YaxisSvg;
@@ -87,11 +89,25 @@ function StackedBar() {
 
 		  x.domain(data.map(function(d) { return d.SampleID; }));
 
+
 		  var labelHolder = [{SampleID: "Sample1"}]
 		  samIDHolder = svg.selectAll(".SampleID")
 		      .data(labelHolder)
 			.enter().append("g")
 			  .attr("class", "SampleID");
+
+		  YaxisSvg.append("g")
+		      .attr("class", "y axis")
+		      .call(yAxis);
+
+		  YaxisSvg.append("text")
+		      .attr("class", "axisLabel")
+		      .attr("text-anchor", "middle")
+		      .attr("y", -55)
+		      .attr("x", -height/2)
+		      .attr("dy", ".75em")
+		      .attr("transform", "rotate(-90)")
+		      .text("Abundance");
 
 		  var sortData = [{ 'group': 'SampleID'}]
 
@@ -495,17 +511,17 @@ function StackedBar() {
 		y.domain([0, d3.max(plotdata, function(d) { return d.total; })]);
 
 		svg.selectAll(".xAxisLabel").remove(); //remove old text
-		svg.selectAll(".y.axis").remove(); //remove old y-axis
+		YaxisSvg.selectAll(".y.axis").remove(); //remove old y-axis
 		samIDHolder.selectAll("text").remove(); //remove old text that may be here
 
-	    yAxis = d3.svg.axis()
-	    	.scale(y)
-	    	.orient("left")
-	    	.tickFormat(d3.format(".2s"));
+      yAxis = d3.svg.axis()
+     	.scale(y)
+     	.orient("left")
+     	.tickFormat(d3.format(".2s"));
 
-	    svg.append("g")
-	      .attr("class", "y axis")
-	      .call(yAxis);
+      YaxisSvg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis);
 
 	    var samID = samIDHolder.selectAll("g")
 	      .data(plotdata, function(d) { return d.uniquename; });

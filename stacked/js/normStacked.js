@@ -3,21 +3,25 @@ adapted code Copyright 2013 Meg Pirrung */
 function NormalizedStackedBar() {
 	/*global vars*/
 	var margin;
-	var windowWidth;
 	var width;
+	var windowWidth;
 	var height;
 	var x;
 	var y;
+	var sortHeaders;
 	var color;
 	var xAxis;
 	var yAxis;
+	var sortHeaders;
 	var div;
 	var biom;
 	var data;
 	var metadataTypes;
 	var vis;
+	var YaxisVis;
 	var svg;
 	var samIDHolder;
+	var YaxisSvg;
 	var tax;
 	var xAxisLabel;
 	var rainbow = new Rainbow();
@@ -31,16 +35,19 @@ function NormalizedStackedBar() {
 	}
 
 	this.initTaxonomyBarChart = function () {
-		windowWidth = document.getElementById('visWrapper').offsetWidth
-		margin = {top: 30, right: 20, bottom: 180, left: 60},
-		width = windowWidth*.8 - margin.left - margin.right,
+		windowWidth = document.getElementById('plot').offsetWidth;
+		margin = {top: 30, right: 20, bottom: 180, left: 60};
+		width = windowWidth*.97;
 		height = 600 - margin.top - margin.bottom;
 
 		x = d3.scale.ordinal()
-		.rangeRoundBands([0, width], .1);
+		.rangeBands([0, width], .1);
 
 		y = d3.scale.linear()
 		.rangeRound([height, 0]);
+
+		// color = d3.scale.ordinal()
+		// .range(["#A50026", "#D73027", "#F46D43", "#FDAE61", "#FEE090", "#FFFFBF", "#E0F3F8", "#ABD9E9", "#74ADD1", "#4575B4", "#313695"]);
 
 		rainbow.setSpectrum('lime','blue','red','yellow')
 
@@ -51,7 +58,7 @@ function NormalizedStackedBar() {
 		yAxis = d3.svg.axis()
 		.scale(y)
 		.orient("left")
-		.tickFormat(d3.format(".0%"));
+		.tickFormat(d3.format("s"));
 
 		div = d3.select("#plot").append("div")
 		.attr("class", "tooltip")
@@ -59,13 +66,21 @@ function NormalizedStackedBar() {
 
 		var classification = ["Phylum","Class","Order","Family","Genus","Species"]
 
+		YaxisVis = d3.select("#yaxisholder")
+		YaxisSvg = YaxisVis.append("svg")
+		    .attr("width", margin.left)
+		    .attr("height", height + margin.top + 10)
+		    .attr("id", "yaxis")
+		  .append("g")
+		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
 		vis = d3.select("#plot")
 		svg = vis.append("svg")
-		    .attr("width", width + margin.left + margin.right)
+		    .attr("width", width + margin.right)
 		    .attr("height", height + margin.top + margin.bottom)
 		    .attr("id", "chart")
 		  .append("g")
-		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+		    .attr("transform", "translate(" + 10 + "," + margin.top + ")");
 
 		  this.setData(0)
 		  this.setMetadataTypes()
@@ -74,11 +89,18 @@ function NormalizedStackedBar() {
 
 		  x.domain(data.map(function(d) { return d.SampleID; }));
 
-		  svg.append("g")
+
+		  var labelHolder = [{SampleID: "Sample1"}]
+		  samIDHolder = svg.selectAll(".SampleID")
+		      .data(labelHolder)
+			.enter().append("g")
+			  .attr("class", "SampleID");
+
+		  YaxisSvg.append("g")
 		      .attr("class", "y axis")
 		      .call(yAxis);
 
-		  svg.append("text")
+		  YaxisSvg.append("text")
 		      .attr("class", "axisLabel")
 		      .attr("text-anchor", "middle")
 		      .attr("y", -55)
@@ -87,11 +109,12 @@ function NormalizedStackedBar() {
 		      .attr("transform", "rotate(-90)")
 		      .text("Abundance");
 
-		  var labelHolder = [{SampleID: "Sample1"}]
-		  samIDHolder = svg.selectAll(".SampleID")
-		      .data(labelHolder)
-			.enter().append("g")
-			  .attr("class", "SampleID");
+		  var sortData = [{ 'group': 'SampleID'}]
+
+		  sortHeaders = svg.selectAll(".sortHeaders")
+		 	  .data(sortData)
+		    .enter().append("g")
+	  		  .attr("class", "groups");
 
 		  this.sortChanged()
 	}
@@ -206,13 +229,15 @@ function NormalizedStackedBar() {
 			});
 		}
 
-		// if((groupsDict.length !== data.length) && key !== "SampleID")
-		// 	this.drawSortHeaders(groupsDict)
-
 		//sort by resets group by so set the index back to 0
 		document.getElementById('group_by_select').selectedIndex = 0
 		this.getTotalAbundances(data)
 		this.drawTaxonomyBarVis(data)
+
+		if((groupsDict.length !== data.length) && key !== "SampleID")
+			this.drawSortHeaders(groupsDict)
+		else
+			sortHeaders.selectAll("g").remove(); //remove sort labels if they exist
 	}
 
 	this.getTotalAbundances = function (data) {
@@ -312,6 +337,8 @@ function NormalizedStackedBar() {
 			);
 		this.getTotalAbundances(groupData)
 		this.drawTaxonomyBarVis(groupData, true)
+
+		sortHeaders.selectAll("g").remove(); //remove sort labels if they exist
 	}
 
 	this.setData = function (taxonomic_level) {
@@ -422,21 +449,59 @@ function NormalizedStackedBar() {
 	// function changeColor(tax) {
 	// }
 
-	// function drawSortHeaders(groupsDict) {
-	// 	console.log("****")
-	//
-	// 	var groups = svg.selectAll(".groups")
-	// 		.data(groupsDict)
-	// 	    .enter().append("g")
-	// 	      .attr("class", "groups");
-	// 	groups.selectAll("rect")
-	// 		.data(groupsDict)
-	// 		.enter().append("rect")
-	// 		.attr("x",height)
-	// 		.attr("y",width)
-	// 		.attr("width",20)
-	// 		.attr("height",20);
-	// }
+	//draws headers over the groups when data is sorted by a certain category
+	this.drawSortHeaders = function (groupsDict) {
+		var groupsData = []
+		var offset = 0;
+		var barWidth = x.rangeBand() + x.rangeBand()*.1; //calculated width of bar + padding
+		for(var i in groupsDict)
+		{
+			groupsData.push({ "group": i, "count": groupsDict[i], "offset":offset*barWidth+x.rangeBand()*.1, "textLocation": (offset*barWidth+ x.rangeBand()*.1 + (groupsDict[i]*barWidth)/2), "width": groupsDict[i]*barWidth})
+			offset += groupsDict[i]
+		}
+
+		var sh = sortHeaders.selectAll("g")
+			.data(groupsData, function(d) { return d.group; });
+
+		sh.enter().append("g")
+				.attr("width", function(d){ return d.width })
+				.attr("height", 10)
+				.attr("x", function(d) { return d.offset})
+		        .on("mouseover", function(d) {
+		            // this.style['opacity'] = .6;
+					// document.getElementById(d.group+"Rect").style.opacity = 1;
+		        })
+		        .on("mouseout", function(d) {
+		            // this.style['opacity'] = 1;
+					// document.getElementById(d.group+"Rect").style.opacity = 0;
+		        })
+
+		 .append("text")
+			.attr("class", "sortLabel")
+			.attr("x",function(d){ return d.textLocation })
+			.attr("y",-13)
+			.attr("text-anchor", "middle")
+			.text(function(d) { return d.group; });
+
+		sh.append("rect")
+				.attr("width", 1)
+				.attr("height", 5)
+				.attr("y", -10)
+				.attr("x", function(d) { return d.textLocation});
+
+		sh.append("rect")
+				.attr("fill-opacity", "0")
+				.attr("stroke", "#000")
+				.attr("id", function(d){ return d.group+"Rect" })
+				.attr("width", function(d){ return d.width })
+				.attr("height", height + 5)
+				.attr("y", -5)
+				.attr("x", function(d) { return d.offset})
+				.attr("rx", 3)
+				.attr("ry", 3);
+
+		sh.exit().remove();
+	}
 
 	this.drawTaxonomyBarVis = function (plotdata, showLabels) {
 		plotdata.forEach(function(d) {

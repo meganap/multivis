@@ -4,6 +4,16 @@ div#plot {
 	font: 10px sans-serif;
 	width: 70%;
 	float: left;
+	overflow: scroll;
+	height: 90%;
+}
+
+div#yaxisholder {
+	float: left;
+}
+
+div#xaxisholder {
+	float: left;
 }
 
 div#options {
@@ -37,7 +47,7 @@ ul#key {
 }
 
 .groups {
-	stroke: lime;
+/*	stroke: lime;*/
 }
 
 .xAxisLabel {
@@ -62,21 +72,27 @@ ul#key {
   display: none;
 }
 
+.sortRect {
+/*	opacity: 0;*/
+/*	stroke: #000;*/
+	border: 1px solid black;
+}
+
 .legend line {
   stroke: #000;
   shape-rendering: crispEdges;
 }
 
-div.tooltip {   
-  position: absolute;           
-  text-align: center;                           
-  height: 16px;                 
-  padding: 2px;             
-  font: 12px sans-serif;        
-  background: #fff;   
-  border: 0px;      
-  border-radius: 5px;           
-  pointer-events: none;         
+div.tooltip {
+  position: absolute;
+  text-align: center;
+  height: 16px;
+  padding: 2px;
+  font: 12px sans-serif;
+  background: #fff;
+  border: 0px;
+  border-radius: 5px;
+  pointer-events: none;
 }
 
 #breadcrumbs {
@@ -110,11 +126,12 @@ div.tooltip {
 
 #breadcrumbs ul li.selected_classification {
 	background-color: #fff;
-	cursor: pointer;
 	padding: 1em 2em;
 }
 
 #breadcrumbs ul li.selected_classification a{
+	pointer-events: none;
+	cursor: default;
 	color: #042a40;
 	text-transform:uppercase;
 	padding: 0px;
