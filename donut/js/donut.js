@@ -42,7 +42,7 @@ function DonutCharts() {
 			    .sort(null)
 			    .value(function(d) { return d.abundance; });
 
-		  this.setData(0)
+		  this.setData(1)
 		  // this.setMetadataTypes()
 		  // this.setSelect()
 		  // 	  	  this.buildKey(tax)
@@ -405,7 +405,30 @@ function DonutCharts() {
 	// 		.attr("height",20);
 	// }
 
+	this.drawLegend = function (plotdata) {
+		var legend = d3.select("#plot").append("svg")
+		      .attr("class", "legend")
+		      .attr("width", radius * 2)
+		      .attr("height", radius * 2)
+		    .selectAll("g")
+		      .data(d3.keys(data[d3.keys(plotdata)[0]]['tax']).slice().reverse())
+		    .enter().append("g")
+		      .attr("transform", function(d, i) { return "translate("+ 0 + "," + i * 20 + ")"; });
+
+		  legend.append("rect")
+		      .attr("width", 18)
+		      .attr("height", 18)
+		      .style("fill", function(d) { return '#'+rainbow.colorAt(d3.keys(plotdata[d3.keys(plotdata)[0]]['tax']).indexOf(d)); });
+
+		  legend.append("text")
+		      .attr("x", 24)
+		      .attr("y", 9)
+		      .attr("dy", ".35em")
+		      .text(function(d) { return d; });
+	}
+
 	this.drawTaxonomyBarVis = function (plotdata, showLabels) {
+	  this.drawLegend(plotdata)
  	  // x.domain(plotdata.map(function(d) { return d.SampleID; }));
  	  vis.selectAll(".pie").remove();
  	  // pies.selectAll("svg").remove(); //clear old pies

@@ -32,7 +32,7 @@ function GroupedBar() {
 
 	this.initTaxonomyBarChart = function () {
 		windowWidth = document.getElementById('plot').offsetWidth
-		margin = {top: 30, right: 20, bottom: 180, left: 60},
+		margin = {top: 30, right: 20, bottom: 200, left: 60},
 		width = windowWidth*.97,
 		height = 600 - margin.top - margin.bottom;
 
@@ -53,7 +53,7 @@ function GroupedBar() {
 	yAxis = d3.svg.axis()
 	.scale(y)
 	.orient("left")
-	.tickFormat(d3.format(".2s"));
+	.tickFormat(d3.format("d"));
 
 	div = d3.select("#plot").append("div")
 	.attr("class", "tooltip")
@@ -77,7 +77,7 @@ function GroupedBar() {
 	  .append("g")
 	    .attr("transform", "translate(" + 10 + "," + margin.top + ")");
 
-	  this.setData(0)
+	  this.setData(1)
 	  // this.setMetadataTypes()
 	  // this.setSelect()
 	  //   	  this.buildKey(tax)
@@ -457,10 +457,10 @@ function GroupedBar() {
 	// 		groupsData.push({ "group": i, "count": groupsDict[i], "offset":offset*barWidth+x0.rangeBand()*.1, "textLocation": (offset*barWidth+ x0.rangeBand()*.1 + (groupsDict[i]*barWidth)/2), "width": groupsDict[i]*barWidth})
 	// 		offset += groupsDict[i]
 	// 	}
-	// 
+	//
 	// 	var sh = sortHeaders.selectAll("g")
 	// 		.data(groupsData, function(d) { return d.group; });
-	// 
+	//
 	// 	sh.enter().append("g")
 	// 			.attr("width", function(d){ return d.width })
 	// 			.attr("height", 10)
@@ -473,20 +473,20 @@ function GroupedBar() {
 	// 	            // this.style['opacity'] = 1;
 	// 				// document.getElementById(d.group+"Rect").style.opacity = 0;
 	// 	        })
-	// 
+	//
 	// 	 .append("text")
 	// 		.attr("class", "sortLabel")
 	// 		.attr("x",function(d){ return d.textLocation })
 	// 		.attr("y",-13)
 	// 		.attr("text-anchor", "middle")
 	// 		.text(function(d) { return d.group; });
-	// 
+	//
 	// 	sh.append("rect")
 	// 			.attr("width", 1)
 	// 			.attr("height", 5)
 	// 			.attr("y", -10)
 	// 			.attr("x", function(d) { return d.textLocation});
-	// 
+	//
 	// 	sh.append("rect")
 	// 			.attr("fill-opacity", "0")
 	// 			.attr("stroke", "#000")
@@ -497,12 +497,41 @@ function GroupedBar() {
 	// 			.attr("x", function(d) { return d.offset})
 	// 			.attr("rx", 3)
 	// 			.attr("ry", 3);
-	// 
+	//
 	// 	sh.exit().remove();
 	// }
 
+	this.drawLegend = function (plotdata) {
+		var legend = svg.selectAll(".legend")
+		      .data(d3.keys(data[d3.keys(plotdata)[0]]['tax']).slice().reverse())
+		    .enter().append("g")
+		      .attr("class", "legend")
+		      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+		  legend.append("rect")
+		      .attr("x", width - 18)
+		      .attr("width", 18)
+		      .attr("height", 18)
+		      .style("fill",  function(d) { return '#'+rainbow.colorAt(d3.keys(plotdata[d3.keys(plotdata)[0]]['tax']).indexOf(d)); });
+
+		  legend.append("text")
+		      .attr("x", width - 24)
+		      .attr("y", 9)
+		      .attr("dy", ".35em")
+		      .style("text-anchor", "end")
+		      .text(function(d) { return d; });
+	}
+
 	this.drawTaxonomyBarVis = function (plotdata, showLabels) {
 		showLabels = true;
+
+		width = Math.max(windowWidth*.97, plotdata.length+10);
+
+		this.drawLegend(plotdata)
+
+		vis.selectAll("svg")
+		    .attr("width", width + margin.right);
+
 	  x0.domain(plotdata.map(function(d) { return d.SampleID; }));
 	  x1.domain(tax).rangeRoundBands([0, x0.rangeBand()]);
 
@@ -514,9 +543,9 @@ function GroupedBar() {
 	  YaxisSvg.selectAll(".y.axis").remove(); //remove old y-axis
 
       yAxis = d3.svg.axis()
-     	.scale(y)
-     	.orient("left")
-     	.tickFormat(d3.format(".2s"));
+           	.scale(y)
+           	.orient("left")
+           	.tickFormat(d3.format("d"));
 
       YaxisSvg.append("g")
         .attr("class", "y axis")

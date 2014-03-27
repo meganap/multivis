@@ -54,7 +54,7 @@ function StackedBar() {
 		yAxis = d3.svg.axis()
 		.scale(y)
 		.orient("left")
-		.tickFormat(d3.format(".2s"));
+		.tickFormat(d3.format("d"));
 
 		div = d3.select("#plot").append("div")
 		.attr("class", "tooltip")
@@ -86,7 +86,7 @@ function StackedBar() {
 		  .append("g")
 		    .attr("transform", "translate(" + 10 + "," + margin.top + ")");
 
-		  this.setData(0)
+		  this.setData(1)
 		  // this.setMetadataTypes()
 		  // this.setSelect()
 	  	  // this.buildKey(tax)
@@ -499,9 +499,33 @@ function StackedBar() {
 	// 	sh.exit().remove();
 	// }
 
+	this.drawLegend = function (plotdata) {
+		var legend = svg.selectAll(".legend")
+		      .data(d3.keys(data[d3.keys(plotdata)[0]]['tax']).slice().reverse())
+		    .enter().append("g")
+		      .attr("class", "legend")
+		      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+		  legend.append("rect")
+		      .attr("x", width - 18)
+		      .attr("width", 18)
+		      .attr("height", 18)
+		      .style("fill", function(d) { return '#'+rainbow.colorAt(d3.keys(plotdata[d3.keys(plotdata)[0]]['tax']).indexOf(d)); });
+
+		  legend.append("text")
+		      .attr("x", width - 24)
+		      .attr("y", 9)
+		      .attr("dy", ".35em")
+		      .style("text-anchor", "end")
+		      .text(function(d) { return d; });
+	}
+
 	this.drawTaxonomyBarVis = function (plotdata, showLabels) {
 		// showLabels = true;
 		width = Math.max(windowWidth*.97, plotdata.length+10);
+
+		this.drawLegend(plotdata)
+
 		vis.selectAll("svg")
 		    .attr("width", width + margin.right);
 
@@ -519,7 +543,7 @@ function StackedBar() {
 	      yAxis = d3.svg.axis()
 	     	.scale(y)
 	     	.orient("left")
-	     	.tickFormat(d3.format(".2s"));
+	     	.tickFormat(d3.format("d"));
 
 	      YaxisSvg.append("g")
 	        .attr("class", "y axis")
@@ -554,7 +578,7 @@ function StackedBar() {
 		      .attr("width", x.rangeBand())
 		      .attr("y", function(d) { return y(d.y1); })
 		      .attr("height", function(d) { return y(d.y0) - y(d.y1); })
-		      .style("fill", function(d) { return '#'+rainbow.colorAt(d3.keys(data[d3.keys(data)[0]]['tax']).indexOf(d.name)); })
+		      .style("fill", function(d) { return '#'+rainbow.colorAt(d3.keys(plotdata[d3.keys(plotdata)[0]]['tax']).indexOf(d.name)); })
 		      .on("mouseover", function(d) {
 		          this.style['opacity'] = .6;
 		          div.transition()

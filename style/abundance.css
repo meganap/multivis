@@ -1,11 +1,17 @@
 /* D3 styling */
 
+
+svg {
+  padding: 10px 0 0 10px;
+}
+
 div#plot {
 	font: 10px sans-serif;
-	width: 70%;
+	min-width: 70%;
 	float: left;
 	overflow: scroll;
 	height: 90%;
+/*	padding-top: 2em;*/
 }
 
 div#yaxisholder {
