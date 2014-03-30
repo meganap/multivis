@@ -14,6 +14,7 @@ from multivis.util import copy_support_files, get_data_path
 
 
 class MakeMultivis(Command):
+    """Stage the multivis stack, and populate it with a BIOM table"""
     BriefDescription = "Package the multivis bits"
     LongDescription = "Stage multivis for use on a given BIOM table"
     CommandIns = ParameterCollection([
