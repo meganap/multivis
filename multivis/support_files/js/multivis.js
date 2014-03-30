@@ -83,7 +83,7 @@ function initAbundance() {
 	d3.select("#visWrapper").selectAll("div").remove()//get rid of old plots
 	d3.select("#visWrapper").html(abundancehtml)
   	queue()
-  		.defer(d3.json, "data/current")
+  		.defer(d3.json, "data/multivis.biom")
   		.await(loadBiom);
 }
 
