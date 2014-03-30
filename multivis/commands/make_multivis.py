@@ -8,9 +8,10 @@ __license__ = "BSD"
 __maintainer__ = "Daniel McDonald"
 __email__ = "mcdonadt@colorado.edu"
 
-from pyqi.core.command import (Command, CommandIn, CommandOut,
-    ParameterCollection)
+from pyqi.core.command import Command, CommandIn, ParameterCollection
 from biom.table import Table
+from multivis.util import copy_support_files, get_data_path
+
 
 class MakeMultivis(Command):
     BriefDescription = "Package the multivis bits"
@@ -20,19 +21,23 @@ class MakeMultivis(Command):
                   Description='The table to operate on', Required=True),
         CommandIn(Name='metadata', DataType=dict,
                   Description='Sample metadata', Required=True),
+        # the output directory is necessary for the command as the command
+        # requires staging multiple files in the directory, and doing this
+        # with output handlers would get ugly (I think)
         CommandIn(Name='output_directory', DataType=str,
                   Description='The output directory', Required=True)
     ])
 
     CommandOuts = ParameterCollection([])
-    #    CommandOut(Name="result_1", DataType=str, Description="xyz"),
-    #    CommandOut(Name="result_2", DataType=str, Description="123"),
-    #])
 
     def run(self, **kwargs):
         kwargs['table'].addSampleMetadata(kwargs['metadata'])
-        # deploy assets in output dir...
-        # model after emperor
-        # cannot require internet access
+        copy_support_files(kwargs['output_directory'])
+        fpath = get_data_path(kwargs['output_directory'])
+
+        with open(fpath, 'w') as tout:
+            tout.write(kwargs['table'].getBiomFormatJsonString('multivis'))
+
+        return {}
 
 CommandConstructor = MakeMultivis
