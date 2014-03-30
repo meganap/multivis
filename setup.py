@@ -51,5 +51,7 @@ setup(name='multivis',
       scripts=glob('scripts/multivis*'),
       install_requires=["pyqi >= 0.3.1",
                         "biom-format >= 1.3.1"],
+      extras_require={'test': ["nose >= 0.10.1", "pep8"],
+                      'doc': ["Sphinx >= 1.1"]},
       classifiers=classifiers
       )
