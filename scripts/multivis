@@ -1,0 +1,3 @@
+#!/bin/sh
+
+exec pyqi --driver-name multivis --command-config-module multivis.interfaces.optparse.config -- "$@"
