@@ -1,0 +1,68 @@
+body,html {
+    font-family: helvetica;
+    font-size: 11pt;
+    background-color: #fff;
+    width: 100%;
+	min-width: 1350px;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+	overflow: scroll;
+}
+
+div#header {
+	width: 100%;
+}
+
+div#title {
+	font: 30pt helvetica;
+}
+
+div.bold {
+	font-weight: 600;
+}
+
+div.left {
+	float: left;
+}
+
+div#visTypes {
+	width: 20%;
+}
+
+div#visWrapper {
+	margin-left: 2em;
+	margin-right: 2em;
+	background-color: #f5f5f5;
+	float: left;
+	width: 75%;
+	min-width: 1000px;
+	height: 700px;
+/*	border: 1px solid black;*/
+	border-radius: 10px;
+}
+
+ul#visList {
+	list-style-type: none;
+	text-align: left;
+}
+
+h3 {
+	font: 16pt helvetica;
+}
+
+rect.map {
+  stroke: #eee;
+  fill: #aaa;
+  fill-opacity: .8;
+}
+
+rect .map .parent {
+  cursor: pointer;
+  fill: steelblue;
+}
+
+/*text.treemaptext {
+	font-size: 11pt;
+}*/

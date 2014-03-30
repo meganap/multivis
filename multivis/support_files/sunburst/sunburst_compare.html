@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" href="style/sunburst.css">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/queue.v1.min.js"></script>
+<script src="../js/jquery.xcolor.js"></script>
+<script src="js/sunburst_compare.js"></script>
+</head>
+<body>
+	<div class="plot" id="plot1"></div>
+	<div class="plot" id="plot2"></div>
+	<input type="button" value="Zoom Out" onclick="zoomOut()"/>
+	<br />
+	<form id="syncOptions">
+		<input type="checkbox" id="syncToggle" checked="checked"><label for="syncToggle">Sync</label>
+		<div id="sync">
+			<input type="radio" name="sync" id="location" value="Location" checked="checked"><label for="location">Location</label>
+			<input type="radio" name="sync" id="name" value="Name"><label for="name">Node Name</label>
+		</div>
+	</form>
+	<script>
+	initJquery()
+  	queue()
+  		.defer(d3.json, "data/comptree1.json")
+  		.defer(d3.json, "data/comptree2.json")
+  		.await(initVals);
+	</script>
+</body>

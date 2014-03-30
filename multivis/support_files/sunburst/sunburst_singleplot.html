@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="../js/rainbowvis.js"></script>
+<script src="js/sunburst_singleplot.js"></script>
+<link rel="stylesheet" type="text/css" href="style/sunburst.css">
+</head>
+<body>
+	<div id="sequence"></div>
+	<div class="plot" id="plot"></div>
+	<div id="text_width"></div>
+	<input type="button" value="Zoom Out" onclick="zoomOut()"/>
+	<br />
+	<script>
+	$(function() {
+	    $( "input[type=button], a, button" )
+	      .button()
+	      .click(function( event ) {
+	        event.preventDefault();
+	      });
+	  });
+	Sunburst.initSunburst()
+	</script>
+</body>

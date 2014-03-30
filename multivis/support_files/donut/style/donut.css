@@ -1,0 +1,100 @@
+svg {
+  padding: 10px 0 0 10px;
+}
+
+.arc {
+  stroke: #fff;
+}
+
+div#taxonomy_plot {
+	font: 10px sans-serif;
+	width: 77%;
+	float: left;
+}
+
+div#options {
+	margin: 1em;
+	border: 1em;
+	border-radius: 5px;
+	background: #fff;
+	width: 18%;
+	float: right;
+	text-align: left;
+	padding: 1em;
+}
+
+div#options select {
+	width: 100%;
+}
+
+div#options ul {
+	list-style-type: none;
+	padding-left: 1em;
+}
+
+div#color_list {
+	overflow: scroll;
+	height: 400px;
+	margin-bottom: 1em;
+}
+
+ul#key {
+	padding-left: 1em;
+}
+
+.groups {
+	stroke: lime;
+}
+
+div.tooltip {   
+  position: absolute;           
+  text-align: center;                           
+  height: 16px;                 
+  padding: 2px;             
+  font: 12px sans-serif;        
+  background: #fff;   
+  border: 0px;      
+  border-radius: 5px;           
+  pointer-events: none;         
+}
+
+#breadcrumbs {
+}
+
+#breadcrumbs ul {
+	list-style-type: none;
+	width: 100%;
+	padding-left: 0px;
+}
+
+#breadcrumbs ul li {
+	display: inline;
+	width: 14%;
+	border-radius: 5px;
+/*	padding: .5em 2em;*/
+}
+
+#breadcrumbs ul li a {
+	text-decoration: none;
+	color: #919191;
+	padding: .5em 2em;
+	background: #ddd;
+	border-radius: 5px;
+}
+
+#breadcrumbs ul li.unselected_classification a:hover{
+	background-color: #eee;
+}
+
+#breadcrumbs ul li.selected_classification {
+	background-color: #fff;
+	cursor: pointer;
+	padding: 1em 2em;
+}
+
+#breadcrumbs ul li.selected_classification a{
+	color: #042a40;
+	text-transform:uppercase;
+	padding: 0px;
+	background-color: #fff;
+}
