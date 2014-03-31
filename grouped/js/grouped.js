@@ -410,18 +410,17 @@ function GroupedBar() {
 		  d.total = d.abundances[d.abundances.length - 1].value;
 		  d.metadata = d['metadata']
 	    });
-
+		tax.sort()
 		rainbow.setNumberRange(0, domain.length);
 	}
 
 	this.buildKey = function (tax) {
-		tax.sort()
 		var htmlstring = "<ul id='key'>"
 		var colorbox = ""
 		for(var t in tax)
 		{
 			htmlstring += "<li><div class='colorbox' style='background-color:"
-			htmlstring += '#'+rainbow.colorAt(d3.keys(data[d3.keys(data)[0]]['tax']).indexOf(tax[t]))
+			htmlstring += '#'+rainbow.colorAt(t)
 			htmlstring += "'></div>"+tax[t]+"</li>"
 		}
 		htmlstring += "</ul>"
