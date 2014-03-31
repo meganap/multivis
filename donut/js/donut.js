@@ -80,7 +80,8 @@ function DonutCharts() {
 		//reset stuff
 		this.setData(taxonomic_level)
 		this.buildKey(tax)
-		this.sortChanged()
+  		this.getTotalAbundances(data)
+  		this.drawTaxonomyBarVis(data)
 	}
 
 	this.setSelect = function () {
