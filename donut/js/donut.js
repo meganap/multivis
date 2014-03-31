@@ -429,7 +429,7 @@ function DonutCharts() {
   		    .enter().append("path")
   		      .attr("class", "arc")
   		      .attr("d", arc)
-  			  .style("fill", function(d) { return '#'+rainbow.colorAt(d3.keys(data[d3.keys(data)[0]]['tax']).indexOf(d.data.name)); } )
+  			  .style("fill", function(d) { return '#'+rainbow.colorAt(tax.indexOf(d.data.name)); } )
   	  	      .on("mouseover", function(d) {
   	  	          this.style['opacity'] = .6;
   	  	          div.transition()

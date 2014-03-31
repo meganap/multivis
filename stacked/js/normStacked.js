@@ -553,7 +553,7 @@ function NormalizedStackedBar() {
 		     .attr("width", x.rangeBand())
 		     .attr("y", function(d) { return y(d.y1); })
 		     .attr("height", function(d) { return y(d.y0) - y(d.y1); })
-		     .style("fill", function(d) { return '#'+rainbow.colorAt(d3.keys(data[d3.keys(data)[0]]['tax']).indexOf(d.name)); })
+		     .style("fill", function(d) { return '#'+rainbow.colorAt(tax.indexOf(d.name)); })
 		     .on("mouseover", function(d) {
 		         this.style['opacity'] = .6;
 		         div.transition()
