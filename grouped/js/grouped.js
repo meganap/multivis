@@ -417,8 +417,13 @@ function GroupedBar() {
 	this.buildKey = function (tax) {
 		tax.sort()
 		var htmlstring = "<ul id='key'>"
+		var colorbox = ""
 		for(var t in tax)
-			htmlstring += "<li>"+tax[t]+"</li>"
+		{
+			htmlstring += "<li><div class='colorbox' style='background-color:"
+			htmlstring += '#'+rainbow.colorAt(d3.keys(data[d3.keys(data)[0]]['tax']).indexOf(tax[t]))
+			htmlstring += "'></div>"+tax[t]+"</li>"
+		}
 		htmlstring += "</ul>"
 		document.getElementById("color_list").innerHTML = htmlstring;
 	}
