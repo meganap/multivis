@@ -44,7 +44,7 @@ function GroupedBar() {
 		y = d3.scale.linear()
 		.rangeRound([height, 0]);
 
-	rainbow.setSpectrum('lime','blue')
+	rainbow.setSpectrum('#e41a1c','#377eb8','#4daf4a','#984ea3','#000000')
 
 	xAxis = d3.svg.axis()
 	.scale(x0)
@@ -72,7 +72,7 @@ function GroupedBar() {
 	vis = d3.select("#plot")
 	svg = vis.append("svg")
 	    .attr("width", width + margin.right)
-	    .attr("height", height + margin.top + margin.bottom)
+	    .attr("height", 465)
 	    .attr("id", "chart")
 	  .append("g")
 	    .attr("transform", "translate(" + 10 + "," + margin.top + ")");

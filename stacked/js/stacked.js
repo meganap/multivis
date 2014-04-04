@@ -32,7 +32,7 @@ function StackedBar() {
 
 	this.initTaxonomyBarChart = function () {
 		windowWidth = document.getElementById('plot').offsetWidth;
-		margin = {top: 30, right: 20, bottom: 180, left: 60};
+		margin = {top: 30, right: 20, bottom: 190, left: 60};
 		width = windowWidth*.97;
 		height = 600 - margin.top - margin.bottom;
 
@@ -45,7 +45,7 @@ function StackedBar() {
 		// color = d3.scale.ordinal()
 		// .range(["#A50026", "#D73027", "#F46D43", "#FDAE61", "#FEE090", "#FFFFBF", "#E0F3F8", "#ABD9E9", "#74ADD1", "#4575B4", "#313695"]);
 
-		rainbow.setSpectrum('lime','blue')
+		rainbow.setSpectrum('#e41a1c','#377eb8','#4daf4a','#984ea3','#000000')
 
 		xAxis = d3.svg.axis()
 		.scale(x)
@@ -70,18 +70,10 @@ function StackedBar() {
 		  .append("g")
 		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-		// XaxisVis = d3.select("#xaxisholder")
-		// XaxisSvg = XaxisVis.append("svg")
-		//     .attr("width", windowWidth*.97)
-		//     .attr("height", margin.bottom)
-		//     .attr("id", "xaxis")
-		//   .append("g")
-		//     .attr("transform", "translate(" + 10 + "," + margin.top + ")");
-
 		vis = d3.select("#plot")
 		svg = vis.append("svg")
 		    .attr("width", width + margin.right)
-		    .attr("height", height + margin.top + 10)
+		    .attr("height", 465)
 		    .attr("id", "chart")
 		  .append("g")
 		    .attr("transform", "translate(" + 10 + "," + margin.top + ")");

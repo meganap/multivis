@@ -24,7 +24,7 @@ function DonutCharts() {
 	}
 
 	this.initTaxonomyBarChart = function () {
-		rainbow.setSpectrum('lime','blue')
+		rainbow.setSpectrum('#e41a1c','#377eb8','#4daf4a','#984ea3','#000000')
 
 		div = d3.select("#plot").append("div")
 		.attr("class", "tooltip")

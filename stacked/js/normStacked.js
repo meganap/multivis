@@ -32,7 +32,7 @@ function NormalizedStackedBar() {
 
 	this.initTaxonomyBarChart = function () {
 		windowWidth = document.getElementById('plot').offsetWidth;
-		margin = {top: 30, right: 100, bottom: 190, left: 60};
+		margin = {top: 30, right: 120, bottom: 190, left: 50};
 		width = windowWidth*.97;
 		height = 600 - margin.top - margin.bottom;
 
@@ -42,7 +42,7 @@ function NormalizedStackedBar() {
 		y = d3.scale.linear()
 		.rangeRound([height, 0]);
 
-		rainbow.setSpectrum('lime','blue')
+		rainbow.setSpectrum('#e41a1c','#377eb8','#4daf4a','#984ea3','#000000')
 
 		xAxis = d3.svg.axis()
 		.scale(x)
@@ -70,7 +70,7 @@ function NormalizedStackedBar() {
 		vis = d3.select("#plot")
 		svg = vis.append("svg")
 		    .attr("width", width + margin.right)
-		    .attr("height", height + margin.top + margin.bottom)
+		    .attr("height", 465)
 		    .attr("id", "chart")
 		  .append("g")
 		    .attr("transform", "translate(" + 10 + "," + margin.top + ")");
@@ -494,20 +494,40 @@ function NormalizedStackedBar() {
 	}
 
 	this.drawLegend = function (plotdata) {
-		var legend = svg.select(".SampleID:last-child").selectAll(".legend")
-		      .data(function(d) { return d.abundances; })
+		var legend = svg.selectAll(".legend")
+		      .data(d3.keys(data[d3.keys(plotdata)[0]]['tax']).slice().reverse())
 		    .enter().append("g")
 		      .attr("class", "legend")
-		      .attr("transform", function(d) { return "translate(" + (x.rangeBand() - 6) + "," + y((d.y0 + d.y1) / 2) + ")"; });
+		      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
 
-		  legend.append("line")
-		      .attr("x2", 10);
+		  legend.append("rect")
+		      .attr("x", width)
+		      .attr("width", 18)
+		      .attr("height", 18)
+		      .style("fill", function(d) { return '#'+rainbow.colorAt(d3.keys(plotdata[d3.keys(plotdata)[0]]['tax']).indexOf(d)); });
 
 		  legend.append("text")
-		      .attr("x", 13)
+		      .attr("x", width + 22)
+		      .attr("y", 9)
 		      .attr("dy", ".35em")
-		      .text(function(d) { return d.name; });
+		      .text(function(d) { return d; });
 	}
+
+	// this.drawLegend = function (plotdata) {
+	// 	var legend = svg.select(".SampleID:last-child").selectAll(".legend")
+	// 	      .data(function(d) { return d.abundances; })
+	// 	    .enter().append("g")
+	// 	      .attr("class", "legend")
+	// 	      .attr("transform", function(d) { return "translate(" + (x.rangeBand() - 6) + "," + y((d.y0 + d.y1) / 2) + ")"; });
+	//
+	// 	  legend.append("line")
+	// 	      .attr("x2", 10);
+	//
+	// 	  legend.append("text")
+	// 	      .attr("x", 13)
+	// 	      .attr("dy", ".35em")
+	// 	      .text(function(d) { return d.name; });
+	// }
 
 	this.drawTaxonomyBarVis = function (plotdata, showLabels) {
 		showLabels = true;

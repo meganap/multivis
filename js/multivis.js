@@ -1,11 +1,38 @@
 /* Copyright 2013 Meg Pirrung */
 
 var s;
-// var abundancehtml = "<div id=\"breadcrumbs\"><ul><li id=\"classification0\" class=\"selected_classification\"><a href=\"javascript:s.changeLevel('0')\">Kingdom</a></li>        <li id=\"classification1\" class=\"unselected_classification\"><a href=\"javascript:s.changeLevel('1')\">Phylum</a></li>        <li id=\"classification2\" class=\"unselected_classification\"><a href=\"javascript:s.changeLevel('2')\">Class</a></li>        <li id=\"classification3\" class=\"unselected_classification\"><a href=\"javascript:s.changeLevel('3')\">Order</a></li>        <li id=\"classification4\" class=\"unselected_classification\"><a href=\"javascript:s.changeLevel('4')\">Family</a></li>        <li id=\"classification5\" class=\"unselected_classification\"><a href=\"javascript:s.changeLevel('5')\">Genus</a></li>        <li id=\"classification6\" class=\"unselected_classification\"><a href=\"javascript:s.changeLevel('6')\">Species</a></li>        </ul>    </div>    <div id=\"plot\"></div>    <div id=\"options\">        <div id=\"sort_by\">            Sort By: <select id=\"sort_by_select\" onchange=\"javascript:s.sortChanged()\">            </select>        </div>        <br />        <div id=\"group_by\">            Group By: <select id=\"group_by_select\" onchange=\"javascript:s.groupChanged()\">            </select>        </div>        <div id=\"color_list\">        </div>    </div>"
-// var abundancehtml = "<div id=\"breadcrumbs\"><ul><li id=\"classification0\" class=\"selected_classification\"><a href=\"javascript:s.changeLevel('0')\">Kingdom</a></li>        <li id=\"classification1\" class=\"unselected_classification\"><a href=\"javascript:s.changeLevel('1')\">Phylum</a></li>        <li id=\"classification2\" class=\"unselected_classification\"><a href=\"javascript:s.changeLevel('2')\">Class</a></li>        <li id=\"classification3\" class=\"unselected_classification\"><a href=\"javascript:s.changeLevel('3')\">Order</a></li>        <li id=\"classification4\" class=\"unselected_classification\"><a href=\"javascript:s.changeLevel('4')\">Family</a></li>        <li id=\"classification5\" class=\"unselected_classification\"><a href=\"javascript:s.changeLevel('5')\">Genus</a></li>        <li id=\"classification6\" class=\"unselected_classification\"><a href=\"javascript:s.changeLevel('6')\">Species</a></li>        </ul>    </div>    <div id=\"plot\"></div>"
+
+var urlParams;
+(window.onpopstate = function () {
+    var match,
+        pl     = /\+/g,  // Regex for replacing addition symbol with a space
+        search = /([^&=]+)=?([^&]*)/g,
+        decode = function (s) { return decodeURIComponent(s.replace(pl, " ").replace(/\//g, '')); },
+        query  = window.location.search.substring(1);
+
+    urlParams = {};
+    while (match = search.exec(query))
+       urlParams[decode(match[1])] = decode(match[2]);
+})();
 
 var abundancehtml = "<div id=\"yaxisholder\"></div><div id=\"plot\"></div>"
-// var abundancehtml = "<div id=\"breadcrumbs\"><ul><li id=\"classification0\" class=\"selected_classification\"><a href=\"javascript:s.changeLevel('0')\">Kingdom</a></li>        <li id=\"classification1\" class=\"unselected_classification\"><a href=\"javascript:s.changeLevel('1')\">Phylum</a></li>        <li id=\"classification2\" class=\"unselected_classification\"><a href=\"javascript:s.changeLevel('2')\">Class</a></li>        <li id=\"classification3\" class=\"unselected_classification\"><a href=\"javascript:s.changeLevel('3')\">Order</a></li>        <li id=\"classification4\" class=\"unselected_classification\"><a href=\"javascript:s.changeLevel('4')\">Family</a></li>        <li id=\"classification5\" class=\"unselected_classification\"><a href=\"javascript:s.changeLevel('5')\">Genus</a></li>        <li id=\"classification6\" class=\"unselected_classification\"><a href=\"javascript:s.changeLevel('6')\">Species</a></li>        </ul>    </div>    <div id=\"yaxisholder\"></div> <div id=\"plot\"></div>   <div id=\"options\">        <div id=\"sort_by\">            Sort By: <select id=\"sort_by_select\" onchange=\"javascript:s.sortChanged()\">            </select>        </div>        <br />        <div id=\"group_by\">            Group By: <select id=\"group_by_select\" onchange=\"javascript:s.groupChanged()\">            </select>        </div>        <div id=\"color_list\">        </div></div>"
+var abundanceFuns = [ stackedBar, normStackedBar, groupedBar, donuts ]
+var surveyStart = "<div id=\"surveyMonkeyInfo\" style=\"width:800px;font-size:10px;color:#666;\"><div><iframe id=\"sm_e_s\" src=\"https://www.surveymonkey.com/s/RSZFG6H?c="
+var surveyEnd = "\" width=\"800\" height=\"300\" style=\"border:0px;padding-bottom:4px;\" frameborder=\"0\" allowtransparency=\"true\" ></iframe></div></div>"
+
+function buildSurvey() {
+	var visID = Math.floor((Math.random()*4))
+	abundanceFuns[visID]();
+
+	var surveyHTML = buildSurveyHTML(visID)
+	document.getElementById('survey').innerHTML = surveyHTML
+}
+
+function buildSurveyHTML(visID) {
+	var surveyID = urlParams['id']+"_"+urlParams['src']+"_1"+visID
+	console.log(surveyID)
+	return surveyStart + surveyID + surveyEnd
+}
 
 function sunburst() {
 	s = new Sunburst("sunburst/data/test.json")
@@ -84,7 +111,7 @@ function donuts() {
 }
 
 function initAbundance() {
-	d3.select("#visWrapper").selectAll("div").remove()//get rid of old plots
+	// d3.select("#visWrapper").selectAll("div").remove()//get rid of old plots
 	d3.select("#visWrapper").html(abundancehtml)
   	queue()
   		.defer(d3.json, "data/current")
