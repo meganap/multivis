@@ -135,13 +135,17 @@ function GroupedBar() {
 		option = document.createElement("option");
 		option.text = "SampleID"
 		groupSelect.add(option)
-		for(var m in biom['columns'][0]['metadata'])
+
+		var metaHeaders = d3.keys(biom['columns'][0]['metadata']);
+		metaHeaders.sort()
+
+		for(var i in metaHeaders)
 		{
 			option=document.createElement("option");
-			option.text = m
+			option.text = metaHeaders[i]
 			sortSelect.add(option)
 			option=document.createElement("option");
-			option.text = m
+			option.text = metaHeaders[i]
 			groupSelect.add(option)
 		}
 	}
