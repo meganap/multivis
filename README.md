@@ -2,7 +2,6 @@
 
 + System for visualizing the same data in different ways
 + Very preliminary system for visualizing the same underlying data with different visualization techniques.
-+ Parts of this will also be used in [QIIME](http://qiime.org) and the [American Gut Project](http://americangut.org)
 
 #Getting Started
 
