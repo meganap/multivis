@@ -90,3 +90,22 @@ function initAbundance() {
 function loadBiom(error, root) {
 	s.setBiom(root)
 }
+
+function parallel() {
+	s = new ParallelCoordinates()
+	initMultiDim()
+}
+
+function initMultiDim() {
+	d3.select("#visWrapper").selectAll("div").remove()//get rid of old plots
+	d3.select("#visWrapper").append("div")
+		.attr("id", "plot")
+		.attr("class", "plotWrapper");
+  	queue()
+  		.defer(d3.csv, "data/keyboardindiv.csv")
+  		.await(loadMultiDim);
+}
+
+function loadMultiDim(error, root) {
+	s.setData(root)
+}
