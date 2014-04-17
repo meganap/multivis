@@ -96,13 +96,18 @@ function parallel() {
 	initMultiDim()
 }
 
+function splom() {
+	s = new Splom()
+	initMultiDim()
+}
+
 function initMultiDim() {
 	d3.select("#visWrapper").selectAll("div").remove()//get rid of old plots
 	d3.select("#visWrapper").append("div")
 		.attr("id", "plot")
 		.attr("class", "plotWrapper");
   	queue()
-  		.defer(d3.csv, "data/keyboardindiv.csv")
+  		.defer(d3.csv, "data/multidimdata.csv")
   		.await(loadMultiDim);
 }
 
