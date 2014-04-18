@@ -13,7 +13,11 @@ function Splom() {
 	//position scales
 	var x = {}, y = {};
 	var axis;
-	var brush;
+    // Brush.
+    var brush = d3.svg.brush()
+        .on("brushstart", brushstart)
+        .on("brush", brush)
+        .on("brushend", brushend);
 	var svg;
 	var cell;
 	var windowWidth;
@@ -71,11 +75,11 @@ function Splom() {
 		      .ticks(5)
 		      .tickSize(size * n);
 
-		  // Brush.
-		brush = d3.svg.brush()
-		      .on("brushstart", this.brushstart)
-		      .on("brush", this.brush)
-		      .on("brushend", this.brushend);
+		//   // Brush.
+		// brush = d3.svg.brush()
+		//       .on("brushstart", this.brushstart)
+		//       .on("brush", this.brush)
+		//       .on("brushend", this.brushend);
 
 		  // Root panel.
 		svg = d3.select("#splom").append("svg:svg")
@@ -101,7 +105,7 @@ function Splom() {
 
 		    // Cell and plot.
 		    cell = svg.selectAll("g.cell")
-		        .data(this.cross(axes, axes))
+		        .data(cross(axes, axes))
 		      .enter().append("svg:g")
 		        .attr("class", "cell")
 		        .attr("transform", function(d) { return "translate(" + d.i * size + "," + d.j * size + ")"; })
@@ -130,20 +134,20 @@ function Splom() {
 		    cell.selectAll("circle")
 		        .data(data)
 		      .enter().append("svg:circle")
-		        // .attr("class", function(d) { return 'derp'; })
-				.style('fill',function(d){
-				  	return '#'+rainbow.colorAt(groups.indexOf(d.Individual));
-				  })
+		        .attr("class", function(d) { return d.Individual.replace(' ',''); })
+				// .style('fill',function(d){
+				//   	return '#'+rainbow.colorAt(groups.indexOf(d.Individual));
+				//   })
 		        .attr("cx", function(d) { return x[p.x](d[p.x]); })
 		        .attr("cy", function(d) { return y[p.y](d[p.y]); })
 		        .attr("r", 3);
 
 		    // Plot brush.
-		    // cell.call(this.brush.x(x[p.x]).y(y[p.y]));
+		    cell.call(brush.x(x[p.x]).y(y[p.y]));
 	}
 
 	// Clear the previously-active brush, if any.
-	  this.brushstart = function(p) {
+	 function brushstart(p) {
 	    if (brush.data !== p) {
 	      cell.call(brush.clear());
 	      brush.x(x[p.x]).y(y[p.y]).data = p;
@@ -151,23 +155,23 @@ function Splom() {
 	  }
 
 	  // Highlight the selected circles.
-	  this.brush = function(p) {
+	  function brush(p) {
 	    var e = brush.extent();
 	    svg.selectAll(".cell circle").attr("class", function(d) {
 	      return e[0][0] <= d[p.x] && d[p.x] <= e[1][0]
 	          && e[0][1] <= d[p.y] && d[p.y] <= e[1][1]
-	          ? d.species : null;
+	          ? d.Individual : null;
 	    });
 	  }
 
 	  // If the brush is empty, select all circles.
-	  this.brushend = function() {
+	  function brushend()  {
 	    if (brush.empty()) svg.selectAll(".cell circle").attr("class", function(d) {
-	      return d.Individual;
+		  return d.Individual;
 	    });
 	  }
 
-	  this.cross = function(a, b) {
+	  function cross(a, b) {
 	    var c = [], n = a.length, m = b.length, i, j;
 	    for (i = -1; ++i < n;) for (j = -1; ++j < m;) c.push({x: a[i], i: i, y: b[j], j: j});
 	    return c;

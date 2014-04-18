@@ -23,7 +23,23 @@
   stroke: #aaa;
 }
 
-.splom circle {
+circle {
   fill: #ccc;
   fill-opacity: .5;
+}
+
+.splom .cell text {
+  pointer-events: none;
+}
+
+.I1 {
+  fill: #800;
+}
+
+.I2 {
+  fill: #080;
+}
+
+.I3 {
+  fill: #008;
 }
