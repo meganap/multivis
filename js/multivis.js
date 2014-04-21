@@ -101,6 +101,11 @@ function splom() {
 	initMultiDim()
 }
 
+function scatter() {
+	s = new Scatter()
+	initMultiDim()
+}
+
 function initMultiDim() {
 	d3.select("#visWrapper").selectAll("div").remove()//get rid of old plots
 	d3.select("#visWrapper").append("div")

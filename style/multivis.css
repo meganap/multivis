@@ -51,18 +51,3 @@ ul#visList {
 h3 {
 	font: 16pt helvetica;
 }
-
-rect.map {
-  stroke: #eee;
-  fill: #aaa;
-  fill-opacity: .8;
-}
-
-rect .map .parent {
-  cursor: pointer;
-  fill: steelblue;
-}
-
-/*text.treemaptext {
-	font-size: 11pt;
-}*/

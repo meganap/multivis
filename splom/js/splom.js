@@ -3,9 +3,8 @@ adapted code Copyright 2013 Meg Pirrung */
 function Splom() {
 	/*global vars*/
 	var data;
-	var pc;
-	var rainbow = new Rainbow();
-	var color;
+	// var rainbow = new Rainbow();
+	// var color;
 	// Size parameters.
     var size = 140,
         padding = 10,
@@ -66,8 +65,8 @@ function Splom() {
 			});
 		});
 
-		rainbow.setSpectrum('green','blue','red','yellow')
-		rainbow.setNumberRange(0,groups.length);
+		// rainbow.setSpectrum('green','blue','red','yellow')
+		// rainbow.setNumberRange(0,groups.length);
 
 		// console.log(data)
 		// Axes.
