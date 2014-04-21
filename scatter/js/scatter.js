@@ -28,7 +28,7 @@ function Scatter() {
 		width = windowWidth*.97 - margin.left - margin.right;
 		height = 600 - margin.top - margin.bottom;
 
-		document.getElementById('plot').innerHTML = '<div id="scatter" class="scatter"></div>'
+		document.getElementById('plot').innerHTML = '<div id="scatter" class="scatter"></div><div>X axis:<select id="xaxis"></select><br>Y axis:<select id="Yaxis"></select></div>'
 
 		x = d3.scale.linear()
 		.range([0, width]);
