@@ -15,7 +15,11 @@ function Scatter() {
 	var legend;
 	var rainbow = new Rainbow();
 	var color;
+	var axes = []
 	var groups = [];
+	var xAxisSelect;
+    var yAxisSelect;
+	var dotHolder;
 
 	this.setData = function(root) {
 		data = root;
@@ -28,7 +32,11 @@ function Scatter() {
 		width = windowWidth*.97 - margin.left - margin.right;
 		height = 600 - margin.top - margin.bottom;
 
-		document.getElementById('plot').innerHTML = '<div id="scatter" class="scatter"></div><div>X axis:<select id="xaxis"></select><br>Y axis:<select id="Yaxis"></select></div>'
+		document.getElementById('plot').innerHTML = '<div id="scatter" class="scatter"></div>'
+		d3.select("#visWrapper").append("div")
+			.attr("id", "axisChoosers")
+			.attr("class", "axisChoosers");
+		document.getElementById('axisChoosers').innerHTML = '<div id=\"legendHolder\"></div><br><div>X axis:<select id=\"Xaxis\" onchange=\"javascript:s.axisChanged()\"></select><br>Y axis:<select id=\"Yaxis\" onchange=\"javascript:s.axisChanged()\"></select></div>'
 
 		x = d3.scale.linear()
 		.range([0, width]);
@@ -50,32 +58,92 @@ function Scatter() {
 		  .append("g")
 		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+		d3.select("#legendHolder")
+			.attr("width",50)
+			.attr("height",50);
+
 		//get all the axes
-		var axes = d3.keys(data[0])
+		axes = d3.keys(data[0])
 		//remove individual as an axis
 		axes.splice(axes.indexOf('Individual'),1)
 
+		this.setSelects()
+
 		data.forEach(function(sample){
-			groups.push(sample.Individual)
-			var temp = {}
+			groups.push(sample.Individual.substring(0,2))
 			axes.forEach(function(d) {
-				temp[d] = +sample[d]
+				sample[d] = +sample[d]
 			});
-			temp.Individual = sample.Individual
+			sample.ID = sample.Individual
+			sample.Individual = sample.ID.substring(0,2)
+			sample.uniqueID = sample.ID+xAxisSelect.selectedIndex+yAxisSelect.selectedIndex
 		});
 		groups = this.dedupe(groups)
 
 		rainbow.setSpectrum('green','blue','red','yellow')
 		rainbow.setNumberRange(0,groups.length);
 
-		x.domain(d3.extent(data, function(d) { return d[1]; })).nice();
-		y.domain(d3.extent(data, function(d) { return d[2]; })).nice();
+	  legend = svg.selectAll(".legend")
+	      .data(groups)
+	    .enter().append("g")
+	      .attr("class", "legend")
+	      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+	  legend.append("rect")
+	      .attr("x", width - 18)
+	      .attr("width", 18)
+	      .attr("height", 18)
+	      .style("fill", function(d){
+			  	return '#'+rainbow.colorAt(groups.indexOf(d));
+			  });
+
+	  legend.append("text")
+	      .attr("x", width - 24)
+	      .attr("y", 9)
+	      .attr("dy", ".35em")
+	      .style("text-anchor", "end")
+	      .text(function(d) { return d; });
+
+		this.drawPlot(data)
+	}
+
+	this.setSelects = function() {
+		xAxisSelect = document.getElementById('Xaxis')
+		yAxisSelect = document.getElementById('Yaxis')
+		var option = document.createElement("option")
+
+		for(var a in axes)
+		{
+			option=document.createElement("option")
+			option.text = axes[a]
+			xAxisSelect.add(option)
+			option=document.createElement("option")
+			option.text = axes[a]
+			yAxisSelect.add(option)
+		}
+
+		xAxisSelect.selectedIndex = 0
+		yAxisSelect.selectedIndex = 1
+	}
+
+	this.axisChanged = function() {
+		data.forEach(function(sample){
+			sample.uniqueID = sample.ID+xAxisSelect.selectedIndex+yAxisSelect.selectedIndex
+		});
 		this.drawPlot(data)
 	}
 
 	this.drawPlot = function(plotData) {
+		x.domain(d3.extent(plotData, function(d) { return d[xAxisSelect.selectedIndex+1]; })).nice();
+		y.domain(d3.extent(plotData, function(d) { return d[yAxisSelect.selectedIndex+1]; })).nice();
+
+		svg.select("#xaxis").remove();
+		svg.select("#yaxis").remove();
+		svg.selectAll(".dot").remove();
+
 		svg.append("g")
 		      .attr("class", "x axis")
+			  .attr("id", "xaxis")
 		      .attr("transform", "translate(0," + height + ")")
 		      .call(xAxis)
 		    .append("text")
@@ -83,10 +151,11 @@ function Scatter() {
 		      .attr("x", width)
 		      .attr("y", -6)
 		      .style("text-anchor", "end")
-		      .text("Axis 1");
+		      .text("Axis "+(xAxisSelect.selectedIndex+1));
 
 		  svg.append("g")
 		      .attr("class", "y axis")
+			  .attr("id", "yaxis")
 		      .call(yAxis)
 		    .append("text")
 		      .attr("class", "label")
@@ -94,39 +163,21 @@ function Scatter() {
 		      .attr("y", 6)
 		      .attr("dy", ".71em")
 		      .style("text-anchor", "end")
-		      .text("Axis 2")
+		      .text("Axis "+(yAxisSelect.selectedIndex+1))
 
-		  svg.selectAll(".dot")
-		      .data(plotData)
-		    .enter().append("circle")
-		      .attr("class", "dot")
-		      .attr("r", 3.5)
-		      .attr("cx", function(d) { return x(d[1]); })
-		      .attr("cy", function(d) { return y(d[2]); })
-		      .style("fill", function(d){
-				  	return '#'+rainbow.colorAt(groups.indexOf(d.Individual));
-				  });
+  		var dots = svg.selectAll(".dot")
+  		     .data(plotData, function(d) { return d.uniqueID; });
 
-		  legend = svg.selectAll(".legend")
-		      .data(groups)
-		    .enter().append("g")
-		      .attr("class", "legend")
-		      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+	    dots.enter().append("circle")
+	      .attr("class", "dot")
+	      .attr("r", 3.5)
+	      .attr("cx", function(d) { return x(d[xAxisSelect.selectedIndex+1]); })
+	      .attr("cy", function(d) { return y(d[yAxisSelect.selectedIndex+1]); })
+	      .style("fill", function(d){
+			  	return '#'+rainbow.colorAt(groups.indexOf(d.Individual));
+			  });
 
-		  legend.append("rect")
-		      .attr("x", width - 18)
-		      .attr("width", 18)
-		      .attr("height", 18)
-		      .style("fill", function(d){
-				  	return '#'+rainbow.colorAt(groups.indexOf(d));
-				  });
-
-		  legend.append("text")
-		      .attr("x", width - 24)
-		      .attr("y", 9)
-		      .attr("dy", ".35em")
-		      .style("text-anchor", "end")
-		      .text(function(d) { return d; });
+		dots.exit().remove();
 	}
 
   	this.dedupe = function (list) {
