@@ -3,6 +3,7 @@ adapted code Copyright 2013 Meg Pirrung */
 function Splom() {
 	/*global vars*/
 	var data;
+	var compData;
 	// var rainbow = new Rainbow();
 	// var color;
 	// Size parameters.
@@ -43,17 +44,18 @@ function Splom() {
 
 		var values = []
 		data.forEach(function(sample){
-			groups.push(sample.Individual)
+			groups.push(sample.Individual.substring(0,11))
 			var temp = {}
 			axes.forEach(function(d) {
 				temp[d] = +sample[d]
 			});
-			temp.Individual = sample.Individual
+			temp.Individual = sample.Individual.substring(0,11)
+			sample.Individual = sample.Individual.substring(0,11)
 			values.push(temp)
 		});
 		groups = this.dedupe(groups)
 
-		var compData = {axes: axes, groups: groups, values: values}
+		compData = {axes: axes, groups: groups, values: values}
 
 		compData.values.forEach(function(sample) {
 			compData.axes.forEach(function(axis){
@@ -133,7 +135,7 @@ function Splom() {
 		    cell.selectAll("circle")
 		        .data(data)
 		      .enter().append("svg:circle")
-		        .attr("class", function(d) { return d.Individual.replace(' ',''); })
+		        .attr("class", function(d) { return d.Individual; })
 				// .style('fill',function(d){
 				//   	return '#'+rainbow.colorAt(groups.indexOf(d.Individual));
 				//   })

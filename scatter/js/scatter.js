@@ -70,12 +70,12 @@ function Scatter() {
 		this.setSelects()
 
 		data.forEach(function(sample){
-			groups.push(sample.Individual.substring(0,2))
+			groups.push(sample.Individual.substring(0,11))
 			axes.forEach(function(d) {
 				sample[d] = +sample[d]
 			});
 			sample.ID = sample.Individual
-			sample.Individual = sample.ID.substring(0,2)
+			sample.Individual = sample.ID.substring(0,11)
 			sample.uniqueID = sample.ID+xAxisSelect.selectedIndex+yAxisSelect.selectedIndex
 		});
 		groups = this.dedupe(groups)

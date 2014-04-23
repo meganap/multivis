@@ -20,6 +20,7 @@ function ParallelCoordinates() {
 		document.getElementById('plot').innerHTML = '<div id="parallelPlot" class="parcoords" style="width:'+pwidth+'px;height:'+pheight+'px"></div>'
 
 		data.forEach(function(d){
+			d.Individual = d.Individual.substring(0,11)
 			groups.push(d.Individual)
 		});
 		groups = this.dedupe(groups)
@@ -63,9 +64,8 @@ function ParallelCoordinates() {
 		  	return '#'+rainbow.colorAt(groups.indexOf(d.Individual));
 		  })
 		  .margin({ top: 40, left: 50, bottom: 40, right: 0 })
-		  .mode("queue")
+		  .ticks(5)
 		  .render()
-		  .brushable()
-		  .reorderable();
+		  .brushable();
 	}
 }
