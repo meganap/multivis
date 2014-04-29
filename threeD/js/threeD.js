@@ -14,7 +14,7 @@ function ThreeD() {
 	var color;
 	var groups = [];
 	var g_plotSpheres = {};
-	var g_segments = 8, g_rings = 8, g_radius = 1;
+	var g_segments = 8, g_rings = 8, g_radius = .02;
 	var g_xAxisLength;
 	var g_yAxisLength;
 	var g_zAxisLength;
@@ -75,7 +75,7 @@ function ThreeD() {
 		var particles, geometry, parameters, i, h, color;
 		var mouseX = 0, mouseY = 0;
 
-		var windowWidth = Math.min(document.getElementById('visWrapper').offsetWidth,document.getElementById('visWrapper').offsetHeight), view_angle = 35, view_near = 0.0000001, view_far = 10000;
+		var windowWidth = Math.min(document.getElementById('visWrapper').offsetWidth,document.getElementById('visWrapper').offsetHeight), view_angle = 40, view_near = 1, view_far = 10000;
 		var winAspect = document.getElementById('visWrapper').offsetWidth/document.getElementById('visWrapper').offsetHeight;
 
 		// Detecting that webgl is activated
@@ -94,7 +94,11 @@ function ThreeD() {
 			// assign a position to the camera befor associating it with other
 			// objects, else the original position will be lost and not make sense
 			g_sceneCamera = new THREE.PerspectiveCamera(view_angle, winAspect, view_near, view_far);
-			g_sceneCamera.position.set(0, 0, 0);
+
+			g_sceneCamera.aspect = document.getElementById('visWrapper').offsetWidth/document.getElementById('visWrapper').offsetHeight;
+			g_sceneCamera.rotation.set( 0, 0, 0 );
+			g_sceneCamera.updateProjectionMatrix();
+			g_sceneCamera.position.set(0 , 0, (g_maximum*4.8) + g_radius);
 
 			$('#plot canvas').attr('width',document.getElementById('visWrapper').offsetWidth);
 			$('#plot canvas').attr('height',document.getElementById('visWrapper').offsetHeight);
@@ -171,11 +175,11 @@ function ThreeD() {
 		/*This function recenter the camera to the initial position it had*/
 		function resetCamera() {
 			// We need to reset the camera controls first before modifying the values of the camera (this is the reset view!)
-			g_sceneControl.reset();
+			// g_sceneControl.reset();
 
-			g_sceneCamera.aspect = 1;
-			g_sceneCamera.rotation.set( 0, 0, 0 );
-			g_sceneCamera.updateProjectionMatrix();
+			// g_sceneCamera.aspect = 1;
+			// g_sceneCamera.rotation.set( 0, 0, 0 );
+			// g_sceneCamera.updateProjectionMatrix();
 		}
 
 		function drawSpheres() {
@@ -230,9 +234,9 @@ function ThreeD() {
 
 		function drawAxisLines() {
 			// removing axes, if they do not exist the scene doesn't complain
-			g_mainScene.remove(g_xAxisLine);
-			g_mainScene.remove(g_yAxisLine);
-			g_mainScene.remove(g_zAxisLine);
+			// g_mainScene.remove(g_xAxisLine);
+			// g_mainScene.remove(g_yAxisLine);
+			// g_mainScene.remove(g_zAxisLine);
 
 
 			// one line for each of the axes
@@ -290,15 +294,15 @@ function ThreeD() {
 
 			//build axis labels
 			var axislabelhtml = "";
-			var xcoords = toScreenXY(new THREE.Vector3(g_xMaximumValue, g_yMinimumValue, g_zMinimumValue),g_sceneCamera,plot);
+			var xcoords = toScreenXY(new THREE.Vector3(g_xMaximumValue, g_yMinimumValue, g_zMinimumValue),g_sceneCamera,$('#plot'));
 			axislabelhtml += "<label id=\"pc1_label\" class=\"unselectable labels\" style=\"position:absolute; left:"+parseInt(xcoords['x'])+"px; top:"+parseInt(xcoords['y'])+"px;\">";
 			axislabelhtml += g_pc1Label;
 			axislabelhtml += "</label>";
-			var ycoords = toScreenXY(new THREE.Vector3(g_xMinimumValue, g_yMaximumValue, g_zMinimumValue),g_sceneCamera,plot);
+			var ycoords = toScreenXY(new THREE.Vector3(g_xMinimumValue, g_yMaximumValue, g_zMinimumValue),g_sceneCamera,$('#plot'));
 			axislabelhtml += "<label id=\"pc2_label\" class=\"unselectable labels\" style=\"position:absolute; left:"+parseInt(ycoords['x'])+"px; top:"+parseInt(ycoords['y'])+"px;\">";
 			axislabelhtml += g_pc2Label;
 			axislabelhtml += "</label>";
-			var zcoords = toScreenXY(new THREE.Vector3(g_xMinimumValue, g_yMinimumValue, g_zMaximumValue),g_sceneCamera,plot);
+			var zcoords = toScreenXY(new THREE.Vector3(g_xMinimumValue, g_yMinimumValue, g_zMaximumValue),g_sceneCamera,$('#plot'));
 			axislabelhtml += "<label id=\"pc3_label\" class=\"unselectable labels\" style=\"position:absolute; left:"+parseInt(zcoords['x'])+"px; top:"+parseInt(zcoords['y'])+"px;\">";
 			axislabelhtml += g_pc3Label;
 			axislabelhtml += "</label>";
@@ -317,7 +321,7 @@ function ThreeD() {
 
 			// multiply the matrices and aply the vector to the projection matrix
 			screenProjectionMatrix.multiplyMatrices( camera.projectionMatrix,
-				camera.matrixWorldInverse);
+				camera.matrixWorldInverse );
 			screenPosition.applyProjection(screenProjectionMatrix);
 			return { x: (screenPosition.x + 1)*jqdiv.width()/2 + jqdiv.offset().left,
 				y: (-screenPosition.y+1)*jqdiv.height()/2 + jqdiv.offset().top};
