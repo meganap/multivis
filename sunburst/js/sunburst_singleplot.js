@@ -1,8 +1,15 @@
-/* adapted from http://bl.ocks.org/kerryrodden/7090426 Copyright 2013 Google Inc. All Rights Reserved. Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-
-and Mike Bostock's sunburst example on d3js.org, d3 example code Library released under BSD license. Copyright 2013 Mike Bostock.
-
-adapted code Copyright 2013 Meg Pirrung */
+/*
+ * __author__ = "Meg Pirrung"
+ * __copyright__ = "Copyright 2014, multivis"
+ * __credits__ = ["Meg Pirrung"]
+ * __license__ = "MIT"
+ * __adaptation__ = " adapted from http://bl.ocks.org/kerryrodden/7090426 Copyright 2013 Google Inc. All Rights Reserved.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed
+to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+and Mike Bostock's sunburst example on d3js.org, d3 example code Library released under BSD license. Copyright 2013 Mike Bostock."
+ */
 
 function Sunburst(jsonPath) {
 	var x;
@@ -21,7 +28,7 @@ function Sunburst(jsonPath) {
 	var sunvar = this;
 
 	// Total size of all segments; we set this later, after loading the data.
-	var totalSize = 0; 
+	var totalSize = 0;
 
 	// max index of breadcrumbs
 	var max_i = 0;
@@ -31,11 +38,11 @@ function Sunburst(jsonPath) {
 	  w: 80, h: 30, s: 3, t: 10
 	};
 
-	this.initSunburst = function() {	
+	this.initSunburst = function() {
 		this.initializeBreadcrumbTrail();
-	
-		div = d3.select("visWrapper").append("div")   
-		.attr("class", "tooltip")               
+
+		div = d3.select("visWrapper").append("div")
+		.attr("class", "tooltip")
 		.style("opacity", 0);
 
 		x = d3.scale.linear().range([0, 2 * Math.PI]);
@@ -50,7 +57,7 @@ function Sunburst(jsonPath) {
 
 		var partition = d3.layout.partition()
 		   .value(function(d) { return d.length; });
-		   
+
 		this.arc()
 
 		rainbow1.setSpectrum('red','blue')
@@ -68,12 +75,12 @@ function Sunburst(jsonPath) {
 			     .on("click", function(d) { sunvar.click(d) })
 				 .on("mouseover", function(d){ sunvar.mouseover(d,svg1) });
 		});
-	
+
 	    // Add the mouseleave handler to the bounding circle
 	    d3.select("#container").on("mouseleave", this.mouseleave);
 		d3.select(self.frameElement).style("height", height + "px");
 	}
-	
+
 	this.arc = function () {
 		arc = d3.svg.arc()
 		    .startAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x))); })
@@ -146,10 +153,10 @@ function Sunburst(jsonPath) {
 	  if (percentage < 0.01) {
 	    percentageString = "< 0.01%";
 	  }
-  
+
 	  d3.select("#percentage")
 	      .text(percentageString);
-	  // 
+	  //
 	  // d3.select("#explanation")
 	  //     .style("visibility", "");
 
@@ -203,7 +210,7 @@ function Sunburst(jsonPath) {
 	    path.unshift(current);
 	    current = current.parent;
 	  }
-	  path.unshift(current); 
+	  path.unshift(current);
 	  return path;
 	}
 
@@ -264,14 +271,14 @@ function Sunburst(jsonPath) {
 
 	// Update the breadcrumb trail to show the current sequence and percentage.
 	this.updateBreadcrumbs = function (nodeArray, percentageString) {
-	
+
 		// set data to empty to reset widths/labels on existing breadcrums
 	    var g = d3.select("#trail")
 	        .selectAll("g")
 	        .data([]);
 		g.enter();
 		g.exit().remove();
-  
+
 	  var l = nodeArray.length
 	  if(l > 5)
 	  	nodeArray = nodeArray.slice(l-6,l)
@@ -287,7 +294,7 @@ function Sunburst(jsonPath) {
 
 	  max_i = nodeArray.length
 	  var finalNodeWidth = Math.max(nodeArray[nodeArray.length-1].name.width() + 20, b.w)
-  
+
 	  // console.log(max_i)
 	  crumbs.append("svg:polygon")
 	      .attr("points", function(d,i) {return sunvar.breadcrumbPoints(d,i)})
@@ -308,20 +315,20 @@ function Sunburst(jsonPath) {
 			div.transition()
 				.style("opacity", .9);
 	      	div.html(d.name)
-	          .style("left", (d3.event.pageX) + "px")     
+	          .style("left", (d3.event.pageX) + "px")
 	          .style("top", (d3.event.pageY - 8) + "px")
 		  })
 	      .on("mouseout", function(d) {
 	          this.style['opacity'] = 1;
-	         div.transition()            
-	             .style("opacity", 0);   
+	         div.transition()
+	             .style("opacity", 0);
 	      })
 		  .on("click",function(d) { sunvar.click(d) })
 	      .text(function(d, i) {
 			  if(d.name.length > 8 && i != max_i-1)
 			  	return d.name.slice(0,5) + '...'
 			  else
-			  	return d.name; 
+			  	return d.name;
 		  });
 
 	  // Set position for entering and updating nodes.

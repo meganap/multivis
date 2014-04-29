@@ -1,5 +1,11 @@
-/* adapted from Mike Bostock's parallel coordinates example on d3js.org, d3 example code Library released under BSD license. Copyright 2013 Mike Bostock.
-adapted code Copyright 2013 Meg Pirrung */
+/*
+ * __author__ = "Meg Pirrung"
+ * __copyright__ = "Copyright 2014, multivis"
+ * __credits__ = ["Meg Pirrung"]
+ * __license__ = "MIT"
+ * __adaptation__ = "adapted from Mike Bostock's parallel coordinates example on d3js.org, d3 example code Library released under BSD license. Copyright 2013 Mike Bostock."
+ */
+
 function ParallelCoordinates() {
 	/*global vars*/
 	var data;
@@ -28,21 +34,6 @@ function ParallelCoordinates() {
 		rainbow.setSpectrum('green','blue','red','yellow')
 		rainbow.setNumberRange(0,groups.length);
 
-		// num_axes = g_fractionExplained.length-g_number_of_custom_axes;
-
-		// var data2 = new Array();
-		// parallelColorMap = {};
-		// for (sid in g_spherePositions) {
-		// 	var a_map = {};
-		// 	var key = "";
-		// 	var value = g_mappingFileData[sid][g_categoryIndex];
-		// 	for (var i = 1; i < num_axes+1; i++) {
-		// 		a_map['P'+i+'('+g_fractionExplainedRounded[i-1]+'%)'] = g_spherePositions[sid]['P'+i];
-		// 		key += String(a_map[i]);
-		// 	}
-		// 	parallelColorMap[key] = value;
-		// 	data2.push(a_map);
-		// }
 		this.drawPlot()
 	}
 

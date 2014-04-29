@@ -1,5 +1,10 @@
-/* adapted from Mike Bostock's scatter plot example on d3js.org, d3 example code Library released under BSD license. Copyright 2013 Mike Bostock.
-adapted code Copyright 2013 Meg Pirrung */
+/*
+ * __author__ = "Meg Pirrung"
+ * __copyright__ = "Copyright 2014, multivis"
+ * __credits__ = ["Meg Pirrung"]
+ * __license__ = "MIT"
+ * __adaptation__ = "adapted from Mike Bostock's scatter plot example on d3js.org, d3 example code Library released under BSD license. Copyright 2013 Mike Bostock."
+ */
 function Scatter() {
 	/*global vars*/
 	var data;
