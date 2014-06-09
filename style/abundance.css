@@ -49,6 +49,12 @@ div#color_list {
 	margin-bottom: 1em;
 }
 
+div.colorbox {
+	float: left;
+	height: 16px;
+	width: 16px;
+}
+
 ul#key {
 	padding-left: 1em;
 }

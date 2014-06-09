@@ -1,0 +1,8 @@
+.scatter .dot {
+	stroke: #000;
+	opacity: 1;
+}
+
+.axisChoosers {
+	font: 10px sans-serif;
+}
