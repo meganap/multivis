@@ -75,7 +75,7 @@ function ThreeD() {
 		var particles, geometry, parameters, i, h, color;
 		var mouseX = 0, mouseY = 0;
 
-		var windowWidth = Math.min(document.getElementById('visWrapper').offsetWidth,document.getElementById('visWrapper').offsetHeight), view_angle = 40, view_near = 1, view_far = 10000;
+		var windowWidth = Math.min(document.getElementById('visWrapper').offsetWidth,document.getElementById('visWrapper').offsetHeight), view_angle = 35, view_near = 1, view_far = 10000;
 		var winAspect = document.getElementById('visWrapper').offsetWidth/document.getElementById('visWrapper').offsetHeight;
 
 		// Detecting that webgl is activated
@@ -95,15 +95,14 @@ function ThreeD() {
 			// objects, else the original position will be lost and not make sense
 			g_sceneCamera = new THREE.PerspectiveCamera(view_angle, winAspect, view_near, view_far);
 
-			g_sceneCamera.aspect = document.getElementById('visWrapper').offsetWidth/document.getElementById('visWrapper').offsetHeight;
+			document.getElementById('plot').style.overflow = "hidden";
+			$('#plot canvas').attr('width',400);
+			$('#plot canvas').attr('height',400);
+
+			g_sceneCamera.aspect = document.getElementById('plot').offsetWidth/document.getElementById('plot').offsetHeight;
 			g_sceneCamera.rotation.set( 0, 0, 0 );
 			g_sceneCamera.updateProjectionMatrix();
-			g_sceneCamera.position.set(0 , 0, (g_maximum*4.8) + g_radius);
-
-			$('#plot canvas').attr('width',document.getElementById('visWrapper').offsetWidth);
-			$('#plot canvas').attr('height',document.getElementById('visWrapper').offsetHeight);
-			// $('#plot canvas').attr('width',500);
-			// $('#plot canvas').attr('height',500);
+			g_sceneCamera.position.set( 0 , 0, (g_maximum*4.8) + g_radius );
 
 			g_mainScene = new THREE.Scene();
 			g_mainScene.add(g_sceneCamera);
@@ -139,7 +138,7 @@ function ThreeD() {
 			g_mainRenderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
 
 			g_mainRenderer.setClearColor(rendererBackgroundColor, 1);
-			g_mainRenderer.setSize( document.getElementById('visWrapper').offsetWidth, document.getElementById('visWrapper').offsetHeight );
+			g_mainRenderer.setSize( document.getElementById('plot').offsetWidth, document.getElementById('plot').offsetHeight );
 			g_mainRenderer.sortObjects = true;
 			plot.append(g_mainRenderer.domElement);
 
@@ -167,6 +166,7 @@ function ThreeD() {
 		}
 
 		function render() {
+			// console.log(g_sceneCamera)
 			g_sceneControl.update();
 			// g_mainRenderer.setSize( document.getElementById('visWrapper').offsetWidth, document.getElementById('visWrapper').offsetHeight );
 			g_mainRenderer.render( g_mainScene, g_sceneCamera );
@@ -175,11 +175,12 @@ function ThreeD() {
 		/*This function recenter the camera to the initial position it had*/
 		function resetCamera() {
 			// We need to reset the camera controls first before modifying the values of the camera (this is the reset view!)
-			// g_sceneControl.reset();
+			g_sceneControl.reset();
 
-			// g_sceneCamera.aspect = 1;
-			// g_sceneCamera.rotation.set( 0, 0, 0 );
-			// g_sceneCamera.updateProjectionMatrix();
+			g_sceneCamera.aspect = document.getElementById('plot').offsetWidth/document.getElementById('plot').offsetHeight;
+			g_sceneCamera.rotation.set( 0, 0, 0 );
+			g_sceneCamera.updateProjectionMatrix();
+			g_sceneCamera.position.set(0 , 0, (g_maximum*4.8) + g_radius);
 		}
 
 		function drawSpheres() {
@@ -190,7 +191,7 @@ function ThreeD() {
 				mesh.material.transparent = true;
 				mesh.material.depthWrite = false;
 				mesh.material.opacity = 1;
-				mesh.position.set(d[xAxisIndex], d[yAxisIndex], d[zAxisIndex]);
+				mesh.position.set(d[xAxisIndex]-.5, d[yAxisIndex]-.5, d[zAxisIndex]-.5);
 				mesh.updateMatrix();
 				mesh.matrixAutoUpdate = true;
 				g_mainScene.add( mesh );
@@ -208,22 +209,22 @@ function ThreeD() {
 		function setMinMaxVals() {
 			g_xMaximumValue = d3.max(data, function(d){
 				return d[xAxisIndex]
-			});
+			}) -.5;
 			g_yMaximumValue = d3.max(data, function(d){
 				return d[yAxisIndex]
-			});
+			}) -.5;
 			g_zMaximumValue = d3.max(data, function(d){
 				return d[zAxisIndex]
-			});
+			}) -.5;
 			g_xMinimumValue = d3.min(data, function(d){
 				return d[xAxisIndex]
-			});
+			}) -.5;
 			g_yMinimumValue = d3.min(data, function(d){
 				return d[yAxisIndex]
-			});
+			}) -.5;
 			g_zMinimumValue = d3.min(data, function(d){
 				return d[zAxisIndex]
-			});
+			}) -.5;
 
 			g_xAxisLength = g_xMaximumValue - g_xMinimumValue;
 			g_yAxisLength = g_yMaximumValue - g_yMinimumValue;
