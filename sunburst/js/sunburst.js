@@ -1,3 +1,11 @@
+/*
+ * __author__ = "Meg Pirrung"
+ * __copyright__ = "Copyright 2014, multivis"
+ * __credits__ = ["Meg Pirrung"]
+ * __license__ = "MIT"
+ * __adaptation__ = "adapted from Mike Bostock's sunburst example on d3js.org, d3 example code Library released under BSD license. Copyright 2013 Mike Bostock."
+ */
+
 var x;
 var y;
 

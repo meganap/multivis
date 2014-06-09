@@ -1,0 +1,44 @@
+.splom .axis {
+  shape-rendering: crispEdges;
+}
+
+.splom .axis line {
+  stroke: #ddd;
+  stroke-width: .5px;
+}
+
+.splom .axis path {
+  display: none;
+}
+
+.splom rect.extent {
+  fill: #000;
+  fill-opacity: .125;
+  stroke: #fff;
+}
+
+.splom rect.frame {
+  fill: #fff;
+  fill-opacity: .7;
+  stroke: #aaa;
+}
+
+circle {
+  fill: #ccc;
+}
+
+.splom .cell text {
+  pointer-events: none;
+}
+
+.Individual1 {
+  fill: #800;
+}
+
+.Individual2 {
+  fill: #080;
+}
+
+.Individual3 {
+  fill: #008;
+}

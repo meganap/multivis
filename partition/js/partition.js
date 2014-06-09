@@ -1,5 +1,10 @@
-/* adapted from Mike Bostock's partition example on d3js.org, d3 example code Library released under BSD license. Copyright 2013 Mike Bostock.
-adapted code Copyright 2013 Meg Pirrung */
+/*
+ * __author__ = "Meg Pirrung"
+ * __copyright__ = "Copyright 2014, multivis"
+ * __credits__ = ["Meg Pirrung"]
+ * __license__ = "MIT"
+ * __adaptation__ = "adapted from Mike Bostock's partition example on d3js.org, d3 example code Library released under BSD license. Copyright 2013 Mike Bostock."
+ */
 
 function Partition(jsonPath) {
 	var w = 1120,
@@ -14,10 +19,10 @@ function Partition(jsonPath) {
 	var div;
 
 	this.initPartition = function() {
-		div = d3.select("#visWrapper").append("div")   
-		.attr("class", "tooltip")               
+		div = d3.select("#visWrapper").append("div")
+		.attr("class", "tooltip")
 		.style("opacity", 0);
-		
+
 		vis = d3.select("#plot").append("div")
 		    .attr("class", "chart")
 		    .style("width", w + "px")
@@ -46,18 +51,18 @@ function Partition(jsonPath) {
 			  .attr("class", "map")
 		      .on("mouseover", function(d) {
 		          this.style['opacity'] = .6;
-		          div.transition()        
-		              .duration(200)      
-		              .style("opacity", .9);      
-		          div .html(d.name)  
-		              .style("left", (d3.event.pageX) + "px")     
+		          div.transition()
+		              .duration(200)
+		              .style("opacity", .9);
+		          div .html(d.name)
+		              .style("left", (d3.event.pageX) + "px")
 		              .style("top", (d3.event.pageY - 28) + "px");
 		      })
 		      .on("mouseout", function(d) {
 		          this.style['opacity'] = 1;
-		         div.transition()        
-		             .duration(500)      
-		             .style("opacity", 0);   
+		         div.transition()
+		             .duration(500)
+		             .style("opacity", 0);
 		      });
 
 		  g.append("svg:text")
@@ -65,18 +70,18 @@ function Partition(jsonPath) {
 			  .attr("class", "treemaptext")
 		      // .attr("dy", ".35em")
 			  .text(function(d) { return d.name; })
-		      .style("display", function(d) { 
+		      .style("display", function(d) {
 				  if( d.dx * ky > 12 && d.dx > this.getComputedTextLength() )
 				  	return "block"
 				  else
 					return "none"
 			  })
-		      
-			  
+
+
 		  d3.select(window)
 		      .on("click", function() { click(root); })
-			  
-			  
+
+
 		  function click(d) {
 		    if (!d.children) return;
 
@@ -96,7 +101,7 @@ function Partition(jsonPath) {
 		    t.select("text")
 		        .attr("transform", transform)
 	  		    .text(function(d) {	return d.name; })
-		        .style("display", function(d) { 
+		        .style("display", function(d) {
 				  if( d.dx * ky > 12 && d.dx > this.getComputedTextLength())
 				  	return "block"
 				  else
@@ -105,7 +110,7 @@ function Partition(jsonPath) {
 
 		    d3.event.stopPropagation();
 		  }
-		  
+
 		  function transform(d) {
 		    return "translate(1," + d.dx * ky / 2 + ")";
 		  }

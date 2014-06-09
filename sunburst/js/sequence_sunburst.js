@@ -1,3 +1,11 @@
+/*
+ * __author__ = "Meg Pirrung"
+ * __copyright__ = "Copyright 2014, multivis"
+ * __credits__ = ["Meg Pirrung"]
+ * __license__ = "MIT"
+ * __adaptation__ = "adapted from sequence sunburst example on d3js.org, d3 example code Library released under BSD license. Copyright 2013 Mike Bostock."
+ */
+
 // Dimensions of sunburst.
 var width = 750;
 var height = 600;
@@ -19,7 +27,7 @@ var colors = {
 };
 
 // Total size of all segments; we set this later, after loading the data.
-var totalSize = 0; 
+var totalSize = 0;
 
 var vis = d3.select("#chart").append("svg:svg")
     .attr("width", width)

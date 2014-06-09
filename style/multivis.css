@@ -7,7 +7,7 @@ body,html {
     height: 100%;
     margin: 0;
     padding: 0;
-    text-align: center;
+/*    text-align: center;*/
 	overflow: scroll;
 }
 
@@ -51,18 +51,3 @@ ul#visList {
 h3 {
 	font: 16pt helvetica;
 }
-
-rect.map {
-  stroke: #eee;
-  fill: #aaa;
-  fill-opacity: .8;
-}
-
-rect .map .parent {
-  cursor: pointer;
-  fill: steelblue;
-}
-
-/*text.treemaptext {
-	font-size: 11pt;
-}*/
