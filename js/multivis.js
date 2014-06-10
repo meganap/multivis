@@ -95,6 +95,11 @@ function initComp(r1,r2) {
 	s.setVals(r1,r2)
 }
 
+function area() {
+	s = new AreaChart()
+	initAbundance()
+}
+
 function stackedBar() {
 	s = new StackedBar()
 	initAbundance()
