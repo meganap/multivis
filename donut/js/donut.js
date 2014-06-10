@@ -1,5 +1,11 @@
-/* adapted from Mike Bostock's donut chart example on d3js.org, d3 example code Library released under BSD license. Copyright 2013 Mike Bostock.
-adapted code Copyright 2013 Meg Pirrung */
+/*
+ * __author__ = "Meg Pirrung"
+ * __copyright__ = "Copyright 2014, multivis"
+ * __credits__ = ["Meg Pirrung"]
+ * __license__ = "MIT"
+ * __adaptation__ = "adapted from Mike Bostock's donut chart example on d3js.org, d3 example code Library released under BSD license. Copyright 2013 Mike Bostock."
+ */
+
 function DonutCharts() {
 	/*global vars*/
 	var radius = 74,
@@ -68,7 +74,10 @@ function DonutCharts() {
 		      .style("text-anchor", "middle")
 		      .text(function(d) { return d.name; });
 
-		  this.sortChanged()
+  		this.getTotalAbundances(data)
+  		this.drawTaxonomyBarVis(data)
+  		//disable sort by for donut charts
+  		document.getElementById('sort_by_select').disabled = true
 	}
 
 	this.changeLevel = function (taxonomic_level) {
@@ -77,7 +86,8 @@ function DonutCharts() {
 		//reset stuff
 		this.setData(taxonomic_level)
 		this.buildKey(tax)
-		this.sortChanged()
+  		this.getTotalAbundances(data)
+  		this.drawTaxonomyBarVis(data)
 	}
 
 	this.setSelect = function () {
@@ -181,10 +191,7 @@ function DonutCharts() {
 		// if((groupsDict.length !== data.length) && key !== "SampleID")
 		// 	this.drawSortHeaders(groupsDict)
 
-		//sort by resets group by so set the index back to 0
-		document.getElementById('group_by_select').selectedIndex = 0
-		this.getTotalAbundances(data)
-		this.drawTaxonomyBarVis(data)
+
 	}
 
 	this.getTotalAbundances = function (data) {
@@ -361,14 +368,19 @@ function DonutCharts() {
 	    });
 		// y.domain([0, d3.max(data, function(d) { return d.total; })]);
 		// data.sort(function(a, b) { return b.total - a.total; });
+		tax.sort()
 		rainbow.setNumberRange(0, domain.length);
 	}
 
 	this.buildKey = function (tax) {
-		tax.sort()
 		var htmlstring = "<ul id='key'>"
+		var colorbox = ""
 		for(var t in tax)
-			htmlstring += "<li>"+tax[t]+"</li>"
+		{
+			htmlstring += "<li><div class='colorbox' style='background-color:"
+			htmlstring += '#'+rainbow.colorAt(t)
+			htmlstring += "'></div>"+tax[t]+"</li>"
+		}
 		htmlstring += "</ul>"
 		document.getElementById("color_list").innerHTML = htmlstring;
 	}
@@ -424,7 +436,7 @@ function DonutCharts() {
   		    .enter().append("path")
   		      .attr("class", "arc")
   		      .attr("d", arc)
-  			  .style("fill", function(d) { return '#'+rainbow.colorAt(d3.keys(data[d3.keys(data)[0]]['tax']).indexOf(d.data.name)); } )
+  			  .style("fill", function(d) { return '#'+rainbow.colorAt(tax.indexOf(d.data.name)); } )
   	  	      .on("mouseover", function(d) {
   	  	          this.style['opacity'] = .6;
   	  	          div.transition()

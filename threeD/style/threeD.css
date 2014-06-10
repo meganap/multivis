@@ -1,0 +1,28 @@
+/*
+ * __author__ = "Meg Pirrung"
+ * __copyright__ = "Copyright 2014, multivis"
+ * __credits__ = ["Meg Pirrung"]
+ * __license__ = "MIT"
+ * __adaptation__ = "EMPeror by Meg Pirrung, Yoshiki Vazquez Baeza and
+                  Antonio Gonzalez Pena. EMPeror BSD 2013"
+ */
+
+div.visWrapper {
+    position: relative;
+    overflow:hidden;
+    height: 100%;
+    width:73%;
+    float: left;
+    margin:0;
+}
+
+div#axes {
+    padding: 0px 1em 100px;
+    width:100%;
+    height:100%;
+    overflow:scroll;
+}
+
+.axislabels {
+    color: #000;
+}

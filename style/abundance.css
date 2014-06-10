@@ -4,6 +4,16 @@ div#plot {
 	font: 10px sans-serif;
 	width: 70%;
 	float: left;
+	overflow: scroll;
+	height: 90%;
+}
+
+div#yaxisholder {
+	float: left;
+}
+
+div#xaxisholder {
+	float: left;
 }
 
 div#options {
@@ -32,12 +42,18 @@ div#color_list {
 	margin-bottom: 1em;
 }
 
+div.colorbox {
+	float: left;
+	height: 16px;
+	width: 16px;
+}
+
 ul#key {
 	padding-left: 1em;
 }
 
 .groups {
-	stroke: lime;
+/*	stroke: lime;*/
 }
 
 .xAxisLabel {
@@ -60,6 +76,12 @@ ul#key {
 
 .x.axis path {
   display: none;
+}
+
+.sortRect {
+/*	opacity: 0;*/
+/*	stroke: #000;*/
+	border: 1px solid black;
 }
 
 .legend line {
@@ -114,11 +136,12 @@ div.tooltip {
 
 #breadcrumbs ul li.selected_classification {
 	background-color: #fff;
-	cursor: pointer;
 	padding: 1em 2em;
 }
 
 #breadcrumbs ul li.selected_classification a{
+	pointer-events: none;
+	cursor: default;
 	color: #042a40;
 	text-transform:uppercase;
 	padding: 0px;
