@@ -26,8 +26,8 @@ var surveyStart = "<div id=\"surveyMonkeyInfo\" style=\"width:800px;font-size:10
 var surveyEnd = "\" width=\"800\" height=\"300\" style=\"border:0px;padding-bottom:4px;\" frameborder=\"0\" allowtransparency=\"true\" ></iframe></div></div>"
 
 function buildSurvey() {
-	// var visID = Math.floor((Math.random()*3))
-	var visID = 1
+	var visID = Math.floor((Math.random()*3))
+	// var visID = 1
 	abundanceFuns[visID]();
 
 	var surveyHTML = buildSurveyHTML(visID)

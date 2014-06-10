@@ -32,9 +32,9 @@ function AreaChart() {
 	}
 
 	this.initTaxonomyChart = function () {
-		windowWidth = document.getElementById('visWrapper').offsetWidth
-		margin = {top: 30, right: 20, bottom: 180, left: 60},
-		width = windowWidth*.8 - margin.left - margin.right,
+		windowWidth = document.getElementById('plot').offsetWidth;
+		margin = {top: 30, right: 120, bottom: 190, left: 50};
+		width = windowWidth*.97;
 		height = 600 - margin.top - margin.bottom;
 
 		x = d3.scale.ordinal()
@@ -78,7 +78,7 @@ function AreaChart() {
 
 		  this.setData(1)
 		  // this.setMetadataTypes()
- // 		  this.setSelect()
+ 		  // this.setSelect()
  // 	  	  this.buildKey(tax)
 
 		  x.domain(data.map(function(d) { return d.SampleID; }));
@@ -109,8 +109,13 @@ function AreaChart() {
 		      .enter().append("g")
 		        .attr("class", "taxon");
 
-  		this.getTotalAbundances(data)
-  		this.drawTaxonomyVis(data)
+			data.sort(
+				function(a, b) {
+					return a.SampleID.localeCompare(b.SampleID)
+				}
+				);
+			this.getTotalAbundances(data)
+			this.drawTaxonomyVis(data)
 	}
 
 	// this.changeLevel = function (taxonomic_level) {
@@ -479,6 +484,26 @@ function AreaChart() {
 	// 		.attr("height",20);
 	// }
 
+	this.drawLegend = function (plotdata) {
+		var legend = svg.selectAll(".legend")
+		      .data(d3.keys(data[d3.keys(plotdata)[0]]['tax']).slice().reverse())
+		    .enter().append("g")
+		      .attr("class", "legend")
+		      .attr("transform", function(d, i) { return "translate(10," + i * 20 + ")"; });
+
+		  legend.append("rect")
+		      .attr("x", width)
+		      .attr("width", 18)
+		      .attr("height", 18)
+		      .style("fill", function(d) { return '#'+rainbow.colorAt(d3.keys(plotdata[d3.keys(plotdata)[0]]['tax']).indexOf(d)); });
+
+		  legend.append("text")
+		      .attr("x", width + 22)
+		      .attr("y", 9)
+		      .attr("dy", ".35em")
+		      .text(function(d) { return d; });
+	}
+
 	this.drawTaxonomyVis = function (plotdata, showLabels) {
 		  x.domain(plotdata.map(function(d) { return d.SampleID; }));
 
@@ -490,8 +515,8 @@ function AreaChart() {
 		      .data(plotdata)
 		  	  .attr("transform", function(d) { return "translate(" + x(d.SampleID) + ",0)"; });
 
-		  if(showLabels)
-		  {
+		  // if(showLabels)
+		  // {
 		  			  samID.append("text")
 		  			  		  .attr("y", function(d){ return x(d.sampleID); })
 		  			  		  .attr("x", -height-15)
@@ -500,14 +525,14 @@ function AreaChart() {
 		  			    	          return "rotate(-90)";
 		  			    	      })
 		  			  		  .text(function(d){ return (d.SampleID); });
-		  }else{
-		  			  svg.append("text")
-		  			      .attr("class", "xAxisLabel")
-		  			      .attr("text-anchor", "middle")
-		  			      .attr("x", width/2)
-		  			      .attr("y", height + 50)
-		  			      .text("Sample");
-		  }
+		  // }else{
+		  // 			  svg.append("text")
+		  // 			      .attr("class", "xAxisLabel")
+		  // 			      .attr("text-anchor", "middle")
+		  // 			      .attr("x", width/2)
+		  // 			      .attr("y", height + 50)
+		  // 			      .text("Sample");
+		  // }
 
 		  taxon = svg.selectAll(".taxon")
 		        .data(taxons);
@@ -553,5 +578,7 @@ function AreaChart() {
 	  		             .duration(500)
 	  		             .style("opacity", 0);
 	  		      });
+
+		this.drawLegend(plotdata)
 	}
 }
