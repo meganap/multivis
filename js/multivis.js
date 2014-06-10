@@ -21,12 +21,13 @@ var urlParams;
 })();
 
 var abundancehtml = "<div id=\"yaxisholder\"></div><div id=\"plot\"></div>"
-var abundanceFuns = [ stackedBar, normStackedBar, groupedBar, donuts ]
+var abundanceFuns = [ normStackedBar, area, donuts ]
 var surveyStart = "<div id=\"surveyMonkeyInfo\" style=\"width:800px;font-size:10px;color:#666;\"><div><iframe id=\"sm_e_s\" src=\"https://www.surveymonkey.com/s/RSZFG6H?c="
 var surveyEnd = "\" width=\"800\" height=\"300\" style=\"border:0px;padding-bottom:4px;\" frameborder=\"0\" allowtransparency=\"true\" ></iframe></div></div>"
 
 function buildSurvey() {
-	var visID = Math.floor((Math.random()*4))
+	// var visID = Math.floor((Math.random()*3))
+	var visID = 1
 	abundanceFuns[visID]();
 
 	var surveyHTML = buildSurveyHTML(visID)
@@ -95,11 +96,6 @@ function initComp(r1,r2) {
 	s.setVals(r1,r2)
 }
 
-function area() {
-	s = new AreaChart()
-	initAbundance()
-}
-
 function stackedBar() {
 	s = new StackedBar()
 	initAbundance()
@@ -117,6 +113,11 @@ function groupedBar() {
 
 function donuts() {
 	s = new DonutCharts()
+	initAbundance()
+}
+
+function area() {
+	s = new AreaChart()
 	initAbundance()
 }
 
