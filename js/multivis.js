@@ -7,9 +7,10 @@
 
 var s;
 var abundancehtml = "<div id=\"breadcrumbs\"><ul><li id=\"classification0\" class=\"selected_classification\"><a href=\"javascript:s.changeLevel('0')\">Kingdom</a></li>        <li id=\"classification1\" class=\"unselected_classification\"><a href=\"javascript:s.changeLevel('1')\">Phylum</a></li>        <li id=\"classification2\" class=\"unselected_classification\"><a href=\"javascript:s.changeLevel('2')\">Class</a></li>        <li id=\"classification3\" class=\"unselected_classification\"><a href=\"javascript:s.changeLevel('3')\">Order</a></li>        <li id=\"classification4\" class=\"unselected_classification\"><a href=\"javascript:s.changeLevel('4')\">Family</a></li>        <li id=\"classification5\" class=\"unselected_classification\"><a href=\"javascript:s.changeLevel('5')\">Genus</a></li>        <li id=\"classification6\" class=\"unselected_classification\"><a href=\"javascript:s.changeLevel('6')\">Species</a></li>        </ul>    </div>    <div id=\"yaxisholder\"></div> <div id=\"plot\"></div>   <div id=\"options\">        <div id=\"sort_by\">            Sort By: <select id=\"sort_by_select\" onchange=\"javascript:s.sortChanged()\">            </select>        </div>        <br />        <div id=\"group_by\">            Group By: <select id=\"group_by_select\" onchange=\"javascript:s.groupChanged()\">            </select>        </div>        <div id=\"color_list\">        </div></div>"
+var multidimhtml = ""
 
 function sunburst() {
-	s = new Sunburst("sunburst/data/test.json")
+	s = new Sunburst("data/keyboard_mini.json")
 	d3.select("#visWrapper").selectAll("div").remove()//get rid of old plots
 	d3.select("#visWrapper").append("div")
 		.attr("id", "sequence");
@@ -22,6 +23,52 @@ function sunburst() {
 	// 	.attr("value", "Zoom Out")
 	// 	.attr("click", function() {s.zoomOut()});
 	s.initSunburst()
+}
+
+function rectangularTree() {
+	d3.select("#visWrapper").selectAll("div").remove()//get rid of old plots
+	d3.select("#visWrapper").append("div")
+		.attr("id", "plot");
+
+	// var newick = Newick.parse("data/keyboard_mini.tre")
+	var newick = Newick.parse("((1917:0.02085000090301037,(52:0.07654999941587448,485:0.05381999909877777)0.632:0.011889999732375145)0.817:0.01592000015079975,(2767:0.01145000010728836,(366:0.03294000029563904,(41:0.04052000120282173,(2886:1.4000000373926014E-4,3288:0.00535999983549118)0.740:1.5999999595806003E-4)0.056:0.0060800001956522465)0.870:0.017430000007152557)0.893:0.01656999997794628);")
+    var newickNodes = []
+    function buildNewickNodes(node, callback) {
+      newickNodes.push(node)
+      if (node.branchset) {
+        for (var i=0; i < node.branchset.length; i++) {
+          buildNewickNodes(node.branchset[i])
+        }
+      }
+    }
+    buildNewickNodes(newick)
+	d3.phylogram.build('#plot', newick, {
+	          width: 400,
+	          skipLabels: true
+	        })
+}
+
+function radialTree() {
+	d3.select("#visWrapper").selectAll("div").remove()//get rid of old plots
+	d3.select("#visWrapper").append("div")
+		.attr("id", "plot");
+
+	// var newick = Newick.parse("data/keyboard_mini.tre")
+	var newick = Newick.parse("((1917:0.02085000090301037,(52:0.07654999941587448,485:0.05381999909877777)0.632:0.011889999732375145)0.817:0.01592000015079975,(2767:0.01145000010728836,(366:0.03294000029563904,(41:0.04052000120282173,(2886:1.4000000373926014E-4,3288:0.00535999983549118)0.740:1.5999999595806003E-4)0.056:0.0060800001956522465)0.870:0.017430000007152557)0.893:0.01656999997794628);")
+    var newickNodes = []
+    function buildNewickNodes(node, callback) {
+      newickNodes.push(node)
+      if (node.branchset) {
+        for (var i=0; i < node.branchset.length; i++) {
+          buildNewickNodes(node.branchset[i])
+        }
+      }
+    }
+    buildNewickNodes(newick)
+	d3.phylogram.buildRadial('#plot', newick, {
+	          width: 400,
+	          skipLabels: true
+	        })
 }
 
 function comparativeSunburst() {
@@ -41,7 +88,7 @@ function comparativeSunburst() {
 }
 
 function treemap() {
-	s = new Treemap("sunburst/data/test.json")
+	s = new Treemap("data/keyboard_mini.json")
 	d3.select("#visWrapper").selectAll("div").remove()//get rid of old plots
 	d3.select("#visWrapper").append("div")
 		.attr("id", "plot");
