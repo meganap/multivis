@@ -56,6 +56,52 @@ function sunburst() {
 	s.initSunburst()
 }
 
+function rectangularTree() {
+	d3.select("#visWrapper").selectAll("div").remove()//get rid of old plots
+	d3.select("#visWrapper").append("div")
+		.attr("id", "plot");
+
+	// var newick = Newick.parse("data/keyboard_mini.tre")
+	var newick = Newick.parse("((Taxon6:0.020,(Taxon7:0.076,Taxon8:0.093):0.011):0.015,(Taxon1:0.011,(Taxon2:0.032,(Taxon3:0.030,(Taxon4:0.014,Taxon5:0.050):.001):0.006):0.017):0.016);")
+    var newickNodes = []
+    function buildNewickNodes(node, callback) {
+      newickNodes.push(node)
+      if (node.branchset) {
+        for (var i=0; i < node.branchset.length; i++) {
+          buildNewickNodes(node.branchset[i])
+        }
+      }
+    }
+    buildNewickNodes(newick)
+	d3.phylogram.build('#plot', newick, {
+	          width: 400,
+	          skipLabels: false
+	        })
+}
+
+function radialTree() {
+	d3.select("#visWrapper").selectAll("div").remove()//get rid of old plots
+	d3.select("#visWrapper").append("div")
+		.attr("id", "plot");
+
+	// var newick = Newick.parse("data/keyboard_mini.tre")
+	var newick = Newick.parse("((Taxon6:0.020,(Taxon7:0.076,Taxon8:0.093):0.011):0.015,(Taxon1:0.011,(Taxon2:0.032,(Taxon3:0.030,(Taxon4:0.014,Taxon5:0.050):.001):0.006):0.017):0.016);")
+    var newickNodes = []
+    function buildNewickNodes(node, callback) {
+      newickNodes.push(node)
+      if (node.branchset) {
+        for (var i=0; i < node.branchset.length; i++) {
+          buildNewickNodes(node.branchset[i])
+        }
+      }
+    }
+    buildNewickNodes(newick)
+	d3.phylogram.buildRadial('#plot', newick, {
+	          width: 600,
+	          skipLabels: false
+	        })
+}
+
 function comparativeSunburst() {
 	s = new ComparativeSunburst()
 	d3.select("#visWrapper").selectAll("div").remove()//get rid of old plots
