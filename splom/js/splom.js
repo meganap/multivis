@@ -30,6 +30,7 @@ function Splom() {
 	var width;
 	var height;
 	var groups = [];
+	var rainbow = new Rainbow();
 
 	this.setData = function(root) {
 		data = root;
@@ -73,27 +74,17 @@ function Splom() {
 			});
 		});
 
-		// rainbow.setSpectrum('green','blue','red','yellow')
-		// rainbow.setNumberRange(0,groups.length);
-
-		// console.log(data)
 		// Axes.
 		axis = d3.svg.axis()
 		      .ticks(5)
 		      .tickSize(size * n);
 
-		//   // Brush.
-		// brush = d3.svg.brush()
-		//       .on("brushstart", this.brushstart)
-		//       .on("brush", this.brush)
-		//       .on("brushend", this.brushend);
-
 		  // Root panel.
 		svg = d3.select("#splom").append("svg:svg")
 		      .attr("width", width)
 		      .attr("height", height)
-		    .append("svg:g");
-		      // .attr("transform", "translate(359.5,69.5)");
+		    .append("svg:g")
+		      .attr("transform", "translate(5,5)");
 		  // X-axis.
 		    svg.selectAll("g.x.axis")
 		        .data(axes)
@@ -123,7 +114,38 @@ function Splom() {
 		        .attr("x", padding)
 		        .attr("y", padding)
 		        .attr("dy", ".71em")
-		        .text(function(d) { return d.x; });
+		        .text(function(d) { return 'Axis ' + d.x; });
+
+		    // Titles for other cells.
+		     cell.filter(function(d) { return d.i != d.j; }).append("svg:text")
+		        .attr("x", padding)
+		        .attr("y", padding)
+		        .attr("dy", ".71em")
+		        .text(function(d) { return 'Axis ' + d.x + ' × Axis ' + d.y;; });
+
+			rainbow.setSpectrum('green','blue','red','yellow')
+			rainbow.setNumberRange(0,groups.length);
+
+		   legend = svg.selectAll(".legend")
+		       .data(groups)
+		     .enter().append("g")
+		       .attr("class", "legend")
+		       .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+		   legend.append("rect")
+		       .attr("x", width - 24)
+		       .attr("width", 16)
+		       .attr("height", 16)
+		       .style("fill", function(d){
+		  		  	return '#'+rainbow.colorAt(groups.indexOf(d));
+		  		  });
+
+		   legend.append("text")
+		       .attr("x", width - 30)
+		       .attr("y", 9)
+		       .attr("dy", ".35em")
+		       .style("text-anchor", "end")
+		       .text(function(d) { return d; });
 	}
 
 	this.plot = function(p) {
@@ -140,11 +162,9 @@ function Splom() {
 		    // Plot dots.
 		    cell.selectAll("circle")
 		        .data(data)
+				.text("derp")
 		      .enter().append("svg:circle")
 		        .attr("class", function(d) { return d.Individual; })
-				// .style('fill',function(d){
-				//   	return '#'+rainbow.colorAt(groups.indexOf(d.Individual));
-				//   })
 		        .attr("cx", function(d) { return x[p.x](d[p.x]); })
 		        .attr("cy", function(d) { return y[p.y](d[p.y]); })
 		        .attr("r", 3);
