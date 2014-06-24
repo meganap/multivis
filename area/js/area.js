@@ -34,7 +34,7 @@ function AreaChart() {
 	this.initTaxonomyChart = function () {
 		windowWidth = document.getElementById('plot').offsetWidth;
 		margin = {top: 30, right: 120, bottom: 190, left: 50};
-		width = windowWidth*.97;
+		width = windowWidth*.80;
 		height = 600 - margin.top - margin.bottom;
 
 		x = d3.scale.ordinal()

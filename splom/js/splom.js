@@ -13,7 +13,7 @@ function Splom() {
 	// var rainbow = new Rainbow();
 	// var color;
 	// Size parameters.
-    var size = 140,
+    var size = 125,
         padding = 10,
         n = 4;
 	//position scales
@@ -38,8 +38,7 @@ function Splom() {
 	}
 
 	this.initSplom = function() {
-		windowWidth = document.getElementById('plot').offsetWidth;
-		width = windowWidth*.97;
+		width = 600;
 		height = 600;
 
 		document.getElementById('plot').innerHTML = '<div id="splom" class="splom"></div>'
@@ -132,20 +131,20 @@ function Splom() {
 		       .attr("class", "legend")
 		       .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
 
+		   legend.append("text")
+		       .attr("x", width - 4)
+		       .attr("y", 9)
+		       .attr("dy", ".35em")
+		       .style("text-anchor", "end")
+		       .text(function(d) { return d; });
+
 		   legend.append("rect")
-		       .attr("x", width - 24)
+		       .attr("x", width - 74)
 		       .attr("width", 16)
 		       .attr("height", 16)
 		       .style("fill", function(d){
 		  		  	return '#'+rainbow.colorAt(groups.indexOf(d));
 		  		  });
-
-		   legend.append("text")
-		       .attr("x", width - 30)
-		       .attr("y", 9)
-		       .attr("dy", ".35em")
-		       .style("text-anchor", "end")
-		       .text(function(d) { return d; });
 	}
 
 	this.plot = function(p) {

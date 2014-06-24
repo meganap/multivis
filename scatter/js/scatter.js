@@ -32,16 +32,18 @@ function Scatter() {
 	}
 
 	this.initScatter = function() {
-		margin = {top: 20, right: 20, bottom: 30, left: 40};
+		margin = {top: 20, right: 0, bottom: 20, left: 100};
 		windowWidth = document.getElementById('plot').offsetWidth;
 		width = windowWidth*.97 - margin.left - margin.right;
-		height = 600 - margin.top - margin.bottom;
+		height = document.getElementById('plot').offsetHeight - margin.top - margin.bottom;
 
 		document.getElementById('plot').innerHTML = '<div id="scatter" class="scatter"></div>'
+
 		d3.select("#visWrapper").append("div")
+			.attr("width", "100px")
 			.attr("id", "axisChoosers")
 			.attr("class", "axisChoosers");
-		document.getElementById('axisChoosers').innerHTML = '<div id=\"legendHolder\"></div><br><div>X axis:<select id=\"Xaxis\" onchange=\"javascript:s.axisChanged()\"></select><br>Y axis:<select id=\"Yaxis\" onchange=\"javascript:s.axisChanged()\"></select></div>'
+		document.getElementById('axisChoosers').innerHTML = 'X axis:<select id=\"Xaxis\" onchange=\"javascript:s.axisChanged()\"></select><br>Y axis:<select id=\"Yaxis\" onchange=\"javascript:s.axisChanged()\"></select>'
 
 		x = d3.scale.linear()
 		.range([0, width]);

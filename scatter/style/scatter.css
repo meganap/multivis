@@ -5,4 +5,8 @@
 
 .axisChoosers {
 	font: 10px sans-serif;
+	position: absolute;
+/*	z-index: 2;*/
+	left: 960px;
+	top: 40px;
 }

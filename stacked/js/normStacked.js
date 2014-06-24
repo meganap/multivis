@@ -73,7 +73,7 @@ function NormalizedStackedBar() {
 		    .attr("height", 465)
 		    .attr("id", "chart")
 		  .append("g")
-		    .attr("transform", "translate(" + 10 + "," + margin.top + ")");
+		    .attr("transform", "translate(" + -10 + "," + margin.top + ")");
 
 		  this.setData(1)
 		  // this.setMetadataTypes()

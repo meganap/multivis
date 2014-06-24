@@ -20,10 +20,12 @@ function ParallelCoordinates() {
 	}
 
 	this.initParallelCoordinates = function() {
-		pwidth = document.getElementById('plot').offsetWidth
-		pheight = document.getElementById('plot').offsetHeight
+		d3.select("#plot").append("div")
+		.attr("width", "730")
+		.attr("height", "600")
+		.attr("id","parallelPlotWrapper");
 
-		document.getElementById('plot').innerHTML = '<div id="parallelPlot" class="parcoords" style="width:'+pwidth+'px;height:'+pheight+'px"></div>'
+		document.getElementById('parallelPlotWrapper').innerHTML = '<div id="parallelPlot" class="parcoords" style="width:770px;height:530px"></div>'
 
 		data.forEach(function(d){
 			d.Individual = d.Individual.substring(0,11)
@@ -54,7 +56,7 @@ function ParallelCoordinates() {
 		  .color(function(d){
 		  	return '#'+rainbow.colorAt(groups.indexOf(d.Individual));
 		  })
-		  .margin({ top: 40, left: 20, bottom: 40, right: 50 })
+		  .margin({ top: 50, left: 30, bottom: 40, right: 50 })
 		  .ticks(5)
 		  .render()
 		  .brushable();
