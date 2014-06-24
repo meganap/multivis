@@ -122,7 +122,7 @@ function initMultiDim() {
 		.attr("id", "plot")
 		.attr("class", "plot");
   	queue()
-  		.defer(d3.csv, "data/multidimdata.csv")
+  		.defer(d3.csv, "data/keyboard_4axes.csv")
   		.await(loadMultiDim);
 }
 
