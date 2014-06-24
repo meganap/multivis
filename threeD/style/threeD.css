@@ -26,3 +26,22 @@ div#axes {
 .axislabels {
     color: #000;
 }
+
+div.colorbox {
+    height: 18px;
+    width: 18px;
+	margin: 0px 2px;
+}
+
+#legendDiv {
+	position: absolute;
+	z-index: 3;
+}
+
+#legendDiv ul {
+	list-style-type: none;
+}
+
+#legendDiv ul li {
+	padding-bottom: 3px;
+}

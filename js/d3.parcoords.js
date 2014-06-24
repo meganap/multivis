@@ -304,7 +304,7 @@ pc.createAxes = function() {
         "x": 0,
         "class": "label"
       })
-      .text(String)
+      .text(function(d){return 'Axis ' + d;})
 
   flags.axes= true;
   return this;

@@ -24,6 +24,12 @@ function ThreeD() {
 	var g_xMinimumValue;
 	var g_yMinimumValue;
 	var g_zMinimumValue;
+	var max_x;
+	var max_y;
+	var max_z;
+	var min_x;
+	var min_y;
+	var min_z;
 	var g_maximum;
 	var g_pc1Label;
 	var g_pc2Label;
@@ -32,6 +38,8 @@ function ThreeD() {
 	var xAxisIndex = 1;
 	var yAxisIndex = 2;
 	var zAxisIndex = 3;
+	var svg;
+	var legend;
 
 	// sample identifiers of all items that are plotted
 	var g_plotIds = [];
@@ -75,7 +83,7 @@ function ThreeD() {
 		var particles, geometry, parameters, i, h, color;
 		var mouseX = 0, mouseY = 0;
 
-		var windowWidth = Math.min(document.getElementById('visWrapper').offsetWidth,document.getElementById('visWrapper').offsetHeight), view_angle = 35, view_near = 1, view_far = 10000;
+		var windowWidth = Math.min(document.getElementById('visWrapper').offsetWidth,document.getElementById('visWrapper').offsetHeight), view_angle = 25, view_near = 1, view_far = 10000;
 		var winAspect = document.getElementById('visWrapper').offsetWidth/document.getElementById('visWrapper').offsetHeight;
 
 		// Detecting that webgl is activated
@@ -132,7 +140,7 @@ function ThreeD() {
 
 			// white is the default background color for the scene
 			var rendererBackgroundColor = new THREE.Color();
-			rendererBackgroundColor.setHex("0xffffff");
+			rendererBackgroundColor.setHex("0xf5f5f5");
 
 			// renderer, the default background color is white
 			g_mainRenderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
@@ -145,6 +153,7 @@ function ThreeD() {
 			colorSpheres();
 			drawAxisLines();
 			buildAxisLabels();
+			drawLegend();
 			resetCamera();
 		}
 
@@ -183,6 +192,19 @@ function ThreeD() {
 			g_sceneCamera.position.set(0 , 0, (g_maximum*4.8) + g_radius);
 		}
 
+		function drawLegend() {
+			var width = document.getElementById('plot').offsetWidth;
+
+			d3.select("#visWrapper").append("div")
+				.attr("id","legendDiv");
+			var legendHTML = "<ul>"
+			for(var g in groups)
+				legendHTML += "<li>"+groups[g]+"<div class=\"colorbox\" style=\"background-color:#"+rainbow.colorAt(g)+"\"></div></li>"
+			legendHTML += "</ul>"
+
+			document.getElementById("legendDiv").innerHTML = legendHTML
+		}
+
 		function drawSpheres() {
 			data.forEach(function(d) {
 				//draw ball
@@ -207,24 +229,31 @@ function ThreeD() {
 		}
 
 		function setMinMaxVals() {
-			g_xMaximumValue = d3.max(data, function(d){
+			max_x = d3.max(data, function(d){
 				return d[xAxisIndex]
 			});
-			g_yMaximumValue = d3.max(data, function(d){
+			max_y = d3.max(data, function(d){
 				return d[yAxisIndex]
 			});
-			g_zMaximumValue = d3.max(data, function(d){
+			max_z = d3.max(data, function(d){
 				return d[zAxisIndex]
 			});
-			g_xMinimumValue = d3.min(data, function(d){
+			min_x = d3.min(data, function(d){
 				return d[xAxisIndex]
 			});
-			g_yMinimumValue = d3.min(data, function(d){
+			min_y = d3.min(data, function(d){
 				return d[yAxisIndex]
 			});
-			g_zMinimumValue = d3.min(data, function(d){
+			min_z = d3.min(data, function(d){
 				return d[zAxisIndex]
 			});
+
+			g_xMaximumValue = max_x + (max_x>=0 ? 6*g_radius : -6*g_radius);
+			g_yMaximumValue = max_y + (max_y>=0 ? 6*g_radius : -6*g_radius);
+			g_zMaximumValue = max_z + (max_z>=0 ? 6*g_radius : -6*g_radius);
+			g_xMinimumValue = min_x + (min_x>=0 ? 6*g_radius : -6*g_radius);
+			g_yMinimumValue = min_y + (min_y>=0 ? 6*g_radius : -6*g_radius);
+			g_zMinimumValue = min_z + (min_z>=0 ? 6*g_radius : -6*g_radius);
 
 			g_xAxisLength = g_xMaximumValue - g_xMinimumValue;
 			g_yAxisLength = g_yMaximumValue - g_yMinimumValue;

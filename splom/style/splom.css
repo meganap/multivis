@@ -32,13 +32,13 @@ circle {
 }
 
 .Individual1 {
-  fill: #800;
-}
-
-.Individual2 {
   fill: #080;
 }
 
-.Individual3 {
+.Individual2 {
   fill: #008;
+}
+
+.Individual3 {
+  fill: #800;
 }
