@@ -14,7 +14,7 @@ function ThreeD() {
 	var color;
 	var groups = [];
 	var g_plotSpheres = {};
-	var g_segments = 8, g_rings = 8, g_radius = .02;
+	var g_segments = 8, g_rings = 8, g_radius = .01;
 	var g_xAxisLength;
 	var g_yAxisLength;
 	var g_zAxisLength;
@@ -191,7 +191,7 @@ function ThreeD() {
 				mesh.material.transparent = true;
 				mesh.material.depthWrite = false;
 				mesh.material.opacity = 1;
-				mesh.position.set(d[xAxisIndex]-.5, d[yAxisIndex]-.5, d[zAxisIndex]-.5);
+				mesh.position.set(d[xAxisIndex], d[yAxisIndex], d[zAxisIndex]);
 				mesh.updateMatrix();
 				mesh.matrixAutoUpdate = true;
 				g_mainScene.add( mesh );
@@ -209,22 +209,22 @@ function ThreeD() {
 		function setMinMaxVals() {
 			g_xMaximumValue = d3.max(data, function(d){
 				return d[xAxisIndex]
-			}) -.5;
+			});
 			g_yMaximumValue = d3.max(data, function(d){
 				return d[yAxisIndex]
-			}) -.5;
+			});
 			g_zMaximumValue = d3.max(data, function(d){
 				return d[zAxisIndex]
-			}) -.5;
+			});
 			g_xMinimumValue = d3.min(data, function(d){
 				return d[xAxisIndex]
-			}) -.5;
+			});
 			g_yMinimumValue = d3.min(data, function(d){
 				return d[yAxisIndex]
-			}) -.5;
+			});
 			g_zMinimumValue = d3.min(data, function(d){
 				return d[zAxisIndex]
-			}) -.5;
+			});
 
 			g_xAxisLength = g_xMaximumValue - g_xMinimumValue;
 			g_yAxisLength = g_yMaximumValue - g_yMinimumValue;

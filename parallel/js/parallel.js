@@ -54,7 +54,7 @@ function ParallelCoordinates() {
 		  .color(function(d){
 		  	return '#'+rainbow.colorAt(groups.indexOf(d.Individual));
 		  })
-		  .margin({ top: 40, left: 50, bottom: 40, right: 0 })
+		  .margin({ top: 40, left: 20, bottom: 40, right: 50 })
 		  .ticks(5)
 		  .render()
 		  .brushable();

@@ -1,3 +1,11 @@
+/*
+ * __author__ = "Meg Pirrung"
+ * __copyright__ = "Copyright 2014, multivis"
+ * __credits__ = ["Meg Pirrung"]
+ * __license__ = "MIT"
+ * __adaptation__ = "adapted from Mike Bostock's parallel coordinates example on d3js.org, d3 example code Library released under BSD license. Copyright 2013 Mike Bostock."
+ */
+
 d3.parcoords = function(config) {
   var __ = {
     data: [],
@@ -55,7 +63,7 @@ var events = d3.dispatch.apply(this,["render", "resize", "highlight", "brush"].c
     dragging = {},
     line = d3.svg.line(),
     // axis = d3.svg.axis().orient("left").ticks(5),
-	axis = d3.svg.axis().orient("left").ticks(0),
+	axis = d3.svg.axis().orient("right").ticks(0),
     g, // groups for axes, brushes
     ctx = {},
     canvas = {};
