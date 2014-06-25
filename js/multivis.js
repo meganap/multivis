@@ -160,6 +160,7 @@ function treemap() {
 
 function normStackedBar() {
 	s = new NormalizedStackedBar()
+	d3.select("#visWrapper").html(abundancehtml)
 	initAbundance()
 }
 
@@ -170,17 +171,19 @@ function normStackedBar() {
 
 function donuts() {
 	s = new DonutCharts()
+	d3.select("#visWrapper").html("<div id=\"yaxisholder\"></div><div id=\"donutplot\"></div>")
 	initAbundance()
 }
 
 function area() {
 	s = new AreaChart()
+	d3.select("#visWrapper").html(abundancehtml)
 	initAbundance()
 }
 
 function initAbundance() {
 	// d3.select("#visWrapper").selectAll("div").remove()//get rid of old plots
-	d3.select("#visWrapper").html(abundancehtml)
+	// d3.select("#visWrapper").html(abundancehtml)
   	queue()
   		.defer(d3.json, "data/current")
   		.await(loadBiom);

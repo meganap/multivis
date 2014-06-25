@@ -26,13 +26,13 @@ function DonutCharts() {
 	this.initTaxonomyBarChart = function () {
 		rainbow.setSpectrum('#e41a1c','#377eb8','#4daf4a','#984ea3','#000000')
 
-		div = d3.select("#plot").append("div")
+		div = d3.select("#donutplot").append("div")
 		.attr("class", "tooltip")
 		.style("opacity", 0);
 
 		var classification = ["Phylum","Class","Order","Family","Genus","Species"]
 
-		vis = d3.select("#plot")
+		vis = d3.select("#donutplot")
 
 		arc = d3.svg.arc()
 		    .outerRadius(radius)
@@ -405,20 +405,20 @@ function DonutCharts() {
 	// 		.attr("height",20);
 	// }
 
-	this.drawLegend = function (plotdata) {
-		var legend = d3.select("#plot").append("svg")
+	this.drawLegend = function (donutplotdata) {
+		var legend = d3.select("#donutplot").append("svg")
 		      .attr("class", "legend")
 		      .attr("width", radius * 2)
 		      .attr("height", radius * 2)
 		    .selectAll("g")
-		      .data(d3.keys(data[d3.keys(plotdata)[0]]['tax']).slice().reverse())
+		      .data(d3.keys(data[d3.keys(donutplotdata)[0]]['tax']).slice().reverse())
 		    .enter().append("g")
 		      .attr("transform", function(d, i) { return "translate("+ 0 + "," + i * 20 + ")"; });
 
 		  legend.append("rect")
 		      .attr("width", 18)
 		      .attr("height", 18)
-		      .style("fill", function(d) { return '#'+rainbow.colorAt(d3.keys(plotdata[d3.keys(plotdata)[0]]['tax']).indexOf(d)); });
+		      .style("fill", function(d) { return '#'+rainbow.colorAt(d3.keys(donutplotdata[d3.keys(donutplotdata)[0]]['tax']).indexOf(d)); });
 
 		  legend.append("text")
 		      .attr("x", 24)
@@ -427,9 +427,9 @@ function DonutCharts() {
 		      .text(function(d) { return d; });
 	}
 
-	this.drawTaxonomyBarVis = function (plotdata, showLabels) {
-	  this.drawLegend(plotdata)
- 	  // x.domain(plotdata.map(function(d) { return d.SampleID; }));
+	this.drawTaxonomyBarVis = function (donutplotdata, showLabels) {
+	  this.drawLegend(donutplotdata)
+ 	  // x.domain(donutplotdata.map(function(d) { return d.SampleID; }));
  	  vis.selectAll(".pie").remove();
  	  // pies.selectAll("svg").remove(); //clear old pies
  	  // arcHolder.selectAll("path").remove(); //clear old arcs
@@ -437,7 +437,7 @@ function DonutCharts() {
  	  // svg.selectAll(".xAxisLabel").remove(); //remove old text
 
  	 pies = vis.selectAll(".pie")
-    	 	.data(plotdata)
+    	 	.data(donutplotdata)
     		    .enter().append("svg")
     		      .attr("class", "pie")
     		      .attr("width", radius * 2)

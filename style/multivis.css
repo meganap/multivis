@@ -3,11 +3,9 @@ body,html {
     font-size: 11pt;
     background-color: #fff;
     width: 100%;
-/*	min-width: 1350px;*/
     height: 100%;
     margin: 0;
     padding: 0;
-/*    text-align: center;*/
 	overflow: scroll;
 }
 
@@ -71,18 +69,13 @@ div#plot {
 }
 
 div#plot svg {
-/*	display: block;*/
-	margin:0 auto;
+	display: block;
+/*	margin:0 auto;*/
 }
 
 div#parallelPlotWrapper svg{
 	display: block;
-	margin:0 auto;
 	padding: 0px;
-}
-
-svg.pie{
-	display: inline;
 }
 
 div#plot canvas {
@@ -91,5 +84,5 @@ div#plot canvas {
 
 #splom svg{
 	display: block;
-	margin:0 auto;
+	margin-left: 100px;
 }
