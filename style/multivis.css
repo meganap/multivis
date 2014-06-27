@@ -84,5 +84,15 @@ div#plot canvas {
 
 #splom svg{
 	display: block;
-	margin-left: 100px;
+	margin-left: 60px;
+}
+
+.splomLegend {
+	position: absolute;
+	top: 60px;
+	left: 250px;
+}
+
+.parallelLegend {
+	margin-top: 50px;
 }

@@ -18,7 +18,8 @@
 <link rel="stylesheet" type="text/css" href="style/d3.parcoords.css">
 <link rel="stylesheet" type="text/css" href="sunburst/style/sunburst.css">
 <link rel="stylesheet" type="text/css" href="partition/style/partition.css">
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" href="style/jquery-ui-1.10.4.custom.min.css">
+<!-- <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" /> -->
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -46,6 +47,21 @@
 </head>
 <body>
 	<div id="wrapper">
+		<div id="admin">
+			<select id="visSelect" onchange="changeVis()">
+				<option value="sunburst">Sunburst</option>
+				<option value="treemap">TreeMap</option>
+				<option value="rectangularTree">Rectangular Tree</option>
+				<option value="radialTree">Radial Tree</option>
+				<option value="normStackedBar">Stacked Bar</option>
+				<option value="area">Area Chart</option>
+				<option value="donuts">Donut Chart</option>
+				<option value="threeD">3d Plot</option>
+				<option value="scatter">Scatter Plot</option>
+				<option value="splom">Splom</option>
+				<option value="parallel">Parallel Plot</option>
+			</select>
+		</div>
 	<!-- <div id="header">
 		<div id="title"><div class="left normal">multi</div><div class="left bold">vis</div></div>
 	</div>
@@ -85,9 +101,9 @@
 		</div>
 	</div>
 
-	<div id="dialog-confirm" title="Notice">
+	<!-- <div id="dialog-confirm" title="Notice">
 	  <p style="font-size: 10pt; margin: 0; text-align: left;">This survey has <b>8 questions</b>. The survey is positioned and scaled so that you can answer each question while still viewing the visualization.<br /><b>Please scroll down within the question area to answer all 8 questions.</b></p>
-	</div>
+	</div> -->
 
 	<script>
 	    // $( "#dialog-confirm" ).dialog({
@@ -101,7 +117,7 @@
 	    //   }
 	    // });
 		// buildSurvey()
-		radialTree()
+		sunburst()
 	</script>
 </div>
 </body>

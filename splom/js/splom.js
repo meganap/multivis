@@ -30,6 +30,8 @@ function Splom() {
 	var width;
 	var height;
 	var groups = [];
+	var axes;
+	var values;
 	var rainbow = new Rainbow();
 
 	this.setData = function(root) {
@@ -44,11 +46,11 @@ function Splom() {
 		document.getElementById('plot').innerHTML = '<div id="splom" class="splom"></div>'
 
 		//get all the axes
-		var axes = d3.keys(data[0])
+		axes = d3.keys(data[0])
 		//remove individual as an axis
-		axes.splice(axes.indexOf('Individual'),1)
+		axes.splice(axes.indexOf('Individual'),2)
 
-		var values = []
+		values = []
 		data.forEach(function(sample){
 			groups.push(sample.Individual.substring(0,11))
 			var temp = {}
@@ -57,6 +59,7 @@ function Splom() {
 			});
 			temp.Individual = sample.Individual.substring(0,11)
 			sample.Individual = sample.Individual.substring(0,11)
+			sample.colorKey = sample.Individual
 			values.push(temp)
 		});
 		groups = this.dedupe(groups)
@@ -72,6 +75,43 @@ function Splom() {
 					y[axis] = d3.scale.linear().domain(domain).range(range.reverse());
 			});
 		});
+
+
+		// rainbow.setSpectrum('green','blue','red','yellow')
+		rainbow.setNumberRange(0,groups.length);
+
+		this.drawPlot()
+	}
+
+	this.changeColors = function(value) {
+		this.setColorBy(value)
+	}
+
+	this.setColorBy = function(value) {
+		groups = []
+		data.forEach(function(sample){
+			if(value == 'Environment')
+			{
+				if(sample.SampleID.indexOf('key') != -1 || sample.SampleID.indexOf('space') != -1)
+					sample.colorKey = 'Key'
+				else
+					sample.colorKey = 'Finger'
+			}
+			else
+				sample.colorKey = sample.Individual
+
+			groups.push(sample.colorKey)
+		});
+		groups = this.dedupe(groups)
+		compData = {axes: axes, groups: groups, values: values}
+
+		rainbow.setNumberRange(0,groups.length);
+
+		this.drawPlot()
+	}
+
+	this.drawPlot = function() {
+		d3.select("#splom").selectAll("svg").remove()
 
 		// Axes.
 		axis = d3.svg.axis()
@@ -122,29 +162,36 @@ function Splom() {
 		        .attr("dy", ".71em")
 		        .text(function(d) { return 'Axis ' + d.x + ' × Axis ' + d.y;; });
 
-			rainbow.setSpectrum('green','blue','red','yellow')
-			rainbow.setNumberRange(0,groups.length);
+  		  legend = d3.select("#splom").append("svg")
+  		  	.attr("class","splomLegend");
+  		  this.drawLegend()
 
-		   legend = svg.selectAll(".legend")
-		       .data(groups)
-		     .enter().append("g")
-		       .attr("class", "legend")
-		       .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+	}
 
-		   legend.append("text")
-		       .attr("x", width - 4)
-		       .attr("y", 9)
-		       .attr("dy", ".35em")
-		       .style("text-anchor", "end")
-		       .text(function(d) { return d; });
+	this.drawLegend = function() {
+	   legend = legend.selectAll(".legend")
+	       .data(groups);
 
-		   legend.append("rect")
-		       .attr("x", width - 74)
-		       .attr("width", 16)
-		       .attr("height", 16)
-		       .style("fill", function(d){
-		  		  	return '#'+rainbow.colorAt(groups.indexOf(d));
-		  		  });
+	   legend.enter().append("g")
+	       .attr("class", "legend")
+	       .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+	   legend.append("rect")
+	       .attr("x", width - 24)
+	       .attr("width", 16)
+	       .attr("height", 16)
+	       .style("fill", function(d){
+	  		  	return '#'+rainbow.colorAt(groups.indexOf(d));
+	  		  });
+
+	   legend.append("text")
+	       .attr("x", width - 30)
+	       .attr("y", 9)
+	       .attr("dy", ".35em")
+	       .style("text-anchor", "end")
+	       .text(function(d) { return d; });
+
+		legend.exit().remove();
 	}
 
 	this.plot = function(p) {
@@ -161,9 +208,8 @@ function Splom() {
 		    // Plot dots.
 		    cell.selectAll("circle")
 		        .data(data)
-				.text("derp")
 		      .enter().append("svg:circle")
-		        .attr("class", function(d) { return d.Individual; })
+		        .attr("class", function(d) { return d.colorKey; })
 		        .attr("cx", function(d) { return x[p.x](d[p.x]); })
 		        .attr("cy", function(d) { return y[p.y](d[p.y]); })
 		        .attr("r", 3);

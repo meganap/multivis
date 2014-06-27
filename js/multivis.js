@@ -29,6 +29,8 @@ var multidimFuns = [ parallel, scatter, splom, threeD ]
 
 var visFuns = [ abundanceFuns, phyloFuns, multidimFuns ]
 
+var allFuns = [ sunburst, treemap, rectangularTree, radialTree, normStackedBar, area, donuts, threeD, scatter, splom, parallel ]
+
 var surveyStart = "<div id=\"surveyMonkeyInfo\" style=\"width:800px;font-size:10px;color:#666;\"><div><iframe id=\"sm_e_s\" src=\"https://www.surveymonkey.com/s/"
 var surveyIDs = ['RSZFG6H?c=','','','']
 var surveyEnd = "\" width=\"800\" height=\"300\" style=\"border:0px;padding-bottom:4px;\" frameborder=\"0\" allowtransparency=\"true\" ></iframe></div></div>"
@@ -51,9 +53,13 @@ function buildSurveyHTML(visID) {
 	return surveyStart + surveyID + surveyEnd
 }
 
+function changeVis() {
+	allFuns[document.getElementById('visSelect').selectedIndex]()
+}
+
 function sunburst() {
 	s = new Sunburst("data/keyboard_mini.json")
-	// d3.select("#visWrapper").selectAll("div").remove()//get rid of old plots
+	d3.select("#visWrapper").selectAll("div").remove()//get rid of old plots
 	// d3.select("#visWrapper").append("div")
 	// 	.attr("id", "sequence");
 	d3.select("#visWrapper").append("div")
@@ -131,7 +137,7 @@ function radialTree() {
 
 function treemap() {
 	s = new Treemap("data/keyboard_mini.json")
-	// d3.select("#visWrapper").selectAll("div").remove()//get rid of old plots
+	d3.select("#visWrapper").selectAll("div").remove()//get rid of old plots
 	d3.select("#visWrapper").append("div")
 		.attr("id", "plot");
 	// d3.select("#visWrapper").append("div")
@@ -185,7 +191,7 @@ function initAbundance() {
 	// d3.select("#visWrapper").selectAll("div").remove()//get rid of old plots
 	// d3.select("#visWrapper").html(abundancehtml)
   	queue()
-  		.defer(d3.json, "data/current")
+  		.defer(d3.json, "data/rich_sparse_otu_table.biom")
   		.await(loadBiom);
 }
 
@@ -218,8 +224,20 @@ function initMultiDim() {
 	d3.select("#visWrapper").append("div")
 		.attr("id", "plot")
 		.attr("class", "plot");
+	d3.select("#visWrapper").append("div")
+		.attr("id", "toggleHolder");
+
+	document.getElementById("toggleHolder").innerHTML = " <div id='colorBy'>Color by:<br><input type='radio' id='Individual' name='colorBy' checked='checked'><label for='Individual'>Individual</label><input type='radio' id='Environment' name='colorBy'><label for='Environment'>Environment</label></div>";
+
+	$( "#colorBy" )
+		.buttonset()
+		.change(function( event ) {
+	        // console.log(event.target.id)
+			s.changeColors(event.target.id)
+		});
+
   	queue()
-  		.defer(d3.csv, "data/keyboard_4axes.csv")
+  		.defer(d3.csv, "data/keyboard_realIDs.csv")
   		.await(loadMultiDim);
 }
 

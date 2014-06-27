@@ -40,6 +40,7 @@ function ThreeD() {
 	var zAxisIndex = 3;
 	var svg;
 	var legend;
+	var threeDvar = this;
 
 	// sample identifiers of all items that are plotted
 	var g_plotIds = [];
@@ -63,18 +64,19 @@ function ThreeD() {
 		//get all the axes
 		var axes = d3.keys(data[0])
 		//remove individual as an axis
-		axes.splice(axes.indexOf('Individual'),1)
+		axes.splice(axes.indexOf('Individual'),2)
 
 		data.forEach(function(sample){
 			groups.push(sample.Individual.substring(0,11))
 			sample.Individual = sample.Individual.substring(0,11)
+			sample.colorKey = sample.Individual
 			var temp = {}
 			axes.forEach(function(d) {
 				sample[d] = +sample[d]
 			});
 		});
-		groups = dedupe(groups)
-		rainbow.setSpectrum('green','blue','red','yellow')
+		groups = this.dedupe(groups)
+		// rainbow.setSpectrum('green','blue','red','yellow')
 		rainbow.setNumberRange(0,groups.length);
 
 		setMinMaxVals();
@@ -153,7 +155,9 @@ function ThreeD() {
 			colorSpheres();
 			drawAxisLines();
 			buildAxisLabels();
-			drawLegend();
+
+			threeDvar.initLegend();
+
 			resetCamera();
 		}
 
@@ -192,19 +196,6 @@ function ThreeD() {
 			g_sceneCamera.position.set(0 , 0, (g_maximum*4.8) + g_radius);
 		}
 
-		function drawLegend() {
-			var width = document.getElementById('plot').offsetWidth;
-
-			d3.select("#visWrapper").append("div")
-				.attr("id","legendDiv");
-			var legendHTML = "<ul>"
-			for(var g in groups)
-				legendHTML += "<li>"+groups[g]+"<div class=\"colorbox\" style=\"background-color:#"+rainbow.colorAt(g)+"\"></div></li>"
-			legendHTML += "</ul>"
-
-			document.getElementById("legendDiv").innerHTML = legendHTML
-		}
-
 		function drawSpheres() {
 			data.forEach(function(d) {
 				//draw ball
@@ -224,7 +215,7 @@ function ThreeD() {
 
 		function colorSpheres() {
 			g_spheres.forEach(function(d){
-				d.mesh.material.color.setHex('0x'+rainbow.colorAt(groups.indexOf(d.obj.Individual)))
+				d.mesh.material.color.setHex('0x'+rainbow.colorAt(groups.indexOf(d.obj.colorKey)))
 			})
 		}
 
@@ -361,15 +352,61 @@ function ThreeD() {
 		function isNumeric(n) {
 		  return !isNaN(parseFloat(n)) && isFinite(n);
 		}
-
-	  	function dedupe(list) {
-	  	   var set = {};
-	  	   for (var i = 0; i < list.length; i++)
-	  	      set[list[i]] = true;
-	  	   list = [];
-	  	   for (var v in set)
-	  	      list.push(v);
-	  	   return list;
-	  	}
 	}
+
+  	this.dedupe = function(list) {
+  	   var set = {};
+  	   for (var i = 0; i < list.length; i++)
+  	      set[list[i]] = true;
+  	   list = [];
+  	   for (var v in set)
+  	      list.push(v);
+  	   return list;
+  	}
+
+	this.changeColors = function(value) {
+		this.setColorBy(value)
+	}
+
+	this.setColorBy = function(value) {
+		groups = []
+		data.forEach(function(sample){
+			if(value == 'Environment')
+			{
+				if(sample.SampleID.indexOf('key') != -1 || sample.SampleID.indexOf('space') != -1)
+					sample.colorKey = 'Key'
+				else
+					sample.colorKey = 'Finger'
+			}
+			else
+				sample.colorKey = sample.Individual
+
+			groups.push(sample.colorKey)
+		});
+		groups = this.dedupe(groups)
+
+		rainbow.setNumberRange(0,groups.length);
+
+		g_spheres.forEach(function(d){
+			d.mesh.material.color.setHex('0x'+rainbow.colorAt(groups.indexOf(d.obj.colorKey)))
+		})
+
+		this.drawLegend()
+	}
+
+	this.initLegend = function() {
+		d3.select("#visWrapper").append("div")
+			.attr("id","legendDiv");
+		this.drawLegend();
+	}
+
+	this.drawLegend = function() {
+			document.getElementById("legendDiv").innerHTML = ''
+			var legendHTML = "<ul>"
+			for(var g in groups)
+				legendHTML += "<li>"+groups[g]+"<div class=\"colorbox\" style=\"background-color:#"+rainbow.colorAt(g)+"\"></div></li>"
+			legendHTML += "</ul>"
+
+			document.getElementById("legendDiv").innerHTML = legendHTML
+		}
 }
