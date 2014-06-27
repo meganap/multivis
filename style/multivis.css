@@ -51,3 +51,7 @@ ul#visList {
 h3 {
 	font: 16pt helvetica;
 }
+
+.parallelLegend {
+	margin-top: 50px;
+}

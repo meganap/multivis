@@ -129,8 +129,8 @@ function initMultiDim() {
 	$( "#colorBy" )
 		.buttonset()
 		.change(function( event ) {
-	        console.log(event.target.id)
-			//s.changeColors()
+	        // console.log(event.target.id)
+			s.changeColors(event.target.id)
 		});
 
   	queue()

@@ -32,21 +32,21 @@ circle {
 }
 
 .Individual1 {
-  fill: #080;
+  fill: #F00;
 }
 
 .Individual2 {
-  fill: #008;
+  fill: #FF0;
 }
 
 .Individual3 {
-  fill: #800;
+  fill: #0F0;
 }
 
-.key {
-	fill: #800;
+.Key {
+	fill: #F00;
 }
 
-.finger {
-	fill: #008;
+.Finger {
+	fill: #0F0;
 }
