@@ -2,7 +2,7 @@
 adapted code Copyright 2013 Meg Pirrung */
 
 function Treemap(jsonPath) {
-	var w = 550,
+	var w = 650,
 	    h = 500,
 	    x = d3.scale.linear().range([0, w]),
 	    y = d3.scale.linear().range([0, h]),
