@@ -168,8 +168,20 @@ function initMultiDim() {
 	d3.select("#visWrapper").append("div")
 		.attr("id", "plot")
 		.attr("class", "plot");
+	d3.select("#visWrapper").append("div")
+		.attr("id", "toggleHolder");
+
+	document.getElementById("toggleHolder").innerHTML = " <div id='colorBy'>Color by:<br><input type='radio' id='Individual' name='colorBy' checked='checked'><label for='Individual'>Individual</label><input type='radio' id='Environment' name='colorBy'><label for='Environment'>Environment</label></div>";
+
+	$( "#colorBy" )
+		.buttonset()
+		.change(function( event ) {
+	        // console.log(event.target.id)
+			s.changeColors(event.target.id)
+		});
+
   	queue()
-  		.defer(d3.csv, "data/keyboard_4axes.csv")
+  		.defer(d3.csv, "data/keyboard_realIDs.csv")
   		.await(loadMultiDim);
 }
 

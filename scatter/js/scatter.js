@@ -70,7 +70,7 @@ function Scatter() {
 		//get all the axes
 		axes = d3.keys(data[0])
 		//remove individual as an axis
-		axes.splice(axes.indexOf('Individual'),1)
+		axes.splice(axes.indexOf('Individual'),2)
 
 		this.setSelects()
 
@@ -80,34 +80,42 @@ function Scatter() {
 				sample[d] = +sample[d]
 			});
 			sample.ID = sample.Individual
-			sample.Individual = sample.ID.substring(0,11)
-			sample.uniqueID = sample.ID+xAxisSelect.selectedIndex+yAxisSelect.selectedIndex
+			sample.colorKey = sample.ID.substring(0,11)
+			sample.uniqueID = sample.colorKey+sample.ID+xAxisSelect.selectedIndex+yAxisSelect.selectedIndex
 		});
 		groups = this.dedupe(groups)
 
-		rainbow.setSpectrum('green','blue','red','yellow')
+		// rainbow.setSpectrum('blue','red','green')
 		rainbow.setNumberRange(0,groups.length);
 
-	  legend = svg.selectAll(".legend")
-	      .data(groups)
-	    .enter().append("g")
-	      .attr("class", "legend")
-	      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+		this.drawPlot(data)
+	}
 
-	  legend.append("rect")
-	      .attr("x", width - 18)
-	      .attr("width", 18)
-	      .attr("height", 18)
-	      .style("fill", function(d){
-			  	return '#'+rainbow.colorAt(groups.indexOf(d));
-			  });
+	this.changeColors = function(value) {
+		this.setColorBy(value)
+	}
 
-	  legend.append("text")
-	      .attr("x", width - 24)
-	      .attr("y", 9)
-	      .attr("dy", ".35em")
-	      .style("text-anchor", "end")
-	      .text(function(d) { return d; });
+	this.setColorBy = function(value) {
+		// console.log(value)
+		groups = []
+		data.forEach(function(sample){
+			if(value == 'Environment')
+			{
+				if(sample.SampleID.indexOf('key') != -1 || sample.SampleID.indexOf('space') != -1)
+					sample.colorKey = 'Key'
+				else
+					sample.colorKey = 'Finger'
+			}
+			else
+				sample.colorKey = sample.ID.substring(0,11)
+
+			groups.push(sample.colorKey)
+			sample.uniqueID = sample.colorKey+sample.ID+xAxisSelect.selectedIndex+yAxisSelect.selectedIndex
+		});
+		groups = this.dedupe(groups)
+
+		// rainbow.setSpectrum('green','blue','red','yellow')
+		rainbow.setNumberRange(0,groups.length);
 
 		this.drawPlot(data)
 	}
@@ -133,9 +141,38 @@ function Scatter() {
 
 	this.axisChanged = function() {
 		data.forEach(function(sample){
-			sample.uniqueID = sample.ID+xAxisSelect.selectedIndex+yAxisSelect.selectedIndex
+			sample.uniqueID = sample.uniqueID = sample.colorKey+sample.ID+xAxisSelect.selectedIndex+yAxisSelect.selectedIndex
 		});
 		this.drawPlot(data)
+	}
+
+	this.drawLegend = function() {
+	  svg.selectAll(".legend").selectAll("text").remove()
+  	  svg.selectAll(".legend").selectAll("rect").remove()
+
+  	  legend = svg.selectAll(".legend")
+  	      .data(groups);
+
+  	  legend.enter().append("g")
+  	      .attr("class", "legend")
+  	      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+  	  legend.append("rect")
+  	      .attr("x", width - 18)
+  	      .attr("width", 18)
+  	      .attr("height", 18)
+  	      .style("fill", function(d){
+  			  	return '#'+rainbow.colorAt(groups.indexOf(d));
+  			  });
+
+  	  legend.append("text")
+  	      .attr("x", width - 24)
+  	      .attr("y", 9)
+  	      .attr("dy", ".35em")
+  	      .style("text-anchor", "end")
+  	      .text(function(d) { return d; });
+
+	  legend.exit().remove();
 	}
 
 	this.drawPlot = function(plotData) {
@@ -179,10 +216,12 @@ function Scatter() {
 	      .attr("cx", function(d) { return x(d[xAxisSelect.selectedIndex+1]); })
 	      .attr("cy", function(d) { return y(d[yAxisSelect.selectedIndex+1]); })
 	      .style("fill", function(d){
-			  	return '#'+rainbow.colorAt(groups.indexOf(d.Individual));
+			  	return '#'+rainbow.colorAt(groups.indexOf(d.colorKey));
 			  });
 
 		dots.exit().remove();
+
+		this.drawLegend()
 	}
 
   	this.dedupe = function (list) {

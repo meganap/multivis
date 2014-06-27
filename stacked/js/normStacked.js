@@ -526,7 +526,7 @@ function NormalizedStackedBar() {
 		y.domain([0, d3.max(plotdata, function(d) { return d.total; })]);
 
 		svg.selectAll(".xAxisLabel").remove(); //remove old text
-		samIDHolder.selectAll("text").remove(); //remove old text that may be h
+		samIDHolder.selectAll("text").remove(); //remove old text that may be here
 
   	    var samID = samIDHolder.selectAll("g")
   	      .data(plotdata, function(d) { return d.uniquename; });
