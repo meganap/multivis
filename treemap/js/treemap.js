@@ -2,7 +2,7 @@
 adapted code Copyright 2013 Meg Pirrung */
 
 function Treemap(jsonPath) {
-	var w = 1000 - 80,
+	var w,
 	    h = 800 - 180,
 	    x = d3.scale.linear().range([0, w]),
 	    y = d3.scale.linear().range([0, h]),
@@ -19,6 +19,8 @@ function Treemap(jsonPath) {
 	var div;
 
 	this.initTreemap = function () {
+		w = document.getElementById('plot').offsetWidth*.97
+
 		div = d3.select("#visWrapper").append("div")
 		.attr("class", "tooltip")
 		.style("opacity", 0);
