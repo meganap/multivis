@@ -9,6 +9,8 @@ function DonutCharts() {
 	var arcHolder;
 	var pies;
 	var div;
+	var legenddiv;
+	var legendHolder;
 	var biom;
 	var data;
 	var metadataTypes;
@@ -30,9 +32,15 @@ function DonutCharts() {
 		.attr("class", "tooltip")
 		.style("opacity", 0);
 
+		legenddiv = d3.select("#donutplot").append("div")
+		.attr("class", "donutLegendDiv")
+		.attr("id", "donutLegendDiv")
+		.attr("width", 180);
+
 		var classification = ["Phylum","Class","Order","Family","Genus","Species"]
 
 		vis = d3.select("#donutplot")
+		legendHolder = d3.select("#donutLegendDiv")
 
 		arc = d3.svg.arc()
 		    .outerRadius(radius)
@@ -406,10 +414,10 @@ function DonutCharts() {
 	// }
 
 	this.drawLegend = function (donutplotdata) {
-		var legend = d3.select("#donutplot").append("svg")
+		var legend = legendHolder.append("svg")
 		      .attr("class", "legend")
-		      .attr("width", radius * 2)
-		      .attr("height", radius * 2)
+		      .attr("width", 200)
+		      .attr("height", 520)
 		    .selectAll("g")
 		      .data(d3.keys(data[d3.keys(donutplotdata)[0]]['tax']).slice().reverse())
 		    .enter().append("g")
@@ -472,4 +480,5 @@ function DonutCharts() {
   	      .style("text-anchor", "middle")
   	      .text(function(d) { return d.name; });
 	}
+
 }

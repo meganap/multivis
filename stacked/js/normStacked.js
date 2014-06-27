@@ -32,8 +32,8 @@ function NormalizedStackedBar() {
 
 	this.initTaxonomyBarChart = function () {
 		windowWidth = document.getElementById('plot').offsetWidth;
-		margin = {top: 30, right: 120, bottom: 190, left: 50};
-		width = windowWidth*.97;
+		margin = {top: 30, right: 180, bottom: 200, left: 50};
+		width = windowWidth*.90;
 		height = 600 - margin.top - margin.bottom;
 
 		x = d3.scale.ordinal()
@@ -379,8 +379,6 @@ function NormalizedStackedBar() {
 				temp_hash[sampleID][classification] += value
 			}
 
-			tax = this.dedupe(tax)
-
 			for(o in temp_hash)
 			{
 				temp = {"SampleID":o}
@@ -405,7 +403,7 @@ function NormalizedStackedBar() {
 	      var y0 = 0;
 	      d.abundances = domain.map(function(name) { return {name: name, y0: y0, y1: y0 += +d['tax'][name]}; });
 		  d.seqCount = d.abundances[d.abundances.length - 1].y1;
-	      d.abundances.forEach(function(d) { d.y0 /= y0; d.y1 /= y0; });
+	      d.abundances.forEach(function(d) { d.y0 /= y0; d.y1 /= y0;});
 		  d.total = d.abundances[d.abundances.length - 1].y1;
 		  d.count = d.abundances.length
 		  d.metadata = d['metadata']
@@ -510,7 +508,7 @@ function NormalizedStackedBar() {
 		      .attr("x", width + 22)
 		      .attr("y", 9)
 		      .attr("dy", ".35em")
-		      .text(function(d) { return d; });
+		      .text(function(d) { console.log(d); return d; });
 	}
 
 	// this.drawLegend = function (plotdata) {
