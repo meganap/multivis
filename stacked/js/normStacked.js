@@ -508,7 +508,7 @@ function NormalizedStackedBar() {
 		      .attr("x", width + 22)
 		      .attr("y", 9)
 		      .attr("dy", ".35em")
-		      .text(function(d) { console.log(d); return d; });
+		      .text(function(d) { return d; });
 	}
 
 	// this.drawLegend = function (plotdata) {

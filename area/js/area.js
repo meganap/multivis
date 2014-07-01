@@ -33,8 +33,8 @@ function AreaChart() {
 
 	this.initTaxonomyChart = function () {
 		windowWidth = document.getElementById('plot').offsetWidth;
-		margin = {top: 30, right: 120, bottom: 190, left: 50};
-		width = windowWidth*.80;
+		margin = {top: 30, right: 180, bottom: 200, left: 50};
+		width = windowWidth*.90;
 		height = 600 - margin.top - margin.bottom;
 
 		x = d3.scale.ordinal()
@@ -60,13 +60,35 @@ function AreaChart() {
 
 		// var classification = ["Phylum","Class","Order","Family","Genus","Species"]
 
-		vis = d3.select("#plot")
-		svg = vis.append("svg")
-		    .attr("width", width + margin.left + margin.right)
-		    .attr("height", height + margin.top + margin.bottom)
-		    .attr("id", "chart")
+		YaxisVis = d3.select("#yaxisholder")
+		YaxisSvg = YaxisVis.append("svg")
+		    .attr("width", margin.left)
+		    .attr("height", height + margin.top + 10)
+		    .attr("id", "yaxis")
 		  .append("g")
 		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+  		  YaxisSvg.append("g")
+  		      .attr("class", "y axis")
+  		      .call(yAxis);
+
+  		  YaxisSvg.append("text")
+  		      .attr("class", "axisLabel")
+  		      .attr("text-anchor", "middle")
+  		      .attr("y", -55)
+  		      .attr("x", -height/2)
+  		      .attr("dy", ".75em")
+  		      .attr("transform", "rotate(-90)")
+  		      .text("Relative Abundance");
+
+		vis = d3.select("#plot")
+		svg = vis.append("svg")
+		    .attr("width", width + margin.right)
+		    .attr("height", 465)
+		    .attr("id", "chart")
+		  .append("g")
+		    .attr("transform", "translate(" + 0 + "," + margin.top + ")");
 
   	  	area = d3.svg.area()
   	  	    .x(function(d) { return x(d.SampleID); })
@@ -84,18 +106,18 @@ function AreaChart() {
 		  x.domain(data.map(function(d) { return d.SampleID; }));
 		  // x.domain(d3.extent(data, function(d) { return d.SampleID; }));
 
-		  svg.append("g")
-		      .attr("class", "y axis")
-		      .call(yAxis);
+		  // svg.append("g")
+		  //     .attr("class", "y axis")
+		  //     .call(yAxis);
 
-		  svg.append("text")
-		      .attr("class", "axisLabel")
-		      .attr("text-anchor", "middle")
-		      .attr("y", -55)
-		      .attr("x", -height/2)
-		      .attr("dy", ".75em")
-		      .attr("transform", "rotate(-90)")
-		      .text("Abundance");
+		  // svg.append("text")
+		  //     .attr("class", "axisLabel")
+		  //     .attr("text-anchor", "middle")
+		  //     .attr("y", -55)
+		  //     .attr("x", -height/2)
+		  //     .attr("dy", ".75em")
+		  //     .attr("transform", "rotate(-90)")
+		  //     .text("Abundance");
 
 		  samID = svg.selectAll(".SampleID")
 		      .data(data)
