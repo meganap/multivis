@@ -77,6 +77,7 @@ function buildSurvey() {
 	{
 		$("#visWrapper").remove()
 		$("#nextSurvey").remove()
+		$("#dialog-confirm").remove()
 		var surveyHTML = surveyStart + 'FVDKBJX?c=' +"\" width=\"800\" height=\"1347\" style=\"border:0px;padding-bottom:4px;\" frameborder=\"0\" allowtransparency=\"true\" ></iframe></div></div>"
 		document.getElementById('survey').innerHTML = surveyHTML
 	}
