@@ -31,26 +31,65 @@ var visFuns = [ abundanceFuns, phyloFuns, multidimFuns ]
 
 var allFuns = [ sunburst, treemap, rectangularTree, radialTree, normStackedBar, area, donuts, threeD, scatter, splom, parallel ]
 
-var surveyStart = "<div id=\"surveyMonkeyInfo\" style=\"width:800px;font-size:10px;color:#666;\"><div><iframe id=\"sm_e_s\" src=\"https://www.surveymonkey.com/s/"
-var surveyIDs = ['RSZFG6H?c=','','','']
+var surveyStart = "<div id=\"surveyMonkeyInfo\" style=\"width:800px;font-size:10px;color:#666;\"><div><iframe id=\"sm_e_s\" src=\"http://www.surveymonkey.com/s/"
+var surveyIDs = ['FLMWHYQ?c=','FLZ9N9J?c=','FVVSD3C?c='] //abundance, phylogeny, multidim
 var surveyEnd = "\" width=\"800\" height=\"300\" style=\"border:0px;padding-bottom:4px;\" frameborder=\"0\" allowtransparency=\"true\" ></iframe></div></div>"
 
+var newURL = '';
+
 function buildSurvey() {
-	var visType = Math.floor((Math.random()*visFuns.length)) // choose between taxonomy summary, higherarchical or multidimensional
-	console.log(visType)
-	var visID = Math.floor((Math.random()*visFuns[visType].length))
-	console.log(visID)
+	var oldIDs = []
+	//if this is the initial survey there will not be any old ids
+	if(urlParams['ids'])
+		oldIDs = urlParams['ids'].split('_')
 
-	visFuns[visType][visID]();
+	var availableVisTypes = ['0', '1', '2']
 
-	var surveyHTML = buildSurveyHTML(visID)
-	document.getElementById('survey').innerHTML = surveyHTML
+	if(oldIDs.length < 3) // if length = 3 need to do demographic questions
+	{
+		newURL = 'http://0.0.0.0:8080/?src=test&ids='
+
+		for(var i in oldIDs)
+		{
+			availableVisTypes.splice(availableVisTypes.indexOf(oldIDs[i][0]),1) //remove the old visType so we don't show it again
+			newURL += oldIDs[i]+'_' //keep track of old surveys in the URL
+		}
+		// console.log(availableVisTypes)
+
+		var visType = availableVisTypes[Math.floor((Math.random()*availableVisTypes.length))] // choose among available visTypes left
+		// var visType = 0
+		var visID = Math.floor((Math.random()*visFuns[visType].length))
+		// var visID = 1
+
+		//build surveymonkey custom URL
+		var surveyID = surveyIDs[visType]+urlParams['src']+"_"+visType+visID
+		var surveyHTML = surveyStart + surveyID + surveyEnd
+		document.getElementById('survey').innerHTML = surveyHTML
+		// console.log(surveyID)
+
+		//build URL for next survey while keeping track of the current survey
+		newURL += visType+''+visID
+		// console.log(newURL)
+
+		visFuns[visType][visID]();
+	}
+	else
+	{
+		$("#visWrapper").remove()
+		$("#nextSurvey").remove()
+		var surveyHTML = surveyStart + 'FVDKBJX?c=' +"\" width=\"800\" height=\"1347\" style=\"border:0px;padding-bottom:4px;\" frameborder=\"0\" allowtransparency=\"true\" ></iframe></div></div>"
+		document.getElementById('survey').innerHTML = surveyHTML
+	}
 }
 
 function buildSurveyHTML(visID) {
 	var surveyID = urlParams['id']+"_"+urlParams['src']+"_1"+visID
 	console.log(surveyID)
 	return surveyStart + surveyID + surveyEnd
+}
+
+function nextSurvey() {
+	window.open(newURL,'_blank');
 }
 
 function changeVis() {

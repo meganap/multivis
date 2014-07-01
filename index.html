@@ -48,7 +48,7 @@
 </head>
 <body>
 	<div id="wrapper">
-		<div id="admin">
+		<!-- <div id="admin">
 			<select id="visSelect" onchange="changeVis()">
 				<option value="sunburst">Sunburst</option>
 				<option value="treemap">TreeMap</option>
@@ -62,7 +62,7 @@
 				<option value="splom">Splom</option>
 				<option value="parallel">Parallel Plot</option>
 			</select>
-		</div>
+		</div> -->
 	<!-- <div id="header">
 		<div id="title"><div class="left normal">multi</div><div class="left bold">vis</div></div>
 	</div>
@@ -101,6 +101,7 @@
 		<div id="survey">
 		</div>
 	</div>
+	<input id="nextSurvey" type="button" value="Please click this button after you have completed and submitted the survey above" onClick="nextSurvey()">
 
 	<!-- <div id="dialog-confirm" title="Notice">
 	  <p style="font-size: 10pt; margin: 0; text-align: left;">This survey has <b>8 questions</b>. The survey is positioned and scaled so that you can answer each question while still viewing the visualization.<br /><b>Please scroll down within the question area to answer all 8 questions.</b></p>
@@ -117,8 +118,8 @@
 	    //     }
 	    //   }
 	    // });
-		// buildSurvey()
-		sunburst()
+		buildSurvey()
+		// sunburst()
 	</script>
 </div>
 </body>
