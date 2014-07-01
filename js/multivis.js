@@ -90,7 +90,7 @@ function buildSurveyHTML(visID) {
 }
 
 function nextSurvey() {
-	window.open(newURL,'_blank');
+	window.open(newURL, '_self');
 }
 
 function changeVis() {
