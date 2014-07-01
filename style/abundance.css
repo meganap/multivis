@@ -1,15 +1,13 @@
 /* D3 styling */
 
-div#plot {
-	font: 10px sans-serif;
-	width: 70%;
-	float: left;
-	overflow: scroll;
-	height: 90%;
+
+svg {
+  padding: 10px 0 0 10px;
 }
 
 div#yaxisholder {
 	float: left;
+	margin-left: 1em;
 }
 
 div#xaxisholder {
@@ -87,6 +85,10 @@ ul#key {
 .legend line {
   stroke: #000;
   shape-rendering: crispEdges;
+}
+
+.area path {
+	display: none;
 }
 
 div.tooltip {

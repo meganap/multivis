@@ -106,8 +106,8 @@ function ThreeD() {
 			g_sceneCamera = new THREE.PerspectiveCamera(view_angle, winAspect, view_near, view_far);
 
 			document.getElementById('plot').style.overflow = "hidden";
-			$('#plot canvas').attr('width',400);
-			$('#plot canvas').attr('height',400);
+			$('#plot canvas').attr('width',380);
+			$('#plot canvas').attr('height',380);
 
 			g_sceneCamera.aspect = document.getElementById('plot').offsetWidth/document.getElementById('plot').offsetHeight;
 			g_sceneCamera.rotation.set( 0, 0, 0 );

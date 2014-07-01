@@ -3,11 +3,9 @@ body,html {
     font-size: 11pt;
     background-color: #fff;
     width: 100%;
-	min-width: 1350px;
     height: 100%;
     margin: 0;
     padding: 0;
-/*    text-align: center;*/
 	overflow: scroll;
 }
 
@@ -31,15 +29,22 @@ div#visTypes {
 	width: 20%;
 }
 
+div#wrapper {
+	width: 800px;
+	margin:0 auto;
+}
+
 div#visWrapper {
-	margin-left: 2em;
-	margin-right: 2em;
 	background-color: #f5f5f5;
+	width: 800px;
+	height: 530px;
+	border-radius: 10px;
+}
+
+div#surveyWrapper {
 	float: left;
-	width: 75%;
-	min-width: 1000px;
-	height: 700px;
-/*	border: 1px solid black;*/
+	width: 800px;
+	border: 1px solid black;
 	border-radius: 10px;
 }
 
@@ -50,6 +55,42 @@ ul#visList {
 
 h3 {
 	font: 16pt helvetica;
+}
+
+div#plot {
+	font: 10px sans-serif;
+	width: 600px;
+	min-width: 70%;
+/*	float: left;*/
+/*	overflow: scroll;*/
+	height: 90%;
+/*	padding-top: 2em;*/
+	margin:0 auto;
+}
+
+div#plot svg {
+	display: block;
+/*	margin:0 auto;*/
+}
+
+div#parallelPlotWrapper svg{
+	display: block;
+	padding: 0px;
+}
+
+div#plot canvas {
+	border-radius: 10px;
+}
+
+#splom svg{
+	display: block;
+	margin-left: 60px;
+}
+
+.splomLegend {
+	position: absolute;
+	top: 60px;
+	left: 250px;
 }
 
 .parallelLegend {

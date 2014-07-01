@@ -16,9 +16,9 @@ function Sunburst(jsonPath) {
 	var x;
 	var y;
 
-	var width = 600,
+	var width = 500,
 	    height = width,
-	    padding = 90,
+	    padding = 35,
 	    radius = (Math.min(width, height) - 2 * padding)/ 2,
 	    duration = 1000;
 	var arc;
@@ -30,14 +30,6 @@ function Sunburst(jsonPath) {
 
 	// Total size of all segments; we set this later, after loading the data.
 	var totalSize = 0;
-
-	// max index of breadcrumbs
-	var max_i = 0;
-
-	// Breadcrumb dimensions: width, height, spacing, width of tip/tail.
-	var b = {
-	  w: 80, h: 30, s: 3, t: 10
-	};
 
 	this.initSunburst = function() {
 		// this.initializeBreadcrumbTrail();

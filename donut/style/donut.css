@@ -3,7 +3,7 @@ svg {
 }
 
 .arc {
-  stroke: #fff;
+/*  stroke: #fff;*/
 }
 
 div#taxonomy_plot {
@@ -46,16 +46,16 @@ ul#key {
 	stroke: lime;
 }
 
-div.tooltip {   
-  position: absolute;           
-  text-align: center;                           
-  height: 16px;                 
-  padding: 2px;             
-  font: 12px sans-serif;        
-  background: #fff;   
-  border: 0px;      
-  border-radius: 5px;           
-  pointer-events: none;         
+div.tooltip {
+  position: absolute;
+  text-align: center;
+  height: 16px;
+  padding: 2px;
+  font: 12px sans-serif;
+  background: #fff;
+  border: 0px;
+  border-radius: 5px;
+  pointer-events: none;
 }
 
 #breadcrumbs {
@@ -97,4 +97,9 @@ div.tooltip {
 	text-transform:uppercase;
 	padding: 0px;
 	background-color: #fff;
+}
+
+#donutLegendDiv {
+	float: left;
+	position: relative;
 }

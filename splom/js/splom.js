@@ -13,7 +13,7 @@ function Splom() {
 	// var rainbow = new Rainbow();
 	// var color;
 	// Size parameters.
-    var size = 140,
+    var size = 125,
         padding = 10,
         n = 4;
 	//position scales
@@ -40,8 +40,7 @@ function Splom() {
 	}
 
 	this.initSplom = function() {
-		windowWidth = document.getElementById('plot').offsetWidth;
-		width = windowWidth*.97;
+		width = 600;
 		height = 600;
 
 		document.getElementById('plot').innerHTML = '<div id="splom" class="splom"></div>'
@@ -163,12 +162,14 @@ function Splom() {
 		        .attr("dy", ".71em")
 		        .text(function(d) { return 'Axis ' + d.x + ' × Axis ' + d.y;; });
 
-		this.drawLegend();
+  		  legend = d3.select("#splom").append("svg")
+  		  	.attr("class","splomLegend");
+  		  this.drawLegend()
 
 	}
 
 	this.drawLegend = function() {
-	   legend = svg.selectAll(".legend")
+	   legend = legend.selectAll(".legend")
 	       .data(groups);
 
 	   legend.enter().append("g")

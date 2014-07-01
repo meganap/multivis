@@ -11,6 +11,7 @@
 <head>
 <link rel="stylesheet" type="text/css" href="style/multivis.css">
 <link rel="stylesheet" type="text/css" href="style/abundance.css">
+<link rel="stylesheet" type="text/css" href="donut/style/donut.css">
 <link rel="stylesheet" type="text/css" href="parallel/style/parallel.css">
 <link rel="stylesheet" type="text/css" href="splom/style/splom.css">
 <link rel="stylesheet" type="text/css" href="scatter/style/scatter.css">
@@ -37,6 +38,7 @@
 <script src="stacked/js/stacked.js"></script>
 <script src="stacked/js/normStacked.js"></script>
 <script src="grouped/js/grouped.js"></script>
+<script src="area/js/area.js"></script>
 <script src="donut/js/donut.js"></script>
 <script src="parallel/js/parallel.js"></script>
 <script src="splom/js/splom.js"></script>
@@ -45,7 +47,23 @@
 <script src="js/multivis.js"></script>
 </head>
 <body>
-	<div id="header">
+	<div id="wrapper">
+		<div id="admin">
+			<select id="visSelect" onchange="changeVis()">
+				<option value="sunburst">Sunburst</option>
+				<option value="treemap">TreeMap</option>
+				<option value="rectangularTree">Rectangular Tree</option>
+				<option value="radialTree">Radial Tree</option>
+				<option value="normStackedBar">Stacked Bar</option>
+				<option value="area">Area Chart</option>
+				<option value="donuts">Donut Chart</option>
+				<option value="threeD">3d Plot</option>
+				<option value="scatter">Scatter Plot</option>
+				<option value="splom">Splom</option>
+				<option value="parallel">Parallel Plot</option>
+			</select>
+		</div>
+	<!-- <div id="header">
 		<div id="title"><div class="left normal">multi</div><div class="left bold">vis</div></div>
 	</div>
 	<br />
@@ -58,8 +76,7 @@
 				<input type="button" value="Sunburst" onclick="sunburst()"/>
 				<input type="button" value="Comparative Sunburst" onclick="comparativeSunburst()"/>
 				<input type="button" value="Treemap" onclick="treemap()"/>
-				<input type="button" value="Rectangular" onclick="rectangularTree()"/>
-				<input type="button" value="Radial" onclick="radialTree()"/>
+				<input type="button" value="Partition" onclick="partition()"/>
 			</li>
 			<li>
 				<h3>Abundance Data</h3>
@@ -76,16 +93,32 @@
 				<input type="button" value="Parallel Coordinates" onclick="parallel()"/>
 			</li>
 		</ul>
+	</div> -->
+		<br />
+	<div id="surveyWrapper">
+		<div id="visWrapper">
+		</div>
+		<div id="survey">
+		</div>
 	</div>
-	<div id="visWrapper">
-	</div>
+
+	<!-- <div id="dialog-confirm" title="Notice">
+	  <p style="font-size: 10pt; margin: 0; text-align: left;">This survey has <b>8 questions</b>. The survey is positioned and scaled so that you can answer each question while still viewing the visualization.<br /><b>Please scroll down within the question area to answer all 8 questions.</b></p>
+	</div> -->
+
 	<script>
-	$(function() {
-	    $( "input[type=button], a, button" )
-	      .button()
-	      .click(function( event ) {
-	        event.preventDefault();
-	      });
-	  });
+	    // $( "#dialog-confirm" ).dialog({
+	    //   resizable: false,
+	    //   height:250,
+	    //   modal: true,
+	    //   buttons: {
+	    //     "Continue": function() {
+	    //       $( this ).dialog( "close" );
+	    //     }
+	    //   }
+	    // });
+		// buildSurvey()
+		sunburst()
 	</script>
+</div>
 </body>

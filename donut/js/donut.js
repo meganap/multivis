@@ -1,11 +1,5 @@
-/*
- * __author__ = "Meg Pirrung"
- * __copyright__ = "Copyright 2014, multivis"
- * __credits__ = ["Meg Pirrung"]
- * __license__ = "MIT"
- * __adaptation__ = "adapted from Mike Bostock's donut chart example on d3js.org, d3 example code Library released under BSD license. Copyright 2013 Mike Bostock."
- */
-
+/* adapted from Mike Bostock's donut chart example on d3js.org, d3 example code Library released under BSD license. Copyright 2013 Mike Bostock.
+adapted code Copyright 2013 Meg Pirrung */
 function DonutCharts() {
 	/*global vars*/
 	var radius = 74,
@@ -15,6 +9,8 @@ function DonutCharts() {
 	var arcHolder;
 	var pies;
 	var div;
+	var legenddiv;
+	var legendHolder;
 	var biom;
 	var data;
 	var metadataTypes;
@@ -30,15 +26,21 @@ function DonutCharts() {
 	}
 
 	this.initTaxonomyBarChart = function () {
-		rainbow.setSpectrum('lime','blue','red','yellow')
+		rainbow.setSpectrum('#e41a1c','#377eb8','#4daf4a','#984ea3','#000000')
 
-		div = d3.select("#plot").append("div")
+		div = d3.select("#donutplot").append("div")
 		.attr("class", "tooltip")
 		.style("opacity", 0);
 
+		legenddiv = d3.select("#donutplot").append("div")
+		.attr("class", "donutLegendDiv")
+		.attr("id", "donutLegendDiv")
+		.attr("width", 180);
+
 		var classification = ["Phylum","Class","Order","Family","Genus","Species"]
 
-		vis = d3.select("#plot")
+		vis = d3.select("#donutplot")
+		legendHolder = d3.select("#donutLegendDiv")
 
 		arc = d3.svg.arc()
 		    .outerRadius(radius)
@@ -48,10 +50,10 @@ function DonutCharts() {
 			    .sort(null)
 			    .value(function(d) { return d.abundance; });
 
-		  this.setData(0)
-		  this.setMetadataTypes()
-		  this.setSelect()
-	  	  this.buildKey(tax)
+		  this.setData(1)
+		  // this.setMetadataTypes()
+		  // this.setSelect()
+		  // 	  	  this.buildKey(tax)
 
 	  	 pies = vis.selectAll(".pie")
 	  		.data(data)
@@ -76,79 +78,78 @@ function DonutCharts() {
 
   		this.getTotalAbundances(data)
   		this.drawTaxonomyBarVis(data)
-  		//disable sort by for donut charts
-  		document.getElementById('sort_by_select').disabled = true
 	}
 
 	this.changeLevel = function (taxonomic_level) {
-		document.querySelectorAll('.selected_classification')[0].className = 'unselected_classification';
-		document.getElementById('classification'+taxonomic_level).className = 'selected_classification'
+		// document.querySelectorAll('.selected_classification')[0].className = 'unselected_classification';
+		// document.getElementById('classification'+taxonomic_level).className = 'selected_classification'
 		//reset stuff
 		this.setData(taxonomic_level)
-		this.buildKey(tax)
-  		this.getTotalAbundances(data)
-  		this.drawTaxonomyBarVis(data)
+		// this.buildKey(tax)
+		// this.sortChanged()
+		this.getTotalAbundances(data)
+		this.drawTaxonomyBarVis(data)
 	}
 
-	this.setSelect = function () {
-		var sortSelect = document.getElementById('sort_by_select')
-		var groupSelect = document.getElementById('group_by_select')
-		var option = document.createElement("option");
-		option.text = "SampleID"
-		sortSelect.add(option)
-		option = document.createElement("option");
-		option.text = "SampleID"
-		groupSelect.add(option)
-		for(var m in biom['columns'][0]['metadata'])
-		{
-			option=document.createElement("option");
-			option.text = m
-			sortSelect.add(option)
-			option=document.createElement("option");
-			option.text = m
-			groupSelect.add(option)
-		}
-	}
+	// this.setSelect = function () {
+	// 	var sortSelect = document.getElementById('sort_by_select')
+	// 	var groupSelect = document.getElementById('group_by_select')
+	// 	var option = document.createElement("option");
+	// 	option.text = "SampleID"
+	// 	sortSelect.add(option)
+	// 	option = document.createElement("option");
+	// 	option.text = "SampleID"
+	// 	groupSelect.add(option)
+	// 	for(var m in biom['columns'][0]['metadata'])
+	// 	{
+	// 		option=document.createElement("option");
+	// 		option.text = m
+	// 		sortSelect.add(option)
+	// 		option=document.createElement("option");
+	// 		option.text = m
+	// 		groupSelect.add(option)
+	// 	}
+	// }
 
-	this.setMetadataTypes = function () {
-		metadataTypes = {}
+	// this.setMetadataTypes = function () {
+	// 	metadataTypes = {}
+	//
+	// 	for(var i = 0; i < d3.keys(data[d3.keys(data)[0]].metadata).length; i++)
+	// 		metadataTypes[d3.keys(data[d3.keys(data)[0]].metadata)[i]] = null;
+	//
+	// 	for(var k in metadataTypes)
+	// 	{
+	// 		var metadataType;
+	// 		//try to see if it is a number
+	// 		var n = Number(data[d3.keys(data)[0]].metadata[k])
+	// 		if(isNaN(n)) //not a number so has to be a string
+	// 			metadataType = "string"
+	// 		else
+	// 			metadataType = "number"
+	//
+	// 		for(var s in data)
+	// 		{
+	// 			var val = data[s].metadata[k]
+	// 			if(val == "NA") //ignore NAs
+	// 				continue;
+	// 			var test = Number(val)
+	// 			var testType;
+	// 			if(isNaN(test)) //not a number so has to be a string
+	// 				testType = "string"
+	// 			else
+	// 				testType = "number"
+	//
+	// 			if(testType !== metadataType)
+	// 			{
+	// 				metadataType = "string"
+	// 				break;
+	// 			}
+	// 		}
+	// 		metadataTypes[k] = metadataType
+	// 	}
+	// }
 
-		for(var i = 0; i < d3.keys(data[d3.keys(data)[0]].metadata).length; i++)
-			metadataTypes[d3.keys(data[d3.keys(data)[0]].metadata)[i]] = null;
-
-		for(var k in metadataTypes)
-		{
-			var metadataType;
-			//try to see if it is a number
-			var n = Number(data[d3.keys(data)[0]].metadata[k])
-			if(isNaN(n)) //not a number so has to be a string
-				metadataType = "string"
-			else
-				metadataType = "number"
-
-			for(var s in data)
-			{
-				var val = data[s].metadata[k]
-				if(val == "NA") //ignore NAs
-					continue;
-				var test = Number(val)
-				var testType;
-				if(isNaN(test)) //not a number so has to be a string
-					testType = "string"
-				else
-					testType = "number"
-
-				if(testType !== metadataType)
-				{
-					metadataType = "string"
-					break;
-				}
-			}
-			metadataTypes[k] = metadataType
-		}
-	}
-
-	this.sortChanged = function () {
+	// this.sortChanged = function () {
 //		var key = document.getElementById('sort_by_select')[document.getElementById('sort_by_select').selectedIndex].text;
 //		var metadataType = metadataTypes[key];
 //		data.sort(
@@ -191,8 +192,11 @@ function DonutCharts() {
 		// if((groupsDict.length !== data.length) && key !== "SampleID")
 		// 	this.drawSortHeaders(groupsDict)
 
-
-	}
+		//sort by resets group by so set the index back to 0
+	// 	document.getElementById('group_by_select').selectedIndex = 0
+	// 	this.getTotalAbundances(data)
+	// 	this.drawTaxonomyBarVis(data)
+	// }
 
 	this.getTotalAbundances = function (data) {
 		var groupAbundances = {}
@@ -216,76 +220,76 @@ function DonutCharts() {
 		// 		);
 	}
 
-	this.groupChanged = function () {
-		var groupData = []
-		var groupCounts = {}
-		var temp = {}
-		var key = document.getElementById('group_by_select')[document.getElementById('group_by_select').selectedIndex].text;
-		var sampleIDs = d3.keys(data)
-
-		for(var i = 0; i < sampleIDs.length; i++)
-		{
-			var sampleID = sampleIDs[i]
-			var val = data[sampleID].metadata[key];
-			if(key == "SampleID")
-				val = data[sampleID].SampleID
-			if(!(val in temp))
-				temp[val] = {}
-
-			if(!(val in groupCounts))
-				groupCounts[val] = 0
-			groupCounts[val] += 1
-
-			var currentTaxonomy = d3.keys(data[sampleID].tax)
-			for(var j = 0; j < currentTaxonomy.length; j++)
-			{
-				var currentTax = currentTaxonomy[j]
-				if(!(currentTax in temp[val]))
-					temp[val][currentTax] = 0
-				temp[val][currentTax] += data[sampleID].tax[currentTax]
-			}
-		}
-
-		var groups = d3.keys(temp)
-		var t;
-		for(var i = 0; i < groups.length; i++)
-		{
-			 t = {"SampleID":groups[i]}
-			 t['tax'] = temp[groups[i]]
-			 t['count'] = groupCounts[groups[i]]
-			 groupData.push(t)
-		}
-
-		var domain = d3.keys(data[d3.keys(data)[0]]['tax'])
-	    groupData.forEach(function(d) {
-	  	  d.name = d.SampleID
-	      d.abundances = domain.map(function(name) { return {name: name, abundance: +d['tax'][name]}; });
-	  	  d.metadata = d['metadata']
-	    });
-
-		var metadataType = metadataTypes[key];
-
-		//in this case the SampleID is actually the group name
-		groupData.sort(
-			function(a, b) {
-				var sortval;
-				if(a.SampleID == 'NA' && b.SampleID == 'NA')
-					return 0
-				else if(a.SampleID == 'NA' && b.SampleID !== 'NA')
-					return -1
-				else if(a.SampleID !== 'NA' && b.SampleID == 'NA')
-					return 1
-				else if(metadataType === 'string')
-					return a.SampleID.localeCompare(b.SampleID);
-				else if(metadataType === 'number')
-					return Number(a.SampleID) - Number(b.SampleID);
-				else
-					return 0
-				}
-			);
-		this.getTotalAbundances(groupData)
-		this.drawTaxonomyBarVis(groupData, true)
-	}
+	// this.groupChanged = function () {
+	// 	var groupData = []
+	// 	var groupCounts = {}
+	// 	var temp = {}
+	// 	var key = document.getElementById('group_by_select')[document.getElementById('group_by_select').selectedIndex].text;
+	// 	var sampleIDs = d3.keys(data)
+	//
+	// 	for(var i = 0; i < sampleIDs.length; i++)
+	// 	{
+	// 		var sampleID = sampleIDs[i]
+	// 		var val = data[sampleID].metadata[key];
+	// 		if(key == "SampleID")
+	// 			val = data[sampleID].SampleID
+	// 		if(!(val in temp))
+	// 			temp[val] = {}
+	//
+	// 		if(!(val in groupCounts))
+	// 			groupCounts[val] = 0
+	// 		groupCounts[val] += 1
+	//
+	// 		var currentTaxonomy = d3.keys(data[sampleID].tax)
+	// 		for(var j = 0; j < currentTaxonomy.length; j++)
+	// 		{
+	// 			var currentTax = currentTaxonomy[j]
+	// 			if(!(currentTax in temp[val]))
+	// 				temp[val][currentTax] = 0
+	// 			temp[val][currentTax] += data[sampleID].tax[currentTax]
+	// 		}
+	// 	}
+	//
+	// 	var groups = d3.keys(temp)
+	// 	var t;
+	// 	for(var i = 0; i < groups.length; i++)
+	// 	{
+	// 		 t = {"SampleID":groups[i]}
+	// 		 t['tax'] = temp[groups[i]]
+	// 		 t['count'] = groupCounts[groups[i]]
+	// 		 groupData.push(t)
+	// 	}
+	//
+	// 	var domain = d3.keys(data[d3.keys(data)[0]]['tax'])
+	//     groupData.forEach(function(d) {
+	//   	  d.name = d.SampleID
+	//       d.abundances = domain.map(function(name) { return {name: name, abundance: +d['tax'][name]}; });
+	//   	  d.metadata = d['metadata']
+	//     });
+	//
+	// 	var metadataType = metadataTypes[key];
+	//
+	// 	//in this case the SampleID is actually the group name
+	// 	groupData.sort(
+	// 		function(a, b) {
+	// 			var sortval;
+	// 			if(a.SampleID == 'NA' && b.SampleID == 'NA')
+	// 				return 0
+	// 			else if(a.SampleID == 'NA' && b.SampleID !== 'NA')
+	// 				return -1
+	// 			else if(a.SampleID !== 'NA' && b.SampleID == 'NA')
+	// 				return 1
+	// 			else if(metadataType === 'string')
+	// 				return a.SampleID.localeCompare(b.SampleID);
+	// 			else if(metadataType === 'number')
+	// 				return Number(a.SampleID) - Number(b.SampleID);
+	// 			else
+	// 				return 0
+	// 			}
+	// 		);
+	// 	this.getTotalAbundances(groupData)
+	// 	this.drawTaxonomyBarVis(groupData, true)
+	// }
 
 	this.setData = function (taxonomic_level) {
 		data = []
@@ -367,23 +371,18 @@ function DonutCharts() {
 		  d.metadata = d['metadata']
 	    });
 		// y.domain([0, d3.max(data, function(d) { return d.total; })]);
-		// data.sort(function(a, b) { return b.total - a.total; });
-		tax.sort()
+		data.sort(function(a, b) { return a.SampleID.localeCompare(b.SampleID); });
 		rainbow.setNumberRange(0, domain.length);
 	}
 
-	this.buildKey = function (tax) {
-		var htmlstring = "<ul id='key'>"
-		var colorbox = ""
-		for(var t in tax)
-		{
-			htmlstring += "<li><div class='colorbox' style='background-color:"
-			htmlstring += '#'+rainbow.colorAt(t)
-			htmlstring += "'></div>"+tax[t]+"</li>"
-		}
-		htmlstring += "</ul>"
-		document.getElementById("color_list").innerHTML = htmlstring;
-	}
+	// this.buildKey = function (tax) {
+	// 	tax.sort()
+	// 	var htmlstring = "<ul id='key'>"
+	// 	for(var t in tax)
+	// 		htmlstring += "<li>"+tax[t]+"</li>"
+	// 	htmlstring += "</ul>"
+	// 	document.getElementById("color_list").innerHTML = htmlstring;
+	// }
 
 	this.dedupe = function (tax) {
 	   var set = {};
@@ -414,8 +413,31 @@ function DonutCharts() {
 	// 		.attr("height",20);
 	// }
 
-	this.drawTaxonomyBarVis = function (plotdata, showLabels) {
- 	  // x.domain(plotdata.map(function(d) { return d.SampleID; }));
+	this.drawLegend = function (donutplotdata) {
+		var legend = legendHolder.append("svg")
+		      .attr("class", "legend")
+		      .attr("width", 200)
+		      .attr("height", 520)
+		    .selectAll("g")
+		      .data(d3.keys(data[d3.keys(donutplotdata)[0]]['tax']).slice().reverse())
+		    .enter().append("g")
+		      .attr("transform", function(d, i) { return "translate("+ 0 + "," + i * 20 + ")"; });
+
+		  legend.append("rect")
+		      .attr("width", 18)
+		      .attr("height", 18)
+		      .style("fill", function(d) { return '#'+rainbow.colorAt(d3.keys(donutplotdata[d3.keys(donutplotdata)[0]]['tax']).indexOf(d)); });
+
+		  legend.append("text")
+		      .attr("x", 24)
+		      .attr("y", 9)
+		      .attr("dy", ".35em")
+		      .text(function(d) { return d; });
+	}
+
+	this.drawTaxonomyBarVis = function (donutplotdata, showLabels) {
+	  this.drawLegend(donutplotdata)
+ 	  // x.domain(donutplotdata.map(function(d) { return d.SampleID; }));
  	  vis.selectAll(".pie").remove();
  	  // pies.selectAll("svg").remove(); //clear old pies
  	  // arcHolder.selectAll("path").remove(); //clear old arcs
@@ -423,7 +445,7 @@ function DonutCharts() {
  	  // svg.selectAll(".xAxisLabel").remove(); //remove old text
 
  	 pies = vis.selectAll(".pie")
-    	 	.data(plotdata)
+    	 	.data(donutplotdata)
     		    .enter().append("svg")
     		      .attr("class", "pie")
     		      .attr("width", radius * 2)
@@ -436,7 +458,7 @@ function DonutCharts() {
   		    .enter().append("path")
   		      .attr("class", "arc")
   		      .attr("d", arc)
-  			  .style("fill", function(d) { return '#'+rainbow.colorAt(tax.indexOf(d.data.name)); } )
+  			  .style("fill", function(d) { return '#'+rainbow.colorAt(d3.keys(data[d3.keys(data)[0]]['tax']).indexOf(d.data.name)); } )
   	  	      .on("mouseover", function(d) {
   	  	          this.style['opacity'] = .6;
   	  	          div.transition()
@@ -458,4 +480,5 @@ function DonutCharts() {
   	      .style("text-anchor", "middle")
   	      .text(function(d) { return d.name; });
 	}
+
 }

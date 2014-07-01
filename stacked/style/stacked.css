@@ -1,11 +1,5 @@
 /* D3 styling */
 
-div#plot {
-	font: 10px sans-serif;
-	width: 70%;
-	float: left;
-}
-
 div#options {
 	margin: 1em;
 	border: 1em;
@@ -67,16 +61,16 @@ ul#key {
   shape-rendering: crispEdges;
 }
 
-div.tooltip {   
-  position: absolute;           
-  text-align: center;                           
-  height: 16px;                 
-  padding: 2px;             
-  font: 12px sans-serif;        
-  background: #fff;   
-  border: 0px;      
-  border-radius: 5px;           
-  pointer-events: none;         
+div.tooltip {
+  position: absolute;
+  text-align: center;
+  height: 16px;
+  padding: 2px;
+  font: 12px sans-serif;
+  background: #fff;
+  border: 0px;
+  border-radius: 5px;
+  pointer-events: none;
 }
 
 #breadcrumbs {

@@ -160,15 +160,15 @@ if (!d3) { throw "d3 wasn't included!"};
     vis.selectAll('g.leaf.node')
       .append("svg:circle")
         .attr("r", 4.5)
-        .attr('stroke',  'yellowGreen')
-        .attr('fill', 'greenYellow')
+        .attr('stroke',  'steelblue')
+        .attr('fill', 'steelblue')
         .attr('stroke-width', '2px');
 
     vis.selectAll('g.root.node')
       .append('svg:circle')
         .attr("r", 4.5)
         .attr('fill', 'steelblue')
-        .attr('stroke', '#369')
+        .attr('stroke', 'steelblue')
         .attr('stroke-width', '2px');
   }
 

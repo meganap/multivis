@@ -32,7 +32,7 @@ function Scatter() {
 	}
 
 	this.initScatter = function() {
-		margin = {top: 20, right: 20, bottom: 30, left: 40};
+		margin = {top: 20, right: 20, bottom: 120, left: 40};
 		windowWidth = document.getElementById('plot').offsetWidth;
 		width = windowWidth*.97 - margin.left - margin.right;
 		height = 600 - margin.top - margin.bottom;
