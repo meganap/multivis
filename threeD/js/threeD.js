@@ -76,8 +76,13 @@ function ThreeD() {
 			});
 		});
 		groups = this.dedupe(groups)
-		// rainbow.setSpectrum('green','blue','red','yellow')
+
+		//have to add extra color on the end to make this work
 		rainbow.setNumberRange(0,groups.length);
+		if(groups.length == 2)
+			rainbow.setSpectrum('blue','red','green')
+		 else
+			rainbow.setSpectrum('blue','red','green', 'yellow')
 
 		setMinMaxVals();
 
@@ -385,7 +390,12 @@ function ThreeD() {
 		});
 		groups = this.dedupe(groups)
 
+		//have to add extra color on the end to make this work
 		rainbow.setNumberRange(0,groups.length);
+		if(groups.length == 2)
+			rainbow.setSpectrum('blue','red','green')
+		 else
+			rainbow.setSpectrum('blue','red','green', 'yellow')
 
 		g_spheres.forEach(function(d){
 			d.mesh.material.color.setHex('0x'+rainbow.colorAt(groups.indexOf(d.obj.colorKey)))

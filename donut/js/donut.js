@@ -432,7 +432,7 @@ function DonutCharts() {
 		      .attr("x", 24)
 		      .attr("y", 9)
 		      .attr("dy", ".35em")
-		      .text(function(d) { return d; });
+		      .text(function(d) { return d.substring(4,d.length); });
 	}
 
 	this.drawTaxonomyBarVis = function (donutplotdata, showLabels) {

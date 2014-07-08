@@ -53,7 +53,7 @@ ul#key {
 }
 
 .x.axis path {
-  display: none;
+/*  display: none;*/
 }
 
 .legend line {

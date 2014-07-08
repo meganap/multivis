@@ -188,7 +188,7 @@ if (!d3) { throw "d3 wasn't included!"};
     var rootDists = nodes.map(function(n) { return n.rootDist; });
     var yscale = d3.scale.linear()
       .domain([0, d3.max(rootDists)])
-      .range([0, w]);
+      .range([0, w/2]);
     visitPreOrder(nodes[0], function(node) {
       node.y = yscale(node.rootDist)
     })
@@ -212,6 +212,7 @@ if (!d3) { throw "d3 wasn't included!"};
     var vis = options.vis || d3.select(selector).append("svg:svg")
         .attr("width", w + 300)
         .attr("height", h + 30)
+		.attr("class", "phylogram")
       .append("svg:g")
         .attr("transform", "translate(20, 20)");
     var nodes = tree(nodes);
@@ -301,16 +302,16 @@ if (!d3) { throw "d3 wasn't included!"};
     options = options || {}
     var w = options.width || d3.select(selector).style('width') || d3.select(selector).attr('width'),
         r = w / 2,
-        labelWidth = options.skipLabels ? 10 : options.labelWidth || 120;
+        labelWidth = options.skipLabels ? 10 : options.labelWidth || 200;
 
     var vis = d3.select(selector).append("svg:svg")
-        .attr("width", r * 2)
-        .attr("height", r * 2)
+        .attr("width", w + labelWidth)
+        .attr("height", w + labelWidth)
       .append("svg:g")
-        .attr("transform", "translate(" + r + "," + r + ")");
+        .attr("transform", "translate(" + (r + labelWidth/2) + "," + (r + labelWidth/2) + ")");
 
     var tree = d3.layout.tree()
-      .size([360, r - labelWidth])
+      .size([360, r])
       .sort(function(node) { return node.children ? node.children.length : -1; })
       .children(options.children || function(node) {
         return node.branchset
@@ -320,7 +321,7 @@ if (!d3) { throw "d3 wasn't included!"};
     var phylogram = d3.phylogram.build(selector, nodes, {
       vis: vis,
       tree: tree,
-      skipBranchLengthScaling: true,
+      skipBranchLengthScaling: options.skipBranchLengthScaling,
       skipTicks: true,
       skipLabels: options.skipLabels,
       diagonal: d3.phylogram.radialRightAngleDiagonal()

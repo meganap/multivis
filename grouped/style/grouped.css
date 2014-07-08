@@ -52,10 +52,6 @@ ul#key {
   fill: steelblue;
 }
 
-.x.axis path {
-  display: none;
-}
-
 .legend line {
   stroke: #000;
   shape-rendering: crispEdges;

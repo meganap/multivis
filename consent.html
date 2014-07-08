@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Visualization Survey Consent Form</title>
+<link rel="stylesheet" type="text/css" href="style/multivis.css">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+</head>
+<body>
+	<div id="wrapper">
+		<div id="consentWrapper">
+			<b>Project Title: Experimental Determination of Useful and Informative Visualizations of Microbial Ecology Data for Public and Scientific Audiences<br>
+			Principal Investigator: Megan Pirrung<br>
+			Version Date: 05-08-2014<br>
+			Protocol Number: 14-0856<br>
+			</b>
+			<br>
+
+			<p>You are being asked to participate in this research study in order to gather information about visualizations of microbial ecology data. This will help inform researchers on the appropriate visualizations to use for microbial ecology data when presenting to public or scientific audiences.</p>
+<p>If you join the study you will be asked quantitative questions about a visual representation of microbial ecology data. This study is designed to learn which visualizations help public and scientific audiences understand microbial ecology data. Possible discomforts include the time taken to answer the survey questions and possible loss of confidentiality of the questionnaire score. Participants are seeing de-identified selected microbial ecology data. There may also be risks that the researchers have not anticipated.</p>
+<p>Your responses will be collected anonymously and cannot be tied back to you unless you choose to provide personally identifying information. The researchers will develop reports and publications based on the data from participants but the results will not be linked back to any personally identifying participant information. All data will be stored in a secure data repository.</p>
+<p>If you agree to join the study, please check the “I have read and understand the consent form” checkbox and click “Submit” to continue. You may decline to continue participation at any time. If you do not wish to participate, please close this window.</p>
+<p>If you have any questions about this consent form or the research project, please contact us at <a href="mailto:cuvissurvey@gmail.com"> cuvissurvey@gmail.com.</a></p>
+<br>
+			<div id="consentForm">
+				<form id="consent">
+					<p style="text-align:center;"><b><input id="consentCheckbox" type="checkbox">I have read and understand the above consent form. I agree to participate in this study.</b>
+						<br>
+						<br>
+						<input id="submit" type="submit">
+					</p>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script>
+		$( "#submit" ).prop('disabled', true)
+	    $( "#consentCheckbox" ).click( function(d) {
+			$( "#submit" ).prop('disabled', !d.target.checked)
+	    });
+		$( "#submit" ).click( function(d) {
+			window.open('./', '_blank');
+		});
+	</script>
+</body>
+</html>

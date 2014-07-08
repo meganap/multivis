@@ -8,7 +8,7 @@
 }
 
 .splom .axis path {
-  display: none;
+/*  display: none;*/
 }
 
 .splom rect.extent {
@@ -32,21 +32,21 @@ circle {
 }
 
 .Individual1 {
-  fill: #F00;
+  fill: #00F;
 }
 
 .Individual2 {
-  fill: #FF0;
+  fill: #F00;
 }
 
 .Individual3 {
-  fill: #0F0;
+  fill: #008000;
 }
 
 .Key {
-	fill: #F00;
+	fill: #00F;
 }
 
 .Finger {
-	fill: #0F0;
+	fill: #F00;
 }

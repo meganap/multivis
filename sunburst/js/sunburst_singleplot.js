@@ -16,7 +16,7 @@ function Sunburst(jsonPath) {
 	var x;
 	var y;
 
-	var width = 500,
+	var width = 600,
 	    height = width,
 	    padding = 35,
 	    radius = (Math.min(width, height) - 2 * padding)/ 2,

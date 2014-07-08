@@ -38,48 +38,58 @@ var surveyEnd = "\" width=\"800\" height=\"300\" style=\"border:0px;padding-bott
 var newURL = '';
 
 function buildSurvey() {
-	var oldIDs = []
-	//if this is the initial survey there will not be any old ids
-	if(urlParams['ids'])
-		oldIDs = urlParams['ids'].split('_')
-
-	var availableVisTypes = ['0', '1', '2']
-
-	if(oldIDs.length < 3) // if length = 3 need to do demographic questions
+	if(urlParams['admin'])
 	{
-		newURL = 'http://0.0.0.0:8080/?src=test&ids='
-
-		for(var i in oldIDs)
-		{
-			availableVisTypes.splice(availableVisTypes.indexOf(oldIDs[i][0]),1) //remove the old visType so we don't show it again
-			newURL += oldIDs[i]+'_' //keep track of old surveys in the URL
-		}
-		// console.log(availableVisTypes)
-
-		var visType = availableVisTypes[Math.floor((Math.random()*availableVisTypes.length))] // choose among available visTypes left
-		// var visType = 0
-		var visID = Math.floor((Math.random()*visFuns[visType].length))
-		// var visID = 1
-
-		//build surveymonkey custom URL
-		var surveyID = surveyIDs[visType]+urlParams['src']+"_"+visType+visID
-		var surveyHTML = surveyStart + surveyID + surveyEnd
-		document.getElementById('survey').innerHTML = surveyHTML
-		// console.log(surveyID)
-
-		//build URL for next survey while keeping track of the current survey
-		newURL += visType+''+visID
-		// console.log(newURL)
+		var visType = urlParams['admin'][0]
+		var visID =  urlParams['admin'][1]
+		$("#dialog-confirm").remove()
 
 		visFuns[visType][visID]();
-	}
-	else
-	{
-		$("#visWrapper").remove()
-		$("#nextSurvey").remove()
-		$("#dialog-confirm").remove()
-		var surveyHTML = surveyStart + 'FVDKBJX?c=' +"\" width=\"800\" height=\"1347\" style=\"border:0px;padding-bottom:4px;\" frameborder=\"0\" allowtransparency=\"true\" ></iframe></div></div>"
-		document.getElementById('survey').innerHTML = surveyHTML
+
+	}else {
+		var oldIDs = []
+		//if this is the initial survey there will not be any old ids
+		if(urlParams['ids'])
+			oldIDs = urlParams['ids'].split('_')
+
+		var availableVisTypes = ['0', '1', '2']
+
+		if(oldIDs.length < 3) // if length = 3 need to do demographic questions
+		{
+			newURL = 'http://0.0.0.0:8080/?src=test&ids='
+
+			for(var i in oldIDs)
+			{
+				availableVisTypes.splice(availableVisTypes.indexOf(oldIDs[i][0]),1) //remove the old visType so we don't show it again
+				newURL += oldIDs[i]+'_' //keep track of old surveys in the URL
+			}
+			// console.log(availableVisTypes)
+
+			var visType = availableVisTypes[Math.floor((Math.random()*availableVisTypes.length))] // choose among available visTypes left
+			// var visType = 0
+			var visID = Math.floor((Math.random()*visFuns[visType].length))
+			// var visID = 1
+
+			//build surveymonkey custom URL
+			var surveyID = surveyIDs[visType]+urlParams['src']+"_"+visType+visID
+			var surveyHTML = surveyStart + surveyID + surveyEnd
+			document.getElementById('survey').innerHTML = surveyHTML
+			// console.log(surveyID)
+
+			//build URL for next survey while keeping track of the current survey
+			newURL += visType+''+visID
+			// console.log(newURL)
+
+			visFuns[visType][visID]();
+		}
+		else
+		{
+			$("#visWrapper").remove()
+			$("#nextSurvey").remove()
+			$("#dialog-confirm").remove()
+			var surveyHTML = surveyStart + 'FVDKBJX?c=' +"\" width=\"800\" height=\"1347\" style=\"border:0px;padding-bottom:4px;\" frameborder=\"0\" allowtransparency=\"true\" ></iframe></div></div>"
+			document.getElementById('survey').innerHTML = surveyHTML
+		}
 	}
 }
 
@@ -131,31 +141,35 @@ function rectangularTree() {
     }
     buildNewickNodes(newick)
 	d3.phylogram.build('#plot', newick, {
-	          width: 550,
+	          width: 1050,
 	          skipLabels: false
 	        })
 }
 
 function radialTree() {
+	// s = new Radial("data/keyboard_mini.txt");
 	d3.select("#visWrapper").selectAll("div").remove()//get rid of old plots
 	d3.select("#visWrapper").append("div")
 		.attr("id", "plot");
 
-	// var newick = Newick.parse("data/keyboard_mini.tre")
+	// s.initRadialTree()
+
+	var newick = Newick.parse("data/keyboard_mini.tre")
 	var newick = Newick.parse("((Taxon6:0.020,(Taxon7:0.076,Taxon8:0.093):0.011):0.015,(Taxon1:0.011,(Taxon2:0.032,(Taxon3:0.030,(Taxon4:0.014,Taxon5:0.050):.001):0.006):0.017):0.016);")
-    var newickNodes = []
-    function buildNewickNodes(node, callback) {
-      newickNodes.push(node)
-      if (node.branchset) {
-        for (var i=0; i < node.branchset.length; i++) {
-          buildNewickNodes(node.branchset[i])
-        }
-      }
-    }
-    buildNewickNodes(newick)
+	    var newickNodes = []
+	    function buildNewickNodes(node, callback) {
+	      newickNodes.push(node)
+	      if (node.branchset) {
+	        for (var i=0; i < node.branchset.length; i++) {
+	          buildNewickNodes(node.branchset[i])
+	        }
+	      }
+	    }
+	    buildNewickNodes(newick)
 	d3.phylogram.buildRadial('#plot', newick, {
-	          width: 550,
-	          skipLabels: false
+	          width: 450,
+	          skipLabels: false,
+			  skipBranchLengthScaling: false
 	        })
 }
 

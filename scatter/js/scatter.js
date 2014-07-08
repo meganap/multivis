@@ -85,8 +85,12 @@ function Scatter() {
 		});
 		groups = this.dedupe(groups)
 
-		// rainbow.setSpectrum('blue','red','green')
+		//have to add extra color on the end to make this work
 		rainbow.setNumberRange(0,groups.length);
+		if(groups.length == 2)
+			rainbow.setSpectrum('blue','red','green')
+		 else
+			rainbow.setSpectrum('blue','red','green', 'yellow')
 
 		this.drawPlot(data)
 	}
@@ -114,8 +118,12 @@ function Scatter() {
 		});
 		groups = this.dedupe(groups)
 
-		// rainbow.setSpectrum('green','blue','red','yellow')
+		//have to add extra color on the end to make this work
 		rainbow.setNumberRange(0,groups.length);
+		if(groups.length == 2)
+			rainbow.setSpectrum('blue','red','green')
+		 else
+			rainbow.setSpectrum('blue','red','green', 'yellow')
 
 		this.drawPlot(data)
 	}

@@ -21,8 +21,8 @@ function ParallelCoordinates() {
 
 	this.initParallelCoordinates = function() {
 		d3.select("#plot").append("div")
-		.attr("width", "730")
-		.attr("height", "600")
+		// .attr("width", "730")
+		// .attr("height", "600")
 		.attr("id","parallelPlotWrapper");
 
 
@@ -32,8 +32,12 @@ function ParallelCoordinates() {
 		});
 		groups = this.dedupe(groups)
 
-		// rainbow.setSpectrum('green','blue','red','yellow')
+		//have to add extra color on the end to make this work
 		rainbow.setNumberRange(0,groups.length);
+		if(groups.length == 2)
+			rainbow.setSpectrum('blue','red','green')
+		 else
+			rainbow.setSpectrum('blue','red','green', 'yellow')
 
 		this.drawPlot()
 	}
@@ -118,7 +122,12 @@ function ParallelCoordinates() {
 			});
 			groups = this.dedupe(groups)
 
+			//have to add extra color on the end to make this work
 			rainbow.setNumberRange(0,groups.length);
+			if(groups.length == 2)
+				rainbow.setSpectrum('blue','red','green')
+			 else
+				rainbow.setSpectrum('blue','red','green', 'yellow')
 
 			pc
 			  .data(data)

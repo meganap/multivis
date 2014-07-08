@@ -77,8 +77,12 @@ function Splom() {
 		});
 
 
-		// rainbow.setSpectrum('green','blue','red','yellow')
+		//have to add extra color on the end to make this work
 		rainbow.setNumberRange(0,groups.length);
+		if(groups.length == 2)
+			rainbow.setSpectrum('blue','red','green')
+		 else
+			rainbow.setSpectrum('blue','red','green', 'yellow')
 
 		this.drawPlot()
 	}
@@ -105,7 +109,12 @@ function Splom() {
 		groups = this.dedupe(groups)
 		compData = {axes: axes, groups: groups, values: values}
 
+		//have to add extra color on the end to make this work
 		rainbow.setNumberRange(0,groups.length);
+		if(groups.length == 2)
+			rainbow.setSpectrum('blue','red','green')
+		 else
+			rainbow.setSpectrum('blue','red','green', 'yellow')
 
 		this.drawPlot()
 	}
