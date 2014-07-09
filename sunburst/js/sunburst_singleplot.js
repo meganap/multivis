@@ -35,7 +35,7 @@ function Sunburst(jsonPath) {
 	this.initSunburst = function() {
 		// this.initializeBreadcrumbTrail();
 
-		labelDiv = d3.select("visWrapper").append("div")
+		labelDiv = d3.select("#visWrapper").append("div")
 		.attr("class", "tooltip")
 		.style("opacity", 0);
 
@@ -70,7 +70,9 @@ function Sunburst(jsonPath) {
 			     .attr("fill-rule", "evenodd")
 			 	 .attr("display", function(d) { return d.depth ? null : "none"; })
 			     .style("fill", "#3182bd")
-  				 .on("mouseover", function(d){
+  				 .on("mouseover", function(d, event){
+					 console.log(d3.event.pageX)
+					 console.log(d3.event.pageY)
 					 this.style['opacity'] = .6;
 			          labelDiv.transition()
 			              .duration(200)
@@ -79,7 +81,12 @@ function Sunburst(jsonPath) {
 			              .style("left", (d3.event.pageX) + "px")
 			              .style("top", (d3.event.pageY - 28) + "px");
 					 })
-  				 .on("mouseout", function(d){ this.style['opacity'] = 1; })
+  				 .on("mouseout", function(d){
+					 this.style['opacity'] = 1;
+			         labelDiv.transition()
+			             .duration(500)
+			             .style("opacity", 0);
+				 });
 
 			 var textEnter = paths.enter().append("text")
 				   .attr("text-anchor","end")
