@@ -5,6 +5,16 @@
 <title>Visualization Survey Consent Form</title>
 <link rel="stylesheet" type="text/css" href="style/multivis.css">
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<noscript>
+    <style type="text/css">
+        .pagecontainer {display:none;}
+    </style>
+    <div class="noscriptmsg">
+    For full functionality of this site it is necessary to enable JavaScript.
+    Here are the <a href="http://www.enable-javascript.com/" target="_blank">
+    instructions how to enable JavaScript in your web browser</a>.
+    </div>
+</noscript>
 </head>
 <body>
 	<div id="wrapper">
@@ -34,12 +44,25 @@
 		</div>
 	</div>
 	<script>
+		var urlParams;
+		(window.onpopstate = function () {
+		    var match,
+		        pl     = /\+/g,  // Regex for replacing addition symbol with a space
+		        search = /([^&=]+)=?([^&]*)/g,
+		        decode = function (s) { return decodeURIComponent(s.replace(pl, " ").replace(/\//g, '')); },
+		        query  = window.location.search.substring(1);
+
+		    urlParams = {};
+		    while (match = search.exec(query))
+		       urlParams[decode(match[1])] = decode(match[2]);
+		})();
+
 		$( "#submit" ).prop('disabled', true)
 	    $( "#consentCheckbox" ).click( function(d) {
 			$( "#submit" ).prop('disabled', !d.target.checked)
 	    });
 		$( "#submit" ).click( function(d) {
-			window.open('./', '_blank');
+			window.open('./?src='+urlParams['src'], '_blank');
 		});
 	</script>
 </body>

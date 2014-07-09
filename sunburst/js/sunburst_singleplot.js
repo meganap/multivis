@@ -26,6 +26,7 @@ function Sunburst(jsonPath) {
 	var root;
 	var rainbow1 = new Rainbow();
 	var div;
+	var labelDiv;
 	var sunvar = this;
 
 	// Total size of all segments; we set this later, after loading the data.
@@ -34,7 +35,7 @@ function Sunburst(jsonPath) {
 	this.initSunburst = function() {
 		// this.initializeBreadcrumbTrail();
 
-		div = d3.select("visWrapper").append("div")
+		labelDiv = d3.select("visWrapper").append("div")
 		.attr("class", "tooltip")
 		.style("opacity", 0);
 
@@ -69,7 +70,15 @@ function Sunburst(jsonPath) {
 			     .attr("fill-rule", "evenodd")
 			 	 .attr("display", function(d) { return d.depth ? null : "none"; })
 			     .style("fill", "#3182bd")
-  				 .on("mouseover", function(d){ this.style['opacity'] = .6; })
+  				 .on("mouseover", function(d){
+					 this.style['opacity'] = .6;
+			          labelDiv.transition()
+			              .duration(200)
+			              .style("opacity", .9);
+			          labelDiv.html(d.length)
+			              .style("left", (d3.event.pageX) + "px")
+			              .style("top", (d3.event.pageY - 28) + "px");
+					 })
   				 .on("mouseout", function(d){ this.style['opacity'] = 1; })
 
 			 var textEnter = paths.enter().append("text")
@@ -84,7 +93,9 @@ function Sunburst(jsonPath) {
 			         var angle = (d.x + d.dx / 2 - Math.PI / 2) / Math.PI * 180;
 			         return "rotate(" + angle + ")translate(" + (Math.sqrt(d.y) + 35) + ")rotate(" + (angle > 90 ? -180 : 0) + ")";
 			       })
-				  .text(function(d) { return d.name; });
+				  .text(function(d) {
+						return d.name;
+					});
 
 		});
 
