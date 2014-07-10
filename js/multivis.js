@@ -36,16 +36,17 @@ var surveyIDs = ['FLMWHYQ?c=','FLZ9N9J?c=','FVVSD3C?c='] //abundance, phylogeny,
 var surveyEnd = "\" width=\"800\" height=\"300\" style=\"border:0px;padding-bottom:4px;\" frameborder=\"0\" allowtransparency=\"true\" ></iframe></div></div>"
 
 var newURL = '';
+var visType;
+var visID;
 
 function buildSurvey() {
 	if(urlParams['admin'])
 	{
-		var visType = urlParams['admin'][0]
-		var visID =  urlParams['admin'][1]
+		visType = urlParams['admin'][0]
+		visID =  urlParams['admin'][1]
 		$("#dialog-confirm").remove()
 
 		visFuns[visType][visID]();
-
 	}else {
 		var oldIDs = []
 		//if this is the initial survey there will not be any old ids
@@ -56,7 +57,7 @@ function buildSurvey() {
 
 		if(oldIDs.length < 3) // if length = 3 need to do demographic questions
 		{
-			newURL = 'http://0.0.0.0:8080/?src=test&ids='
+			newURL = 'http://0.0.0.0:8080/?src='+urlParams['src']+'&u='+urlParams['u']+'&ids='
 
 			for(var i in oldIDs)
 			{
@@ -65,13 +66,13 @@ function buildSurvey() {
 			}
 			// console.log(availableVisTypes)
 
-			var visType = availableVisTypes[Math.floor((Math.random()*availableVisTypes.length))] // choose among available visTypes left
+			visType = availableVisTypes[Math.floor((Math.random()*availableVisTypes.length))] // choose among available visTypes left
 			// var visType = 0
-			var visID = Math.floor((Math.random()*visFuns[visType].length))
+			visID = Math.floor((Math.random()*visFuns[visType].length))
 			// var visID = 1
 
 			//build surveymonkey custom URL
-			var surveyID = surveyIDs[visType]+urlParams['src']+"_"+visType+visID
+			var surveyID = surveyIDs[visType]+urlParams['u']+"_"+urlParams['src']+"_"+visType+visID
 			var surveyHTML = surveyStart + surveyID + surveyEnd
 			document.getElementById('survey').innerHTML = surveyHTML
 			// console.log(surveyID)
@@ -91,11 +92,19 @@ function buildSurvey() {
 			document.getElementById('survey').innerHTML = surveyHTML
 		}
 	}
+
+	log(visID, visType);
+}
+
+function log(visID, visType) {
+ $.post("record.php", { visID: visID, visType: visType, id: urlParams['u'], src: urlParams['src']})
+ .done(function( data ) {
+	 // console.log( data );
+  });
 }
 
 function buildSurveyHTML(visID) {
 	var surveyID = urlParams['id']+"_"+urlParams['src']+"_1"+visID
-	console.log(surveyID)
 	return surveyStart + surveyID + surveyEnd
 }
 

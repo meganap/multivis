@@ -18,7 +18,7 @@ function Sunburst(jsonPath) {
 
 	var width = 600,
 	    height = width,
-	    padding = 35,
+	    padding = 70,
 	    radius = (Math.min(width, height) - 2 * padding)/ 2,
 	    duration = 1000;
 	var arc;
@@ -69,10 +69,13 @@ function Sunburst(jsonPath) {
 			     .attr("d", arc)
 			     .attr("fill-rule", "evenodd")
 			 	 .attr("display", function(d) { return d.depth ? null : "none"; })
-			     .style("fill", "#3182bd")
+			     .style("fill", function(d) {
+					 if(d.children)
+					 	return "#AAA";
+					 else
+					 	return "#3182bd";
+			     })
   				 .on("mouseover", function(d, event){
-					 console.log(d3.event.pageX)
-					 console.log(d3.event.pageY)
 					 this.style['opacity'] = .6;
 			          labelDiv.transition()
 			              .duration(200)
@@ -92,7 +95,7 @@ function Sunburst(jsonPath) {
 				   .attr("text-anchor","end")
 			       .attr("text-anchor", function(d) {
 					   var angle = (d.x + d.dx / 2 - Math.PI / 2) / Math.PI * 180
-			         return ((d.x + d.dx / 2 - Math.PI / 2) / Math.PI * 180) < 90 ? "middle" : "end";
+			         return ((d.x + d.dx / 2 - Math.PI / 2) / Math.PI * 180) < 90 ? "beginning" : "end";
 			       })
 			       .attr("dy", ".2em")
 				   .attr("dx", "5") // margin
@@ -101,7 +104,10 @@ function Sunburst(jsonPath) {
 			         return "rotate(" + angle + ")translate(" + (Math.sqrt(d.y) + 35) + ")rotate(" + (angle > 90 ? -180 : 0) + ")";
 			       })
 				  .text(function(d) {
+					  if(d.children)
 						return d.name;
+					  else
+						return d.name + '(' + d.length + ')';
 					});
 
 		});
