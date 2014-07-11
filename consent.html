@@ -63,11 +63,10 @@
 			$( "#submit" ).prop('disabled', !d.target.checked)
 	    });
 		$( "#submit" ).click( function(d) {
-			$.post("getLastID.php")
+			$.post("getNewID.php", { url: document.URL })
 			    .done(function( data ) {
-					var newID = parseInt(data) + 1 //increment userID
-					$.post("record.php", { consent: true, id: newID, src: urlParams['src'] });
-					window.open('./?src='+urlParams['src']+'&u='+newID, '_blank');
+					$.post("record.php", { consent: true, id: data, src: urlParams['src'] });
+					window.open('./?src='+urlParams['src']+'&u='+data, '_blank');
 			     });
 		});
 		$( "#close" ).click( function(d) {
