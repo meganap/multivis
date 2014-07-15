@@ -65,7 +65,7 @@
 		$( "#submit" ).click( function(d) {
 			$.post("getNewID.php", { url: document.URL })
 			    .done(function( data ) {
-					$.post("record.php", { consent: true, id: data, src: urlParams['src'] });
+					$.post("record.php", { consent: true, visID: 'na', id: data, src: urlParams['src'] });
 					window.open('./?src='+urlParams['src']+'&u='+data, '_blank');
 			     });
 		});

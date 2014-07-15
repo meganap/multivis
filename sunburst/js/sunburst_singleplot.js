@@ -18,9 +18,8 @@ function Sunburst(jsonPath) {
 
 	var width = 600,
 	    height = width,
-	    padding = 70,
-	    radius = (Math.min(width, height) - 2 * padding)/ 2,
-	    duration = 1000;
+	    padding = 5,
+	    radius = (Math.min(width, height))/ 2;
 	var arc;
 	var path;
 	var root;
@@ -43,6 +42,11 @@ function Sunburst(jsonPath) {
 		y = d3.scale.pow().exponent(1.3).domain([0, 1]).range([0, radius]);
 
 		var div = d3.select("#plot")
+
+		var note = div.append("div")
+			.attr("id","note")
+			.html("<br><b>Hover over arcs to see branch length.</b>");
+
 		var svg = div.append("svg")
 		    .attr("width", width)
 		    .attr("height", height)
@@ -50,7 +54,6 @@ function Sunburst(jsonPath) {
 		    .attr("transform", "translate(" + [radius + padding, radius + padding] + ")");
 
 		var partition = d3.layout.partition()
-		   .size([2 * Math.PI, radius * radius])
 		   .value(function(d) { return d.length; });
 
 		this.arc()
@@ -91,24 +94,25 @@ function Sunburst(jsonPath) {
 			             .style("opacity", 0);
 				 });
 
-			 var textEnter = paths.enter().append("text")
-				   .attr("text-anchor","end")
-			       .attr("text-anchor", function(d) {
-					   var angle = (d.x + d.dx / 2 - Math.PI / 2) / Math.PI * 180
-			         return ((d.x + d.dx / 2 - Math.PI / 2) / Math.PI * 180) < 90 ? "beginning" : "end";
-			       })
-			       .attr("dy", ".2em")
-				   .attr("dx", "5") // margin
-			       .attr("transform", function(d) {
-			         var angle = (d.x + d.dx / 2 - Math.PI / 2) / Math.PI * 180;
-			         return "rotate(" + angle + ")translate(" + (Math.sqrt(d.y) + 35) + ")rotate(" + (angle > 90 ? -180 : 0) + ")";
-			       })
-				  .text(function(d) {
-					  if(d.children)
-						return d.name;
-					  else
-						return d.name + '(' + d.length + ')';
-					});
+			     var text = svg.selectAll("text").data(nodes);
+			     var textEnter = text.enter().append("text")
+			         .attr("text-anchor", function(d) {
+			           return x(d.x + d.dx / 2) > Math.PI ? "end" : "start";
+			         })
+			         .attr("dy", ".2em")
+			         .attr("transform", function(d) {
+			           var multiline = (d.name || "").split(" ").length > 1,
+			               angle = x(d.x + d.dx / 2) * 180 / Math.PI - 90,
+			               rotate = angle + (multiline ? -.5 : 0);
+			           return "rotate(" + rotate + ")translate(" + (y(d.y) + padding) + ")rotate(" + (angle > 90 ? -180 : 0) + ")";
+			         });
+			     textEnter.append("tspan")
+			         .attr("x", 0)
+			         .text(function(d) { return d.depth ? d.name.split(" ")[0] : ""; });
+			     textEnter.append("tspan")
+			         .attr("x", 0)
+			         .attr("dy", "1em")
+			         .text(function(d) { return d.depth ? d.name.split(" ")[1] || "" : ""; });
 
 		});
 
@@ -119,10 +123,10 @@ function Sunburst(jsonPath) {
 
 	this.arc = function () {
 		arc = d3.svg.arc()
-	    .startAngle(function(d) { return d.x; })
-	    .endAngle(function(d) { return d.x + d.dx; })
-	    .innerRadius(function(d) { return Math.sqrt(d.y); })
-	    .outerRadius(function(d) { return Math.sqrt(d.y + d.dy); });
+		    .startAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x))); })
+		    .endAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x + d.dx))); })
+		    .innerRadius(function(d) { return Math.max(0, y(d.y)); })
+		    .outerRadius(function(d) { return Math.max(0, y(d.y + d.dy)); });
 	}
 
 }

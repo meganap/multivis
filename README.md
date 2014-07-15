@@ -11,7 +11,7 @@ Python is being used solely as an example.
 
 From within multivis directory:
 ```
-python -m SimpleHTTPServer 8888
+php -S 0.0.0.0:8080 -t .
 ```
 
 ### Viewing `index.html`

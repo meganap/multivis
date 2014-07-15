@@ -73,13 +73,12 @@ $b = browser();
 $os = getOS();
 $src = $_POST['src'];
 
-$line = "\n" . $id . "\t" . $visID . "\t" . $date . "\t" . $b[0] . ":" . $b[1] . "\t" . $os . "\t" . $src;
+$line = "\n" . $id . "\t" .  $visID . "\t" . $date . "\t" . $b[0] . ":" . $b[1] . "\t" . $os . "\t" . $src;
 
 if($_POST['consent']) // consent given
 	$file = 'log/consent.txt';
-else
+elseif($_POST['vis'])
 	$file = 'log/' . $_POST['visType'] . '.txt';
 
 file_put_contents($file, $line, FILE_APPEND | LOCK_EX);
-echo 'derp';
 ?>

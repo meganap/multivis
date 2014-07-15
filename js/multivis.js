@@ -23,7 +23,7 @@ var urlParams;
 var abundancehtml = "<div id=\"yaxisholder\"></div><div id=\"plot\"></div>"
 var abundanceFuns = [ normStackedBar, area, donuts ]
 
-var phyloFuns = [ sunburst, rectangularTree, radialTree, treemap ]
+var phyloFuns = [ sunburst, rectangularTree, radialTree ]
 
 var multidimFuns = [ parallel, scatter, splom, threeD ]
 
@@ -68,20 +68,13 @@ function buildSurvey() {
 
 			visType = availableVisTypes[Math.floor((Math.random()*availableVisTypes.length))] // choose among available visTypes left
 			// var visType = 0
-			visID = Math.floor((Math.random()*visFuns[visType].length))
-			// var visID = 1
 
-			//build surveymonkey custom URL
-			var surveyID = surveyIDs[visType]+urlParams['u']+"_"+urlParams['src']+"_"+visType+visID
-			var surveyHTML = surveyStart + surveyID + surveyEnd
-			document.getElementById('survey').innerHTML = surveyHTML
-			// console.log(surveyID)
+			$.post("getVisID.php", { visType: visType })
+			    .done(function( data ) {
+					visID = parseInt(data);
+					buildPage(visID);
+			     });
 
-			//build URL for next survey while keeping track of the current survey
-			newURL += visType+''+visID
-			// console.log(newURL)
-
-			visFuns[visType][visID]();
 		}
 		else
 		{
@@ -92,15 +85,29 @@ function buildSurvey() {
 			document.getElementById('survey').innerHTML = surveyHTML
 		}
 	}
+}
 
-	log(visID, visType);
+function buildPage(id) {
+	// visID = Math.floor((Math.random()*visFuns[visType].length))
+	visID = id
+
+	//build surveymonkey custom URL
+	var surveyID = surveyIDs[visType]+urlParams['u']+"_"+urlParams['src']+"_"+visType+visID
+	var surveyHTML = surveyStart + surveyID + surveyEnd
+	document.getElementById('survey').innerHTML = surveyHTML
+	// console.log(surveyID)
+
+	//build URL for next survey while keeping track of the current survey
+	newURL += visType+''+visID
+	// console.log(newURL)
+
+	console.log(visType)
+	console.log(visID)
+	visFuns[visType][visID]();
 }
 
 function log(visID, visType) {
- $.post("record.php", { visID: visID, visType: visType, id: urlParams['u'], src: urlParams['src']})
- .done(function( data ) {
-	 // console.log( data );
-  });
+ $.post("record.php", { vis: true, visID: visID, visType: visType, id: urlParams['u'], src: urlParams['src']});
 }
 
 function buildSurveyHTML(visID) {
@@ -109,6 +116,7 @@ function buildSurveyHTML(visID) {
 }
 
 function nextSurvey() {
+	log(visID, visType);
 	window.open(newURL, '_self');
 }
 
