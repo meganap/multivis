@@ -1,6 +1,14 @@
+/*
+ * __author__ = "Meg Pirrung"
+ * __copyright__ = "Copyright 2014, multivis"
+ * __credits__ = ["Meg Pirrung"]
+ * __license__ = "MIT"
+ */
+
 <?php
 $user_agent     =   $_SERVER['HTTP_USER_AGENT'];
 
+/* from http://stackoverflow.com/questions/2142030/any-php-code-to-detect-the-browser-with-version-and-operating-system */
 function browser() {
     $ua = strtolower($_SERVER['HTTP_USER_AGENT']);
     // you can add different browsers with the same way ..
@@ -24,6 +32,7 @@ function browser() {
     return array($browser,$version[2], 'name'=>$browser,'version'=>$version[2]);
 }
 
+/* from http://stackoverflow.com/questions/18070154/get-operating-system-info-with-php */
 function getOS() {
 	global $user_agent;
 
