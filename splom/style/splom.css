@@ -8,7 +8,7 @@
 }
 
 .splom .axis path {
-/*  display: none;*/
+  display: none;
 }
 
 .splom rect.extent {
@@ -25,6 +25,7 @@
 
 circle {
   fill: #ccc;
+  fill-opacity: 1;
 }
 
 .splom .cell text {

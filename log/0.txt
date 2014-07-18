@@ -1,3 +1,2 @@
 ID	visID	date	browser	os	src
-003a003a	2	07/11/2014 08:56:14 am	chrome:35	Mac OS X	fb
-00940062	2	07/11/2014 09:58:51 am	chrome:35	Mac OS X	fb
+003a003a	0	07/16/2014 09:18:02 am	chrome:35	Mac OS X	test

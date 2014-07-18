@@ -34,7 +34,7 @@ div.colorbox {
 }
 
 #legendDiv {
-	position: absolute;
+/*	position: absolute;*/
 	z-index: 3;
 }
 

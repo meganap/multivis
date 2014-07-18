@@ -101,18 +101,18 @@ function Sunburst(jsonPath) {
 			         })
 			         .attr("dy", ".2em")
 			         .attr("transform", function(d) {
-			           var multiline = (d.name || "").split(" ").length > 1,
+			           var multiline = (d.name +': '+ d.length || "").split(" ").length > 1,
 			               angle = x(d.x + d.dx / 2) * 180 / Math.PI - 90,
 			               rotate = angle + (multiline ? -.5 : 0);
 			           return "rotate(" + rotate + ")translate(" + (y(d.y) + padding) + ")rotate(" + (angle > 90 ? -180 : 0) + ")";
 			         });
 			     textEnter.append("tspan")
 			         .attr("x", 0)
-			         .text(function(d) { return d.depth ? d.name.split(" ")[0] : ""; });
+			         .text(function(d) { return d.depth ? (d.name +' ('+ d.length +')').split(" ")[0] : ""; });
 			     textEnter.append("tspan")
 			         .attr("x", 0)
 			         .attr("dy", "1em")
-			         .text(function(d) { return d.depth ? d.name.split(" ")[1] || "" : ""; });
+			         .text(function(d) { return d.depth ? (d.name +' ('+ d.length +')').split(" ")[1] || "" : ""; });
 
 		});
 

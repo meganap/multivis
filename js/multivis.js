@@ -7,6 +7,7 @@
 
 var s;
 
+/* from http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript */
 var urlParams;
 (window.onpopstate = function () {
     var match,
@@ -57,8 +58,14 @@ function buildSurvey() {
 
 		if(oldIDs.length < 3) // if length = 3 need to do demographic questions
 		{
-			newURL = 'http://0.0.0.0:8080/?src='+urlParams['src']+'&u='+urlParams['u']+'&ids='
+			newURL = 'http://'
+			var urlPieces = document.URL.split("/")
 
+			for(var i = 2; i < urlPieces.length - 1; i++)
+				newURL += urlPieces[i]+'/'
+
+			newURL +='?src='+urlParams['src']+'&u='+urlParams['u']+'&ids='
+			console.log(newURL)
 			for(var i in oldIDs)
 			{
 				availableVisTypes.splice(availableVisTypes.indexOf(oldIDs[i][0]),1) //remove the old visType so we don't show it again
@@ -72,6 +79,8 @@ function buildSurvey() {
 			$.post("getVisID.php", { visType: visType })
 			    .done(function( data ) {
 					visID = parseInt(data);
+					if(isNaN(visID))
+						visID = Math.floor((Math.random()*visFuns[visType].length));
 					buildPage(visID);
 			     });
 
@@ -101,13 +110,13 @@ function buildPage(id) {
 	newURL += visType+''+visID
 	// console.log(newURL)
 
-	console.log(visType)
-	console.log(visID)
+	// console.log(visType)
+	// console.log(visID)
 	visFuns[visType][visID]();
 }
 
-function log(visID, visType) {
- $.post("record.php", { vis: true, visID: visID, visType: visType, id: urlParams['u'], src: urlParams['src']});
+function log(i, t) {
+ $.post("record.php", { vis: true, visID: i, visType: t, id: urlParams['u'], src: urlParams['src']});
 }
 
 function buildSurveyHTML(visID) {
@@ -116,8 +125,10 @@ function buildSurveyHTML(visID) {
 }
 
 function nextSurvey() {
-	log(visID, visType);
-	window.open(newURL, '_self');
+	 $.post("record.php", { vis: true, visID: visID, visType: visType, id: urlParams['u'], src: urlParams['src']})
+	 .done(function(data) {
+	 	window.open(newURL, '_self');
+	 });
 }
 
 function changeVis() {
@@ -298,7 +309,7 @@ function initMultiDim() {
 	d3.select("#visWrapper").append("div")
 		.attr("id", "toggleHolder");
 
-	document.getElementById("toggleHolder").innerHTML = " <div id='colorBy'>Color by:<br><input type='radio' id='Individual' name='colorBy' checked='checked'><label for='Individual'>Individual</label><input type='radio' id='Environment' name='colorBy'><label for='Environment'>Environment</label></div>";
+	document.getElementById("toggleHolder").innerHTML = " <div id='colorBy'>Color by:<br><input type='radio' id='Individual' name='colorBy' checked='checked'><label for='Individual'>Individual</label><input type='radio' id='Environment' name='colorBy'><label for='Environment'>Environment</label></div><br><div id=\"note\"></div>";
 
 	$( "#colorBy" )
 		.buttonset()

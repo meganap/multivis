@@ -124,7 +124,7 @@ function Splom() {
 
 		// Axes.
 		axis = d3.svg.axis()
-		      .ticks(5)
+		      .ticks(3)
 		      .tickSize(size * n);
 
 		  // Root panel.

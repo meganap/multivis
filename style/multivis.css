@@ -106,3 +106,8 @@ div#plot canvas {
 	margin-top: 50px;
 	height: 100px;
 }
+
+#note {
+	font-weight: bold;
+	padding-right: 1em;
+}

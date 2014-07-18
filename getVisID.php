@@ -1,9 +1,3 @@
-/*
- * __author__ = "Meg Pirrung"
- * __copyright__ = "Copyright 2014, multivis"
- * __credits__ = ["Meg Pirrung"]
- * __license__ = "MIT"
- */
 <?php
 $visType = $_POST['visType'];
 $file = 'log/' . $visType . '.txt';

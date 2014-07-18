@@ -1,10 +1,3 @@
-/*
- * __author__ = "Meg Pirrung"
- * __copyright__ = "Copyright 2014, multivis"
- * __credits__ = ["Meg Pirrung"]
- * __license__ = "MIT"
- */
-
 <?php
 $user_agent     =   $_SERVER['HTTP_USER_AGENT'];
 
@@ -24,8 +17,6 @@ function browser() {
             $browser = 'msie';
     elseif(preg_match('/(mozilla)[ \/]([\w.]+)/', $ua))
             $browser = 'mozilla';
-    elseif(preg_match('/(mozilla)[ \/]([\w.]+)/', $ua))
-            $browser = 'internetexplorer';
 
     preg_match('/('.$browser.')[ \/]([\w]+)/', $ua, $version);
 

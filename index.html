@@ -9,6 +9,8 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <head>
+<link rel="icon" href="favicon.ico">
+<title>Visualization Survey</title>
 <link rel="stylesheet" type="text/css" href="style/multivis.css">
 <link rel="stylesheet" type="text/css" href="style/abundance.css">
 <link rel="stylesheet" type="text/css" href="donut/style/donut.css">
@@ -18,19 +20,17 @@
 <link rel="stylesheet" type="text/css" href="threeD/style/threeD.css">
 <link rel="stylesheet" type="text/css" href="style/d3.parcoords.css">
 <link rel="stylesheet" type="text/css" href="sunburst/style/sunburst.css">
-<link rel="stylesheet" type="text/css" href="partition/style/partition.css">
 <link rel="stylesheet" type="text/css" href="style/jquery-ui-1.10.4.custom.min.css">
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="http://d3js.org/queue.v1.min.js"></script>
+<script src="js/jquery-1.9.1.js"></script>
+<script src="js/jquery-ui.js"></script>
+<script src="js/d3.v3.min.js"></script>
+<script src="js/queue.v1.min.js"></script>
 <script src="js/rainbowvis.js"></script>
 <script src="js/d3.parcoords.js"></script>
 <script src="js/d3.phylogram.js"></script>
 <script src="js/newick.js"></script>
 <script src="js/Three.js"></script>
 <script src="sunburst/js/sunburst_singleplot.js"></script>
-<script src="treemap/js/treemap.js"></script>
 <script src="stacked/js/normStacked.js"></script>
 <script src="area/js/area.js"></script>
 <script src="donut/js/donut.js"></script>
@@ -108,7 +108,7 @@
 	<input id="nextSurvey" type="button" value="Please click this button after you have completed and submitted the survey above" onClick="nextSurvey()">
 
 	<div id="dialog-confirm" title="Notice">
-	  <p style="font-size: 10pt; margin: 0; text-align: left;">This survey has <b>8 questions</b>. The survey is positioned and scaled so that you can answer each question while still viewing the visualization.<br /><b>Please scroll down within the question area to answer all 8 questions.</b></p>
+	  <p style="font-size: 10pt; margin: 0; text-align: left;">This survey has <b>multiple questions</b>. The survey is positioned and scaled so that you can answer each question while still viewing the visualization.<br /><b>Please scroll down within the question area to answer all questions.</b></p>
 	</div>
 
 	<script>
