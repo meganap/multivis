@@ -309,7 +309,7 @@ function initMultiDim() {
 	d3.select("#visWrapper").append("div")
 		.attr("id", "toggleHolder");
 
-	document.getElementById("toggleHolder").innerHTML = " <div id='colorBy'>Color by:<br><input type='radio' id='Individual' name='colorBy' checked='checked'><label for='Individual'>Individual</label><input type='radio' id='Environment' name='colorBy'><label for='Environment'>Environment</label></div><br><div id=\"note\"></div>";
+	document.getElementById("toggleHolder").innerHTML = " <div id='colorBy'>Color by:<br><input type='radio' id='Individual' name='colorBy' checked='checked'><label for='Individual'>Individual</label><input type='radio' id='Environment' name='colorBy'><label for='Environment'>Environment</label></div><br>";
 
 	$( "#colorBy" )
 		.buttonset()

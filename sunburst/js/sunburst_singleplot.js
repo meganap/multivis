@@ -34,9 +34,9 @@ function Sunburst(jsonPath) {
 	this.initSunburst = function() {
 		// this.initializeBreadcrumbTrail();
 
-		labelDiv = d3.select("#visWrapper").append("div")
-		.attr("class", "tooltip")
-		.style("opacity", 0);
+		// labelDiv = d3.select("#visWrapper").append("div")
+		// .attr("class", "tooltip")
+		// .style("opacity", 0);
 
 		x = d3.scale.linear().range([0, 2 * Math.PI]);
 		y = d3.scale.pow().exponent(1.3).domain([0, 1]).range([0, radius]);
@@ -80,18 +80,9 @@ function Sunburst(jsonPath) {
 			     })
   				 .on("mouseover", function(d, event){
 					 this.style['opacity'] = .6;
-			          labelDiv.transition()
-			              .duration(200)
-			              .style("opacity", .9);
-			          labelDiv.html(d.length)
-			              .style("left", (d3.event.pageX) + "px")
-			              .style("top", (d3.event.pageY - 28) + "px");
 					 })
   				 .on("mouseout", function(d){
 					 this.style['opacity'] = 1;
-			         labelDiv.transition()
-			             .duration(500)
-			             .style("opacity", 0);
 				 });
 
 			     var text = svg.selectAll("text").data(nodes);

@@ -100,6 +100,7 @@ div.tooltip {
 }
 
 #donutLegendDiv {
-	float: left;
+	float: right;
 	position: relative;
+	font-size: 10px;
 }

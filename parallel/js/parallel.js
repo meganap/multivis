@@ -21,8 +21,6 @@ function ParallelCoordinates() {
 
 	this.initParallelCoordinates = function() {
 		d3.select("#plot").append("div")
-		// .attr("width", "730")
-		// .attr("height", "600")
 		.attr("id","parallelPlotWrapper");
 
 
@@ -61,7 +59,7 @@ function ParallelCoordinates() {
 		  .color(function(d){
 		  	return '#'+rainbow.colorAt(groups.indexOf(d.colorKey || d.Individual));
 		  })
-		  .margin({ top: 60, left: 0, bottom: 40, right: 50 })
+		  .margin({ top: 70, left: 0, bottom: 40, right: 20 })
 		  .ticks(5)
 		  .render()
 		  .brushable();

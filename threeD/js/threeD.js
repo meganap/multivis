@@ -106,7 +106,10 @@ function ThreeD() {
 			  .attr("id", "axislabels")
 			  .attr("class", "axislabels");
 
-			d3.select("#note").html("<br>Click and drag on the plot to change the view.")
+
+	  		var note = d3.select("#plot").append("div")
+	  			.attr("id","note")
+	  			.html("Click and drag on the plot to change the view.");
 
 			// assign a position to the camera befor associating it with other
 			// objects, else the original position will be lost and not make sense

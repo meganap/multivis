@@ -304,7 +304,12 @@ pc.createAxes = function() {
         "x": 0,
         "class": "label"
       })
-      .text(function(d){return 'Axis ' + d;})
+      .text(function(d){
+		  if(isNaN(parseInt(d)))
+		  	return d;
+		  else
+		    return 'PC ' + d;
+	  });
 
   flags.axes= true;
   return this;

@@ -535,7 +535,13 @@ function AreaChart() {
 
 		  samID = svg.selectAll(".SampleID")
 		      .data(plotdata)
-		  	  .attr("transform", function(d) { return "translate(" + x(d.SampleID) + ",0)"; });
+		  	  .attr("transform", function(d) {
+				  if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1 && d.SampleID == "Sample 1") {
+				          return "translate(" + x(d.SampleID)+10 + ",0)";
+				      } else {
+				          return "translate(" + x(d.SampleID) + ",0)";
+				      }
+				   });
 
 		  // if(showLabels)
 		  // {
@@ -570,7 +576,7 @@ function AreaChart() {
 		  		          div.transition()
 		  		              .duration(200)
 		  		              .style("opacity", .9);
-		  		          div .html(d.name)
+		  		          div .html(d.name.substring(4, d.name.length))
 		  		              .style("left", (d3.event.pageX) + "px")
 		  		              .style("top", (d3.event.pageY - 28) + "px");
 		  		      })
@@ -590,7 +596,7 @@ function AreaChart() {
 	  		          div.transition()
 	  		              .duration(200)
 	  		              .style("opacity", .9);
-	  		          div .html(d.name)
+	  		          div .html(d.name.substring(4, d.name.length))
 	  		              .style("left", (d3.event.pageX) + "px")
 	  		              .style("top", (d3.event.pageY - 28) + "px");
 	  		      })

@@ -302,13 +302,13 @@ if (!d3) { throw "d3 wasn't included!"};
     options = options || {}
     var w = options.width || d3.select(selector).style('width') || d3.select(selector).attr('width'),
         r = w / 2,
-        labelWidth = options.skipLabels ? 10 : options.labelWidth || 200;
+        labelWidth = options.skipLabels ? 10 : options.labelWidth || 300;
 
     var vis = d3.select(selector).append("svg:svg")
         .attr("width", w + labelWidth)
         .attr("height", w + labelWidth)
       .append("svg:g")
-        .attr("transform", "translate(" + (r + labelWidth/2) + "," + (r + labelWidth/2) + ")");
+        .attr("transform", "translate(" + (r-55 + labelWidth/2) + "," + (r-50 + labelWidth/2) + ")");
 
     var tree = d3.layout.tree()
       .size([360, r])

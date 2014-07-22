@@ -366,8 +366,10 @@ function DonutCharts() {
 	      // var y0 = 0;
 		  d.name = d.SampleID
 	      d.abundances = domain.map(function(name) { return {name: name, abundance: +d['tax'][name]}; });
-	      // d.abundances.forEach(function(d) { d.y0 /= y0; d.y1 /= y0; });
-		  // d.total = d.abundances[d.abundances.length - 1].y1;
+		  d.total = d3.sum(d.abundances, function(a) {
+			  return a.abundance
+		  });
+		  d.abundances.forEach(function(t) { t.percent = t.abundance/d.total; });
 		  d.metadata = d['metadata']
 	    });
 		// y.domain([0, d3.max(data, function(d) { return d.total; })]);
@@ -464,7 +466,7 @@ function DonutCharts() {
   	  	          div.transition()
   	  	              .duration(200)
   	  	              .style("opacity", .9);
-  	  	          div .html(d.data.name +": "+d.data.abundance)
+  	  	          div .html(d.data.name.substring(4, d.data.name.length) +": "+(d.data.percent*100).toFixed(2)+"%")
   	  	              .style("left", (d3.event.pageX) + "px")
   	  	              .style("top", (d3.event.pageY - 28) + "px");
   	  	      })

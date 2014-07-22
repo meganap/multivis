@@ -43,7 +43,10 @@ function Scatter() {
 			.attr("class", "axisChoosers");
 		document.getElementById('axisChoosers').innerHTML = '<div id=\"legendHolder\"></div><br><div>X axis:<select id=\"Xaxis\" onchange=\"javascript:s.axisChanged()\"></select><br>Y axis:<select id=\"Yaxis\" onchange=\"javascript:s.axisChanged()\"></select></div>'
 
-		d3.select("#note").html("<br>Use the drop-down menus below to change the plot axes.")
+
+		var note = d3.select("#visWrapper").append("div")
+			.html("<br><b>Use the select menus above to change the displayed axes.</b>");
+
 
 		x = d3.scale.linear()
 		.range([0, width]);
@@ -138,10 +141,10 @@ function Scatter() {
 		for(var a in axes)
 		{
 			option=document.createElement("option")
-			option.text = axes[a]
+			option.text = 'PC ' +axes[a]
 			xAxisSelect.add(option)
 			option=document.createElement("option")
-			option.text = axes[a]
+			option.text = 'PC ' +axes[a]
 			yAxisSelect.add(option)
 		}
 
@@ -204,7 +207,7 @@ function Scatter() {
 		      .attr("x", width)
 		      .attr("y", -6)
 		      .style("text-anchor", "end")
-		      .text("Axis "+(xAxisSelect.selectedIndex+1));
+		      .text("PC "+(xAxisSelect.selectedIndex+1));
 
 		  svg.append("g")
 		      .attr("class", "y axis")
@@ -216,7 +219,7 @@ function Scatter() {
 		      .attr("y", 6)
 		      .attr("dy", ".71em")
 		      .style("text-anchor", "end")
-		      .text("Axis "+(yAxisSelect.selectedIndex+1))
+		      .text("PC "+(yAxisSelect.selectedIndex+1))
 
   		var dots = svg.selectAll(".dot")
   		     .data(plotData, function(d) { return d.uniqueID; });
