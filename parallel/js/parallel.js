@@ -13,6 +13,8 @@ function ParallelCoordinates() {
 	var rainbow = new Rainbow();
 	var color;
 	var groups = [];
+	var legendHolder;
+	var legend;
 
 	this.setData = function(root) {
 		data = root;
@@ -59,26 +61,26 @@ function ParallelCoordinates() {
 		  .color(function(d){
 		  	return '#'+rainbow.colorAt(groups.indexOf(d.colorKey || d.Individual));
 		  })
-		  .margin({ top: 70, left: 0, bottom: 40, right: 20 })
+		  .margin({ top: 70, left: 0, bottom: 40, right: 130 })
 		  .ticks(5)
 		  .render()
 		  .brushable();
 
-  		svg = d3.select("#parallelPlot").append("svg")
+  		legendHolder = d3.select("#parallelPlot").selectAll("svg").append("svg")
   		  .attr("class","parallelLegend");
   		  this.drawLegend()
 	}
 
 	this.drawLegend = function() {
-	  	   svg.selectAll(".legend").selectAll("text").remove()
-	       svg.selectAll(".legend").selectAll("rect").remove()
+	  	   legendHolder.selectAll(".legend").selectAll("text").remove()
+	  	   legendHolder.selectAll(".legend").selectAll("rect").remove()
 
-		   legend = svg.selectAll(".legend")
+		   legend = legendHolder.selectAll(".legend")
 		       .data(groups);
 
 		   legend.enter().append("g")
 		       .attr("class", "legend")
-		       .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+		       .attr("transform", function(d, i) { return "translate(-90," + ((i * 20)+50) + ")"; });
 
 		   legend.append("rect")
 		       .attr("x", 700 + 66)
