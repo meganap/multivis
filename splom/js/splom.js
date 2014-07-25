@@ -33,6 +33,8 @@ function Splom() {
 	var axes;
 	var values;
 	var rainbow = new Rainbow();
+	var legendHolder;
+	var legend;
 
 	this.setData = function(root) {
 		data = root;
@@ -171,19 +173,19 @@ function Splom() {
 		        .attr("dy", ".71em")
 		        .text(function(d) { return 'Axis ' + d.x + ' × Axis ' + d.y;; });
 
-  		  legend = d3.select("#splom").append("svg")
+  		  legendHolder = d3.select("#splom").selectAll("svg").append("svg")
   		  	.attr("class","splomLegend");
   		  this.drawLegend()
 
 	}
 
 	this.drawLegend = function() {
-	   legend = legend.selectAll(".legend")
+	   legend = legendHolder.selectAll(".legend")
 	       .data(groups);
 
 	   legend.enter().append("g")
 	       .attr("class", "legend")
-	       .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+	       .attr("transform", function(d, i) { return "translate(10," + ((i * 20) +50) + ")"; });
 
 	   legend.append("rect")
 	       .attr("x", width - 24)

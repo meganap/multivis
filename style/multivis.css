@@ -95,11 +95,7 @@ div#plot canvas {
 	margin-left: 60px;
 }
 
-.splomLegend {
-	position: absolute;
-	top: 60px;
-	left: 250px;
-	height: 100px;
+svg .splomLegend {
 }
 
 .parallelLegend {
