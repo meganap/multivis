@@ -1,9 +1,14 @@
 <?php
 $visType = $_POST['visType'];
+$hasWebGL = $_POST['hasWebGl'];
 $file = 'log/' . $visType . '.txt';
 $current = fopen($file, "r");
 
-$availableIDArray = [[0,1,2], [0,1,2], [0,1,2,3]];
+if($hasWebGL)
+	$availableIDArray = [[0,1,2], [0,1,2], [0,1,2,3]];
+else
+	$availableIDArray = [[0,1,2], [0,1,2], [0,1,2]];
+
 $availableIDs = $availableIDArray[$visType];
 $visCounts = [];
 
