@@ -106,7 +106,6 @@ function ThreeD() {
 			  .attr("id", "axislabels")
 			  .attr("class", "axislabels");
 
-
 	  		var note = d3.select("#plot").append("div")
 	  			.attr("id","note")
 	  			.html("Click and drag on the plot to change the view.");
@@ -355,7 +354,7 @@ function ThreeD() {
 				camera.matrixWorldInverse );
 			screenPosition.applyProjection(screenProjectionMatrix);
 			return { x: (screenPosition.x + 1)*jqdiv.width()/2 + jqdiv.offset().left,
-				y: (-screenPosition.y+1)*jqdiv.height()/2 + jqdiv.offset().top};
+				y: (-screenPosition.y + 1)*jqdiv.height()/2 + jqdiv.offset().top};
 		}
 
 		// Taken from http://stackoverflow.com/questions/18082/validate-numbers-in-javascript-isnumeric

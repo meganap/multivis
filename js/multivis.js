@@ -65,7 +65,7 @@ function buildSurvey() {
 				newURL += urlPieces[i]+'/'
 
 			newURL +='?src='+urlParams['src']+'&u='+urlParams['u']+'&ids='
-			console.log(newURL)
+			// console.log(newURL)
 			for(var i in oldIDs)
 			{
 				availableVisTypes.splice(availableVisTypes.indexOf(oldIDs[i][0]),1) //remove the old visType so we don't show it again
