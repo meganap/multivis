@@ -10,8 +10,6 @@ function Splom() {
 	/*global vars*/
 	var data;
 	var compData;
-	// var rainbow = new Rainbow();
-	// var color;
 	// Size parameters.
     var size = 125,
         padding = 10,

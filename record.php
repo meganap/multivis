@@ -73,6 +73,7 @@ $b = browser();
 $os = getOS();
 $src = $_POST['src'];
 
+// build log line with user ID, visualization ID, date, browser:browser version, operating system and source
 $line = "\n" . $id . "\t" .  $visID . "\t" . $date . "\t" . $b[0] . ":" . $b[1] . "\t" . $os . "\t" . $src;
 
 if($_POST['consent']) // consent given

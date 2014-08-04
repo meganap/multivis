@@ -69,17 +69,13 @@ div#plot {
 	font: 10px sans-serif;
 	width: 600px;
 	min-width: 70%;
-/*	float: left;*/
-/*	overflow: scroll;*/
 	height: 90%;
-/*	padding-top: 2em;*/
 	margin:0 auto;
 	position: relative;
 }
 
 div#plot svg {
 	display: block;
-/*	margin:0 auto;*/
 }
 
 div#parallelPlotWrapper svg{

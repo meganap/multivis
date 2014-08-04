@@ -32,12 +32,6 @@ function Sunburst(jsonPath) {
 	var totalSize = 0;
 
 	this.initSunburst = function() {
-		// this.initializeBreadcrumbTrail();
-
-		// labelDiv = d3.select("#visWrapper").append("div")
-		// .attr("class", "tooltip")
-		// .style("opacity", 0);
-
 		x = d3.scale.linear().range([0, 2 * Math.PI]);
 		y = d3.scale.pow().exponent(1.3).domain([0, 1]).range([0, radius]);
 
@@ -57,8 +51,6 @@ function Sunburst(jsonPath) {
 		   .value(function(d) { return d.length; });
 
 		this.arc()
-
-		// rainbow1.setSpectrum('red','blue')
 
 		d3.json(jsonPath, function(root) {
 			 var nodes = partition.nodes(root);

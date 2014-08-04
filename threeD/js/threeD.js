@@ -263,12 +263,6 @@ function ThreeD() {
 		}
 
 		function drawAxisLines() {
-			// removing axes, if they do not exist the scene doesn't complain
-			// g_mainScene.remove(g_xAxisLine);
-			// g_mainScene.remove(g_yAxisLine);
-			// g_mainScene.remove(g_zAxisLine);
-
-
 			// one line for each of the axes
 			g_xAxisLine = makeLine([g_xMinimumValue, g_yMinimumValue, g_zMinimumValue],
 				[g_xMaximumValue, g_yMinimumValue, g_zMinimumValue], '0x000000', 3);
