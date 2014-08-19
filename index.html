@@ -56,29 +56,17 @@
 	<div id="surveyWrapper">
 		<div id="visWrapper">
 		</div>
+		<div id="surveyNote">
+			Please <b>scroll inside the survey area below</b> to answer all available questions. When you are finished click the "done" button.
+			<br>If you have any questions or need help, please contact us at <a href="mailto:cuvissurvey@gmail.com"> cuvissurvey@gmail.com</a>.
+		</div>
 		<div id="survey">
 		</div>
-	</div>
-	<div id="help">
-		<p>If you have any questions or need help, please contact us at <a href="mailto:cuvissurvey@gmail.com"> cuvissurvey@gmail.com</a>.</p>
-	</div>
-	<div id="dialog-confirm" title="Notice">
-	  <p style="font-size: 10pt; margin: 0; text-align: left;">This survey has <b>multiple questions</b>. The survey is positioned and scaled so that you can answer each question while still viewing the visualization.<br /><b>Please scroll down within the question area to answer all questions.</b></p>
 	</div>
 
 	<script>
 		window.onbeforeunload = function() { return "Please do not refresh or go backward in the survey."; };
 		buildSurvey()
-	    $( "#dialog-confirm" ).dialog({
-	      resizable: false,
-	      height:250,
-	      modal: true,
-	      buttons: {
-	        "Continue": function() {
-	          $( this ).dialog( "close" );
-	        }
-	      }
-	    });
 	</script>
 </div>
 </body>
