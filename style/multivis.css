@@ -48,6 +48,7 @@ div#surveyWrapper {
 	width: 800px;
 	border: 1px solid black;
 	border-radius: 10px;
+	overflow: auto;
 }
 
 div#consentWrapper {

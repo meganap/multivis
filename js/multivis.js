@@ -37,7 +37,7 @@ var allFuns = [ sunburst, rectangularTree, radialTree, normStackedBar, area, don
 
 var surveyStart = "<div id=\"surveyMonkeyInfo\" style=\"width:800px;font-size:10px;color:#666;\"><div><iframe id=\"sm_e_s\" src=\"http://www.surveymonkey.com/s/"
 var surveyIDs = ['FLMWHYQ?c=','FLZ9N9J?c=','FVVSD3C?c='] //surveymonkey IDs for abundance, phylogeny and multidim surveys, respectively
-var surveyEnd = "\" width=\"800\" height=\"300\" style=\"border:0px;padding-bottom:4px;\" frameborder=\"0\" allowtransparency=\"true\" ></iframe></div></div>"
+var surveyEnd = "\" width=\"800\" height=\"100%\" style=\"border:0px;padding-bottom:4px;\" frameborder=\"0\" allowtransparency=\"true\" ></iframe></div></div>"
 
 var newURL = '';
 
