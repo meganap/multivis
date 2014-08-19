@@ -13,7 +13,7 @@ if(! flock($current, LOCK_EX))
 $data = file_get_contents($file);
 $lines = preg_split('/[\n]/', $data);
 // create a new ID which is a hash of some values so that IDs do not intersect
-echo hash('adler32', sizeof($lines)+$_POST['url']+$date);
+echo hash('adler32', sizeof($lines)+$_POST['url']+$date+rand(0, sizeof($lines)+50));
 flock($current, LOCK_UN);
 fclose($current);
 ?>

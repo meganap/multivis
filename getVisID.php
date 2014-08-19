@@ -1,15 +1,15 @@
 <?php
 $visType = $_POST['visType'];
-$hasWebGL = $_POST['hasWebGl'];
+// $hasWebGL = $_POST['hasWebGl'];
 // get the log file for the current visType
 $file = 'log/' . $visType . '.txt';
 $current = fopen($file, "r");
 
 // if the user doesn't have webGL the 3d plot is not available to choose from
-if($hasWebGL)
+// if($hasWebGL)
 	$availableIDArray = [[0,1,2], [0,1,2], [0,1,2,3]];
-else
-	$availableIDArray = [[0,1,2], [0,1,2], [0,1,2]];
+// else
+	// $availableIDArray = [[0,1,2], [0,1,2], [0,1,2]];
 
 // already got the visType from the javascript, choose the available IDs array that corresponds to that visType
 $availableIDs = $availableIDArray[$visType];

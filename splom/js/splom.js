@@ -41,7 +41,7 @@ function Splom() {
 
 	this.initSplom = function() {
 		width = 600;
-		height = 600;
+		height = 525;
 
 		document.getElementById('plot').innerHTML = '<div id="splom" class="splom"></div>'
 

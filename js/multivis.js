@@ -88,13 +88,17 @@ function buildSurvey() {
 
 			/* get new visID based on percentages of visIDs already seen using PHP
 			if the user doesn't have webGL we can't choose the 3d plot*/
-			$.post("getVisID.php", { visType: visType, hasWebGl: (webgl_support() != false) })
+			$.post("getVisID.php", { visType: visType, hasWebGl: (webgl_support() != null) })
 			    .done(function( data ) {
 					// try to get visID from the returned value from PHP
 					visID = parseInt(data);
 					// if it doesn't give us a valid ID, just choose randomly
 					if(isNaN(visID))
 						visID = Math.floor((Math.random()*visFuns[visType].length));
+
+					if(visType == 2 && visID == 3 && (webgl_support() == null))
+						visID = Math.floor((Math.random()*visFuns[visType].length-1));
+
 					buildPage(visID);
 			     });
 
@@ -137,13 +141,18 @@ function buildSurveyHTML(visID) {
 	return surveyStart + surveyID + surveyEnd
 }
 
-/* this function calls a PHP function to log info about the survey that was just taken and shows the user
-the next survey*/
-function nextSurvey() {
-	 $.post("record.php", { vis: true, visID: visID, visType: visType, id: urlParams['u'], src: urlParams['src']})
-	 .done(function(data) {
-	 	window.open(newURL, '_self');
-	 });
+// next button clicked inside iframe, need to get all the vars from the parent window to send to the next survey
+function triggerNextSurvey() {
+	window.parent.onbeforeunload = null;
+	newURL = window.parent.newURL;
+	visID = window.parent.visID;
+	visType = window.parent.visType;
+	urlParams['u'] = window.parent.urlParams['u'];
+	urlParams['src'] = window.parent.urlParams['src'];
+	$.post("record.php", { vis: true, visID: visID, visType: visType, id: urlParams['u'], src: urlParams['src']})
+	.done(function(data) {
+		window.parent.open(newURL, '_self');
+	});
 }
 
 /* from http://stackoverflow.com/questions/11871077/proper-way-to-detect-webgl-support */
@@ -171,6 +180,8 @@ function rectangularTree() {
 	d3.select("#visWrapper").append("div")
 		.attr("id", "plot");
 
+	document.getElementById("visWrapper").style.height = "600px";
+
 	// for some reason the Newick.parse didn't like when I had this in a file so it is hard coded for this particular application
 	var newick = Newick.parse("((Taxon6:0.020,(Taxon7:0.076,Taxon8:0.093):0.011):0.015,(Taxon1:0.011,(Taxon2:0.032,(Taxon3:0.030,(Taxon4:0.014,Taxon5:0.050):.001):0.006):0.017):0.016);")
     var newickNodes = []
@@ -194,6 +205,8 @@ function radialTree() {
 	d3.select("#visWrapper").selectAll("div").remove()//get rid of old plots
 	d3.select("#visWrapper").append("div")
 		.attr("id", "plot");
+
+	document.getElementById("visWrapper").style.height = "750px";
 
 	// for some reason the Newick.parse didn't like when I had this in a file so it is hard coded for this particular application
 	var newick = Newick.parse("((Taxon6:0.020,(Taxon7:0.076,Taxon8:0.093):0.011):0.015,(Taxon1:0.011,(Taxon2:0.032,(Taxon3:0.030,(Taxon4:0.014,Taxon5:0.050):.001):0.006):0.017):0.016);")
@@ -224,6 +237,7 @@ function normStackedBar() {
 /* this function builds the donut visualization */
 function donuts() {
 	s = new DonutCharts()
+		document.getElementById("visWrapper").style.height = "500px";
 	d3.select("#visWrapper").html("<div id=\"yaxisholder\"></div><div id=\"donutplot\"></div>")
 	initAbundance()
 }
@@ -277,6 +291,7 @@ function initMultiDim() {
 	d3.select("#visWrapper").append("div")
 		.attr("id", "plot")
 		.attr("class", "plot");
+	document.getElementById("visWrapper").style.height = "500px";
 
 	// the toggle is used to change the coloring of the multidimensional visualizations
 	d3.select("#visWrapper").append("div")

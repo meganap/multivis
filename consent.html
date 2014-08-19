@@ -37,7 +37,7 @@
 			<p>You are being asked to participate in this research study in order to gather information about visualizations of microbial ecology data. This will help inform researchers on the appropriate visualizations to use for microbial ecology data when presenting to public or scientific audiences.</p>
 <p>If you join the study you will be asked quantitative questions about a visual representation of microbial ecology data. This study is designed to learn which visualizations help public and scientific audiences understand microbial ecology data. Possible discomforts include the time taken to answer the survey questions and possible loss of confidentiality of the questionnaire score. Participants are seeing de-identified selected microbial ecology data. There may also be risks that the researchers have not anticipated.</p>
 <p>Your responses will be collected anonymously and cannot be tied back to you unless you choose to provide personally identifying information. The researchers will develop reports and publications based on the data from participants but the results will not be linked back to any personally identifying participant information. All data will be stored in a secure data repository.</p>
-<p>If you agree to join the study, please check the “I have read and understand the consent form” checkbox and click “Begin Survey” to continue. You may decline to continue participation at any time. If you do not wish to participate, please close this window.</p>
+<p>The study consists of three visualization surveys and an optional demographic survey. It will take about 15 minutes to complete all surveys. If you agree to join the study, please check the “I have read and understand the consent form” checkbox and click “next” to continue. You may decline to continue participation at any time. If you do not wish to participate, please close this window.</p>
 <p>If you have any questions about this consent form or the research project, please contact us at <a href="mailto:cuvissurvey@gmail.com"> cuvissurvey@gmail.com</a>.</p>
 <br>
 			<div id="consentForm">
@@ -53,7 +53,7 @@
 		</div>
 	</div>
 	<script>
-	/* from http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript */
+		/* from http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript */
 		var urlParams;
 		(window.onpopstate = function () {
 		    var match,
@@ -66,6 +66,7 @@
 		    while (match = search.exec(query))
 		       urlParams[decode(match[1])] = decode(match[2]);
 		})();
+		/* end stackoverflow code */
 
 		$( "#consentCheckbox" ).checked = false;
 		$( "#submit" ).prop('disabled', true)

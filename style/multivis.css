@@ -37,8 +37,9 @@ div#wrapper {
 div#visWrapper {
 	background-color: #f5f5f5;
 	width: 800px;
-	height: 650px;
+/*	height: 550px;*/
 	border-radius: 10px;
+	padding-bottom: 30px;
 }
 
 div#surveyWrapper {

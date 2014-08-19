@@ -55,7 +55,7 @@ function AreaChart() {
 		.orient("left")
 		.tickFormat(d3.format(".0%"));
 
-		div = d3.select("#plot").append("div")
+		div = d3.select("#visWrapper").append("div")
 		.attr("class", "tooltip")
 		.style("opacity", 0);
 
