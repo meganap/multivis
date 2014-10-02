@@ -15,4 +15,11 @@
 </head>
 <body>
 <input id="nextSurvey" type="button" value="Please click this button to continue to the next survey." onClick="triggerNextSurvey()">
+<script>
+var oldIDs = []
+// if this is the initial survey there will not be any old ids
+if(window.parent.urlParams['ids'])
+	oldIDs = window.parent.urlParams['ids'].split('_')
+document.getElementById("nextSurvey").value = "You have completed survey " + (oldIDs.length + 1) + " of 4. Please click this button to proceed to the next survey.";
+</script>
 </body>

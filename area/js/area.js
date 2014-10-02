@@ -82,7 +82,7 @@ function AreaChart() {
 
 		vis = d3.select("#plot")
 		svg = vis.append("svg")
-		    .attr("width", width + margin.right)
+		    .attr("width", 690)
 		    .attr("height", 465)
 		    .attr("id", "chart")
 		  .append("g")

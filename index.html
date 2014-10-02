@@ -56,8 +56,46 @@
 	<div id="surveyWrapper">
 		<div id="visWrapper">
 		</div>
+		<div id="abundanceNote" class="plotNote">
+			The above plot is interactive. Hover over plot elements to see more information.
+		</div>
+		<div id="threeDnote" class="plotNote">
+			The above plot is interactive. Click and drag to rotate the plot. Scroll up and down to zoom in and out.
+		</div>
+		<div id="abundanceDefs" class="defNote">
+			<h3>Definitions</h3>
+			<div>
+				<ul>
+					<li>A <b>taxon</b> is group or category of living organisms linked by common ancestry.</li>
+					<li>Increased <b>diversity</b> is a larger difference in both number and abundance of present organisms within a sample.</li>
+					<li>Two groups are <b>similar</b> if they are similar in both abundance and type of present organisms.</li>
+				</ul>
+			</div>
+		</div>
+		<div id="phylogenyDefs" class="defNote">
+			<h3>Definitions</h3>
+			<div>
+				<ul>
+					<li>A <b>phylogeny</b> is an inferred evolutionary relationship between organisms.</li>
+					<li>A <b>phylogenetic tree</b> is a visual representation of the inferred evolutionary relationships between organisms.</li>
+					<li><b>Closely related</b> in terms of phylogeny means that organisms are closer to each other in evolutionary time.</li>
+					<li><b>Branch length</b> is a representation of evolutionary time. A longer branch length means that the organism has not changed for a longer evolutionary time.</li>
+					<li><b>Depth</b> refers to the number of ancestors that a particular organism has. An organism with many ancestors has many changes throughout evolutionary time.</li>
+				</ul>
+			</div>
+		</div>
+		<div id="multidimDefs" class="defNote">
+			<h3>Definitions</h3>
+			<div>
+				<ul>
+					<li>A <b>principal coordinate</b> is a numerical representation that describes the similarity of points. It is often mapped to an axis in a visual representation. The first principle coordinate describes the most difference between points.</li>
+					<li><b>Spread</b> in principal coordinate space refers to the closeness of points. If the points have more spread, the farther they are away from each other in space.</li>
+					<li>If two points are closer to each other in space then their communities are <b>closely related/similar</b>.</li>
+				</ul>
+			</div>
+		</div>
 		<div id="surveyNote">
-			Please <b>scroll inside the survey area below</b> to answer all available questions. When you are finished click the "done" button.
+			Please <b>scroll inside the survey area below</b> to answer all 10 questions. When you are finished click the "done" button.
 			<br>If you have any questions or need help, please contact us at <a href="mailto:cuvissurvey@gmail.com"> cuvissurvey@gmail.com</a>.
 		</div>
 		<div id="survey">
@@ -66,6 +104,25 @@
 
 	<script>
 		window.onbeforeunload = function() { return "Please do not refresh or go backward in the survey."; };
+
+	    $(function() {
+	      $( "#abundanceDefs" ).accordion({
+	        collapsible: true
+	      });
+	    });
+
+	    $(function() {
+	      $( "#phylogenyDefs" ).accordion({
+	        collapsible: true
+	      });
+	    });
+
+	    $(function() {
+	      $( "#multidimDefs" ).accordion({
+	        collapsible: true
+	      });
+	    });
+
 		buildSurvey()
 	</script>
 </div>

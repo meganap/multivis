@@ -52,6 +52,7 @@ div#surveyWrapper {
 }
 
 div#consentWrapper {
+	font-size: 12pt;
 	padding: 20px;
 	float: left;
 	width: 800px;
@@ -115,6 +116,17 @@ svg .splomLegend {
 	font-weight: bold;
 	padding: 1em 1em;
 	z-index: 3;
+}
+
+.plotNote {
+	display: none;
+	padding: .5em 0;
+	text-align: center;
+	background-color: #cfc;
+}
+
+.defNote {
+	display: none;
 }
 
 div#colorBy {

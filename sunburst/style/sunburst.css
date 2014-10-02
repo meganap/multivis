@@ -1,13 +1,13 @@
 #sunburst {
   stroke: #fff;
   stroke-width: 1;
-  cursor: pointer;
+/*  cursor: pointer;*/
 }
 
 path {
 /*  stroke: #fff;*/
   stroke-width: 1;
- cursor: pointer;
+/* cursor: pointer;*/
 }
 
 text {

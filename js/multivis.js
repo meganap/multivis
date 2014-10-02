@@ -37,7 +37,7 @@ var allFuns = [ sunburst, rectangularTree, radialTree, normStackedBar, area, don
 
 var surveyStart = "<div id=\"surveyMonkeyInfo\" style=\"width:800px;font-size:10px;color:#666;\"><div><iframe id=\"sm_e_s\" src=\"http://www.surveymonkey.com/s/"
 var surveyIDs = ['FLMWHYQ?c=','FLZ9N9J?c=','FVVSD3C?c='] //surveymonkey IDs for abundance, phylogeny and multidim surveys, respectively
-var surveyEnd = "\" width=\"800\" height=\"100%\" style=\"border:0px;padding-bottom:4px;\" frameborder=\"0\" allowtransparency=\"true\" ></iframe></div></div>"
+var surveyEnd = '';
 
 var newURL = '';
 
@@ -96,8 +96,30 @@ function buildSurvey() {
 					if(isNaN(visID))
 						visID = Math.floor((Math.random()*visFuns[visType].length));
 
-					if(visType == 2 && visID == 3 && (webgl_support() == null))
-						visID = Math.floor((Math.random()*visFuns[visType].length-1));
+					if(visType == 2)
+					{
+						document.getElementById("multidimDefs").style.display = "block"
+						 $( "#multidimDefs" ).accordion("refresh");
+
+						if(visID == 3 && (webgl_support() == null))
+							visID = Math.floor((Math.random()*visFuns[visType].length-1));
+
+						if(visID == 3 && (webgl_support()))
+							document.getElementById("threeDnote").style.display = "block"
+					}
+
+					if(visType == 1)
+					{
+						document.getElementById("phylogenyDefs").style.display = "block"
+						 $( "#phylogenyDefs" ).accordion("refresh");
+					}
+
+					if(visType == 0)
+					{
+						document.getElementById("abundanceNote").style.display = "block"
+						document.getElementById("abundanceDefs").style.display = "block"
+				  	      $( "#abundanceDefs" ).accordion("refresh");
+					}
 
 					buildPage(visID);
 			     });
@@ -105,9 +127,11 @@ function buildSurvey() {
 		}
 		else // user HAS seen all 3 surveys and now needs to do demographic questions
 		{
+			window.onbeforeunload = null;
 			$("#visWrapper").remove()
 			$("#nextSurvey").remove()
 			$("#dialog-confirm").remove()
+			$("#surveyNote").remove()
 			var surveyHTML = surveyStart + 'FVDKBJX?c=' +"\" width=\"800\" height=\"1347\" style=\"border:0px;padding-bottom:4px;\" frameborder=\"0\" allowtransparency=\"true\" ></iframe></div></div>"
 			document.getElementById('survey').innerHTML = surveyHTML
 		}
@@ -118,27 +142,26 @@ function buildSurvey() {
 function buildPage(id) {
 	visID = id
 
+	// call fuction to build visualization
+	visFuns[visType][visID]();
+
 	// build surveymonkey custom URL
 	var surveyID = surveyIDs[visType]+urlParams['u']+"_"+urlParams['src']+"_"+visType+visID
+
+	// try and figure out optimal survey height, minimum survey height is 200px
+	var surveyHeight = Math.max(($(window).height() - Math.max($('#visWrapper').height(), 550)), 200)
+	surveyEnd = "\" width=\"800\" height=\""+surveyHeight+"\" style=\"border:0px;padding-bottom:4px;\" frameborder=\"0\" allowtransparency=\"true\" ></iframe></div></div>"
+
 	var surveyHTML = surveyStart + surveyID + surveyEnd
 	document.getElementById('survey').innerHTML = surveyHTML
 
 	// build URL for next survey while keeping track of the current survey
 	newURL += visType+''+visID
-
-	// call fuction to build visualization
-	visFuns[visType][visID]();
 }
 
 /* this function calls a PHP function to log relevant info about the survey that was taken */
 function log(i, t) {
  $.post("record.php", { vis: true, visID: i, visType: t, id: urlParams['u'], src: urlParams['src']});
-}
-
-/* this function builds the URL for the surveymonkey iframe */
-function buildSurveyHTML(visID) {
-	var surveyID = urlParams['id']+"_"+urlParams['src']+"_1"+visID
-	return surveyStart + surveyID + surveyEnd
 }
 
 // next button clicked inside iframe, need to get all the vars from the parent window to send to the next survey
@@ -168,7 +191,7 @@ function webgl_support() {
 /* this funciton builds the sunburst visualization */
 function sunburst() {
 	s = new Sunburst("data/keyboard_mini.json")
-	d3.select("#visWrapper").selectAll("div").remove()//get rid of old plots
+	document.getElementById("visWrapper").style.height = "480px";
 	d3.select("#visWrapper").append("div")
 		.attr("id", "plot");
 	s.initSunburst()
@@ -180,7 +203,7 @@ function rectangularTree() {
 	d3.select("#visWrapper").append("div")
 		.attr("id", "plot");
 
-	document.getElementById("visWrapper").style.height = "600px";
+	document.getElementById("visWrapper").style.height = "500px";
 
 	// for some reason the Newick.parse didn't like when I had this in a file so it is hard coded for this particular application
 	var newick = Newick.parse("((Taxon6:0.020,(Taxon7:0.076,Taxon8:0.093):0.011):0.015,(Taxon1:0.011,(Taxon2:0.032,(Taxon3:0.030,(Taxon4:0.014,Taxon5:0.050):.001):0.006):0.017):0.016);")
@@ -206,7 +229,7 @@ function radialTree() {
 	d3.select("#visWrapper").append("div")
 		.attr("id", "plot");
 
-	document.getElementById("visWrapper").style.height = "750px";
+	document.getElementById("visWrapper").style.height = "600px";
 
 	// for some reason the Newick.parse didn't like when I had this in a file so it is hard coded for this particular application
 	var newick = Newick.parse("((Taxon6:0.020,(Taxon7:0.076,Taxon8:0.093):0.011):0.015,(Taxon1:0.011,(Taxon2:0.032,(Taxon3:0.030,(Taxon4:0.014,Taxon5:0.050):.001):0.006):0.017):0.016);")
@@ -237,7 +260,7 @@ function normStackedBar() {
 /* this function builds the donut visualization */
 function donuts() {
 	s = new DonutCharts()
-		document.getElementById("visWrapper").style.height = "500px";
+		document.getElementById("visWrapper").style.height = "440px";
 	d3.select("#visWrapper").html("<div id=\"yaxisholder\"></div><div id=\"donutplot\"></div>")
 	initAbundance()
 }

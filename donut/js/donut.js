@@ -189,7 +189,7 @@ function DonutCharts() {
 		var legend = legendHolder.append("svg")
 		      .attr("class", "legend")
 		      .attr("width", 200)
-		      .attr("height", 520)
+		      .attr("height", 450)
 		    .selectAll("g")
 		      .data(d3.keys(data[d3.keys(donutplotdata)[0]]['tax']).slice().reverse())
 		    .enter().append("g")

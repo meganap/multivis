@@ -241,14 +241,14 @@ function Splom() {
 	    svg.selectAll(".cell circle").attr("class", function(d) {
 	      return e[0][0] <= d[p.x] && d[p.x] <= e[1][0]
 	          && e[0][1] <= d[p.y] && d[p.y] <= e[1][1]
-	          ? d.Individual : null;
+	          ? d.colorKey : null;
 	    });
 	  }
 
 	  // If the brush is empty, select all circles.
 	  function brushend()  {
 	    if (brush.empty()) svg.selectAll(".cell circle").attr("class", function(d) {
-		  return d.Individual;
+		  return d.colorKey;
 	    });
 	  }
 

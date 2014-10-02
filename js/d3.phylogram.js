@@ -305,10 +305,10 @@ if (!d3) { throw "d3 wasn't included!"};
         labelWidth = options.skipLabels ? 10 : options.labelWidth || 300;
 
     var vis = d3.select(selector).append("svg:svg")
-        .attr("width", w + labelWidth)
-        .attr("height", w + labelWidth)
+        .attr("width", w + 235)
+        .attr("height", w + 180)
       .append("svg:g")
-        .attr("transform", "translate(" + (r-55 + labelWidth/2) + "," + (r-50 + labelWidth/2) + ")");
+        .attr("transform", "translate(" + (r-60 + labelWidth/2) + "," + (r-50 + labelWidth/2) + ")");
 
     var tree = d3.layout.tree()
       .size([360, r])

@@ -17,9 +17,9 @@ function Sunburst(jsonPath) {
 	var y;
 
 	var width = 600,
-	    height = width,
-	    padding = 5,
-	    radius = (Math.min(width, height))/ 2;
+	    height = 500,
+	    padding = 0,
+	    radius = width / 2;
 	var arc;
 	var path;
 	var root;
@@ -37,15 +37,11 @@ function Sunburst(jsonPath) {
 
 		var div = d3.select("#plot")
 
-		var note = div.append("div")
-			.attr("id","note")
-			.html("<br><b>Hover over arcs to see branch length.</b>");
-
 		var svg = div.append("svg")
 		    .attr("width", width)
 		    .attr("height", height)
 		    .append("g")
-		    .attr("transform", "translate(" + [radius + padding, radius + padding] + ")");
+		    .attr("transform", "translate(" + [radius + padding, (radius - 100) + padding] + ")");
 
 		var partition = d3.layout.partition()
 		   .value(function(d) { return d.length; });
@@ -69,13 +65,7 @@ function Sunburst(jsonPath) {
 					 	return "#AAA";
 					 else
 					 	return "#3182bd";
-			     })
-  				 .on("mouseover", function(d, event){
-					 this.style['opacity'] = .6;
-					 })
-  				 .on("mouseout", function(d){
-					 this.style['opacity'] = 1;
-				 });
+			     });
 
 			     var text = svg.selectAll("text").data(nodes);
 			     var textEnter = text.enter().append("text")
