@@ -52,6 +52,7 @@ function buildSurvey() {
 	// if you supply a url with &admin=## at the end the user can choose which visualization to show
 	if(urlParams['admin'])
 	{
+		window.onbeforeunload = null;
 		visType = urlParams['admin'][0]
 		visID =  urlParams['admin'][1]
 		$("#dialog-confirm").remove()
@@ -132,8 +133,9 @@ function buildSurvey() {
 			$("#nextSurvey").remove()
 			$("#dialog-confirm").remove()
 			$("#surveyNote").remove()
-			var surveyHTML = surveyStart + 'FVDKBJX?c=' +"\" width=\"800\" height=\"1347\" style=\"border:0px;padding-bottom:4px;\" frameborder=\"0\" allowtransparency=\"true\" ></iframe></div></div>"
+			var surveyHTML = surveyStart + 'FVDKBJX?c='+urlParams['u']+"\" width=\"800\" height=\"1347\" style=\"border:0px;padding-bottom:4px;\" frameborder=\"0\" allowtransparency=\"true\" ></iframe></div></div>"
 			document.getElementById('survey').innerHTML = surveyHTML
+			console.log(surveyHTML)
 		}
 	}
 }
@@ -149,7 +151,7 @@ function buildPage(id) {
 	var surveyID = surveyIDs[visType]+urlParams['u']+"_"+urlParams['src']+"_"+visType+visID
 
 	// try and figure out optimal survey height, minimum survey height is 200px
-	var surveyHeight = Math.max(($(window).height() - Math.max($('#visWrapper').height(), 550)), 200)
+	var surveyHeight = Math.max(($(window).height() - Math.max($('#visWrapper').height(), 550)) - $('.defNote').height() - $('#surveyNote').height(), 200)
 	surveyEnd = "\" width=\"800\" height=\""+surveyHeight+"\" style=\"border:0px;padding-bottom:4px;\" frameborder=\"0\" allowtransparency=\"true\" ></iframe></div></div>"
 
 	var surveyHTML = surveyStart + surveyID + surveyEnd

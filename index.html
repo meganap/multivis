@@ -11,7 +11,7 @@
 <head>
 <link rel="icon" href="favicon.ico">
 <title>Visualization Survey</title>
-<link rel="stylesheet" type="text/css" href="style/multivis.css">
+<link rel="stylesheet" type="text/css" href="style/multivis.min.css">
 <link rel="stylesheet" type="text/css" href="style/abundance.css">
 <link rel="stylesheet" type="text/css" href="donut/style/donut.css">
 <link rel="stylesheet" type="text/css" href="parallel/style/parallel.css">
@@ -21,7 +21,7 @@
 <link rel="stylesheet" type="text/css" href="style/d3.parcoords.css">
 <link rel="stylesheet" type="text/css" href="sunburst/style/sunburst.css">
 <link rel="stylesheet" type="text/css" href="style/jquery-ui-1.10.4.custom.min.css">
-<script src="js/jquery-1.9.1.js"></script>
+<script src="js/jquery-1.11.1.min.js"></script>
 <script src="js/jquery-ui.js"></script>
 <script src="js/d3.v3.min.js"></script>
 <script src="js/queue.v1.min.js"></script>
@@ -38,6 +38,7 @@
 <script src="splom/js/splom.js"></script>
 <script src="scatter/js/scatter.js"></script>
 <script src="threeD/js/threeD.js"></script>
+<!-- <script src="js/min/multivis-min.js"></script> -->
 <script src="js/multivis.js"></script>
 <noscript>
     <style type="text/css">
@@ -63,39 +64,45 @@
 			The above plot is interactive. Click and drag to rotate the plot. Scroll up and down to zoom in and out.
 		</div>
 		<div id="abundanceDefs" class="defNote">
-			<h3>Definitions</h3>
+			<h3>Definitions (defined terms in the survey questions are indicated by a <b>*</b>)</h3>
 			<div>
 				<ul>
+					<li>A <b>sample</b> refers to one physical sample that was taken from an individual. A sample contains a unique community of microbes.</li>
+					<li>An <b>individual</b> refers to a human or animal from which one or multiple samples were taken.</li>
 					<li>A <b>taxon</b> is group or category of living organisms linked by common ancestry.</li>
-					<li>Increased <b>diversity</b> is a larger difference in both number and abundance of present organisms within a sample.</li>
+					<li><b>Diversity</b> reflects the number of distinct organisms in a sample, as well as how equally abundant those organisms are.  A highly diverse sample will be one with many organisms, no single one of which dominates in abundance.</li>
 					<li>Two groups are <b>similar</b> if they are similar in both abundance and type of present organisms.</li>
 				</ul>
 			</div>
 		</div>
 		<div id="phylogenyDefs" class="defNote">
-			<h3>Definitions</h3>
+			<h3>Definitions (defined terms in the survey questions are indicated by a <b>*</b>)</h3>
 			<div>
 				<ul>
+					<li>A <b>sample</b> refers to one physical sample that was taken from an individual. A sample contains a unique community of microbes.</li>
+					<li>An <b>individual</b> refers to a human or animal from which one or multiple samples were taken.</li>
 					<li>A <b>phylogeny</b> is an inferred evolutionary relationship between organisms.</li>
 					<li>A <b>phylogenetic tree</b> is a visual representation of the inferred evolutionary relationships between organisms.</li>
+					<li><b>Branch length</b> is a representation of evolutionary time. Long branch length between organisms means that there has been a long time since those organisms diverged from a common ancestor. As an example, humans have a more recent common ancestor with a chimp than with a dog, and so the human and the dog would be separated by more branch length on a phylogenetic tree.</li>
 					<li><b>Closely related</b> in terms of phylogeny means that organisms are closer to each other in evolutionary time.</li>
-					<li><b>Branch length</b> is a representation of evolutionary time. A longer branch length means that the organism has not changed for a longer evolutionary time.</li>
-					<li><b>Depth</b> refers to the number of ancestors that a particular organism has. An organism with many ancestors has many changes throughout evolutionary time.</li>
+					<li><b>Depth</b> refers to the amount of evolutionary history represented by an ancestor (taxon) and all its descendants. A taxon that is deep has many changes through evolutionary time.</li>
 				</ul>
 			</div>
 		</div>
 		<div id="multidimDefs" class="defNote">
-			<h3>Definitions</h3>
+			<h3>Definitions (defined terms in the survey questions are indicated by a <b>*</b>)</h3>
 			<div>
 				<ul>
-					<li>A <b>principal coordinate</b> is a numerical representation that describes the similarity of points. It is often mapped to an axis in a visual representation. The first principle coordinate describes the most difference between points.</li>
-					<li><b>Spread</b> in principal coordinate space refers to the closeness of points. If the points have more spread, the farther they are away from each other in space.</li>
-					<li>If two points are closer to each other in space then their communities are <b>closely related/similar</b>.</li>
+					<li>A <b>sample</b> refers to one physical sample that was taken from an individual. A sample contains a unique community of microbes.</li>
+					<li>An <b>individual</b> refers to a human or animal from which one or multiple samples were taken.</li>
+					<li>A <b>principal coordinate</b> is a numerical representation that describes the similarity of samples. It is often mapped to an axis in a visual representation. The first principle coordinate describes the most difference between samples.</li>
+					<li><b>Spread</b> in principal coordinate space refers to the closeness of samples. Samples that have more spread are farther away from each other in space.</li>
+					<li>If two samples are closer to each other in space then their communities are <b>closely related/similar</b>.</li>
 				</ul>
 			</div>
 		</div>
 		<div id="surveyNote">
-			Please <b>scroll inside the survey area below</b> to answer all 10 questions. When you are finished click the "done" button.
+			Please disable all ad-blockers. <b>Scroll inside the survey area below</b> to answer all 10 questions. When you are finished click the "done" button.
 			<br>If you have any questions or need help, please contact us at <a href="mailto:cuvissurvey@gmail.com"> cuvissurvey@gmail.com</a>.
 		</div>
 		<div id="survey">
