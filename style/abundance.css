@@ -52,6 +52,10 @@ ul#key {
 	padding-left: 1em;
 }
 
+ul#key li {
+    margin-bottom: .5em;
+}
+
 .groups {
 /*	stroke: lime;*/
 }
