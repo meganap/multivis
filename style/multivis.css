@@ -55,3 +55,11 @@ h3 {
 .parallelLegend {
 	margin-top: 50px;
 }
+
+div#plot {
+	font: 10px sans-serif;
+	width: 70%;
+	float: left;
+	overflow: scroll;
+	height: 90%;
+}
