@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>multivis</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+      @import url(http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Roboto Condensed', sans-serif;
+			 }
+      h1 {
+        font-weight: 400;
+		color: #00B8D4;
+      }
+
+	  h2, h3, h4 {
+          font-weight: 300;
+		  color: #37474F;
+	  }
+
+	  a {
+		  text-decoration: none;
+	  }
+
+	  .footnote {
+	          position: absolute;
+	          bottom: 3em;
+	        }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+
+      .inverse {
+        background: #272822;
+        color: #777872;
+        text-shadow: 0 0 20px #333;
+      }
+      .inverse h1{
+        line-height: 2em;
+      }
+
+	  .inverse h2, .inverse h3, .inverse h4 {
+		  color: #f3f3f3;
+	  }
+
+	  .full-width {
+		  width: 100%;
+	  }
+
+      /* Two-column layout */
+      .left-column {
+        color: #777;
+        width: 20%;
+        height: 92%;
+        float: left;
+      }
+	  .left-column h2, .left-column h3, .left-column h4 {
+		  font-weight: 700;
+		  color: #aaa;
+	  }
+        .left-column h2:last-of-type, .left-column h3:last-child {
+          color: #000;
+		  font-weight: 700;
+        }
+      .right-column {
+        width: 72%;
+        float: right;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+name: title
+class: center, middle, inverse
+
+# multi**vis**
+### Meg Pirrung
+#### Technical Talk
+---
+name: overview-what
+layout: false
+.full-width[
+# overiew
+]
+.left-column[
+### what
+]
+.right-column[
+### multiple visualizations of the same underlying (microbial ecology) data*
+.footnote[*any .json properly formatted data]
+]
+---
+name: overview-why
+layout: false
+.full-width[
+# overiew
+]
+.left-column[
+### what
+### why
+]
+.right-column[
+### different people visualize data in different ways
+![Multiple Visualizations of the Same Data](./img/diffvis.png)
+]
+---
+name: overview-how
+layout: false
+.full-width[
+# overiew
+]
+.left-column[
+### what
+### why
+### how
+]
+.right-column[
+### to use it?
+]
+---
+class: center, middle, inverse
+## what is multivis?
+---
+class: center, middle, inverse
+## what is **multi**vis?
+???
+# multiple
+---
+class: center, middle, inverse
+## what is multi**vis**?
+???
+# visualizations of the same underlying data
+---
+name: what-tools1
+layout: false
+.full-width[
+# what is multi**vis**
+]
+.left-column[
+### .html
+]
+.right-column[
+### framing
+]
+---
+name: what-tools2
+layout: false
+.full-width[
+# what is multi**vis**
+]
+.left-column[
+### .html
+### .css
+]
+.right-column[
+### styling
+]
+---
+name: what-tools3
+layout: false
+.full-width[
+# what is multi**vis**
+]
+.left-column[
+### .html
+### .css
+### .js
+]
+.right-column[
+### heavy lifting
+### jQuery
+### d3.js
+### three.js
+]
+???
+# three.js WebGL based
+---
+name: what-tools4
+layout: false
+.full-width[
+# what is multi**vis**
+]
+.left-column[
+### .html
+### .css
+### .js
+### .php*
+]
+.right-column[
+### admin
+### logging
+### unique IDs
+.footnote[*only on surveyOption1 branch]
+]
+???
+# used for survey-based visualization research
+---
+name: what-features1
+layout: false
+.full-width[
+# multi**vis** features
+]
+.left-column[
+### compatibility
+]
+.right-column[
+### tested in major web browsers (chrome, safari, firefox, IE)
+]
+---
+name: what-features2
+layout: false
+.full-width[
+# multi**vis** features
+]
+.left-column[
+### compatibility
+### admin capabilities
+]
+.right-column[
+### admin mode for quick debugging
+.footnote[*only on surveyOption1 branch]
+]
+---
+name: what-features2
+layout: false
+.full-width[
+# multi**vis** features
+]
+.left-column[
+### compatibility
+### admin capabilities
+### survey embedding
+]
+.right-column[
+### easily embed SurveyMonkey surveys with unique ID capabilities
+]
+---
+name: what-screens1
+layout: false
+.full-width[
+# multi**vis** hierarchical data views
+]
+???
+demo
+---
+name: what-screens2
+layout: false
+.full-width[
+# multi**vis** abundance data views
+]
+???
+demo
+---
+name: what-screens3
+layout: false
+.full-width[
+# multi**vis** multi-dimensional data views
+]
+???
+demo
+---
+class: center, middle, inverse
+## why create multi**vis**?
+---
+name: why-easy1
+layout: false
+.full-width[
+# why create multi**vis**
+]
+.left-column[
+### easy
+]
+.right-column[
+### click buttons instead of re-running scripts
+]
+---
+name: why-easy2
+layout: false
+.full-width[
+# why create multi**vis**
+]
+.left-column[
+### easy
+]
+.right-column[
+### click buttons instead of re-running scripts
+### web-based, easy install
+]
+---
+name: why-modular1
+layout: false
+.full-width[
+# why create multi**vis**
+]
+.left-column[
+### easy
+### modular
+]
+.right-column[
+### written in object-oriented javascript for ease of embedding
+]
+---
+name: why-modular2
+layout: false
+.full-width[
+# why create multi**vis**
+]
+.left-column[
+### easy
+### modular
+]
+.right-column[
+### written in object-oriented javascript for ease of embedding
+### web-based scientific data visualization
+]
+---
+name: why-modular3
+layout: false
+.full-width[
+# why create multi**vis**
+]
+.left-column[
+### easy
+### modular
+]
+.right-column[
+### written in object-oriented javascript for ease of embedding
+### web-based scientific data visualization
+### survey-based visualization research
+]
+---
+class: center, middle, inverse
+## how to use multi**vis**?
+---
+class: center, middle, inverse
+## using multi**vis** for quick vis
+---
+name: how-general-resources1
+.full-width[
+# using multi**vis** for quick vis
+]
+.left-column[
+### resources
+]
+.right-column[
+### web-browser
+]
+---
+name: how-general-resources2
+.full-width[
+# using multi**vis** for quick vis
+]
+.left-column[
+### resources
+]
+.right-column[
+### web-browser
+### multivis repo
+]
+---
+name: how-general-resources3
+.full-width[
+# using multi**vis** for quick vis
+]
+.left-column[
+### resources
+]
+.right-column[
+### web-browser
+### multivis repo
+### minimal html/javascript coding
+]
+---
+name: how-general-resources4
+.full-width[
+# using multi**vis** for quick vis
+]
+.left-column[
+### resources
+]
+.right-column[
+### web-browser
+### multivis repo
+### minimal html/javascript coding
+### .json formatted dataset
+]
+---
+name: how-general-code
+.full-width[
+# using multi**vis** for quick vis
+]
+.left-column[
+### resources
+### html code
+]
+.right-column[
+```html
+<link rel="stylesheet" type="text/css"
+	href="style/multivis.css">
+<link rel="stylesheet" type="text/css"
+	href="sunburst/style/sunburst.css">
+<link rel="stylesheet" type="text/css"
+	href="style/jquery-ui-1.10.4.custom.min.css">
+
+<script src="js/min/utils-min.js"></script>
+<script src="sunburst/js/sunburst_singleplot.js"></script>
+<script src="treemap/js/treemap.js"></script>
+<script src="partition/js/partition.js"></script>
+<script src="js/multivis.js"></script>
+```
+```html
+<input type="button" value="Sunburst"
+	onclick="sunburst()"/>
+<input type="button" value="Treemap"
+	onclick="treemap()"/>
+<input type="button" value="Rectangular"
+	onclick="rectangularTree()"/>
+<input type="button" value="Radial"
+	onclick="radialTree()"/>
+<div id="visWrapper"></div>
+```
+]
+???
+demo
+---
+name: how-survey
+class: center, middle, inverse
+.full-width[
+# using multi**vis** for visualization research
+]
+---
+name: how-survey-intro1
+class: center, middle
+.full-width[
+![Different vis for Different Populations](./img/populations.png)
+]
+???
+# Need to communicate scientific research to different populations
+# Visualization is key to scientific data analysis
+# Making science understandable keeps research funded and inspires the next generation of scientists
+---
+name: how-survey-intro2
+class: center, middle
+.full-width[
+![Different vis for Different Populations](./img/populationvis.png)
+]
+???
+# visualizations familiar to scientists are not familiar to the general public
+---
+name: how-survey-intro3
+class: center, middle
+.full-width[
+### How can we figure out which visualizations are most effective?
+]
+---
+name: how-survey-intro3
+class: center, middle
+.full-width[
+## *Hypothesis:*
+# Useful and informative visualizations for scientific communication can be determined experimentally
+]
+---
+name: how-experimentaldesign
+class: center, middle
+.full-width[
+![Experimental Design](./img/expdesign1.png)
+]
+???
+same underlying data
+---
+name: how-experimentaldesign
+class: center, middle
+.full-width[
+![Experimental Design](./img/expdesign2.png)
+]
+???
+system to visualize in different ways (multivis)
+---
+name: how-experimentaldesign
+class: center, middle
+.full-width[
+![Experimental Design](./img/expdesign3.png)
+]
+???
+questions about the underlying data
+---
+name: how-experimentaldesign
+class: center, middle
+.full-width[
+![Experimental Design](./img/expdesign4.png)
+]
+???
+put the system and questions together
+---
+name: how-experimentaldesign
+class: center, middle
+.full-width[
+![Experimental Design](./img/expdesign5.png)
+]
+???
+in this web-based framework
+---
+name: how-experimentaldesign
+class: center, middle
+.full-width[
+![Experimental Design](./img/expdesign6.png)
+]
+???
+score the questions
+---
+name: how-experimentaldesign
+class: center, middle
+.full-width[
+![Experimental Design](./img/expdesign7.png)
+]
+???
+for each visualization
+---
+name: how-experimentaldesign
+class: center, middle
+.full-width[
+![Experimental Design](./img/expdesign8.png)
+]
+???
+average performance score in certain populations surveyed
+---
+name: how-survey-resources
+layout: false
+.full-width[
+# using multi**vis** for visualization research
+]
+.left-column[
+### resources
+]
+.right-column[
+### html/javascript coding
+### .json formatted dataset
+### SurveyMonkey survey
+]
+???
+any embedable online survey system
+---
+name: how-survey
+class: center, middle
+.full-width[
+![Survey Screenshot](./img/surveyscreenshot.png)
+]
+???
+demo
+---
+name: how-survey
+class: center, middle
+.full-width[
+# http://tinyurl.com/vissurvey-cv
+]
+---
+name: how-survey-resources
+layout: false
+.full-width[
+# multi**vis**
+]
+.left-column[
+### features
+]
+.right-column[
+### web-based
+]
+---
+name: how-survey-resources
+layout: false
+.full-width[
+# multi**vis**
+]
+.left-column[
+### features
+]
+.right-column[
+### web-based
+### modular
+]
+---
+name: how-survey-resources
+layout: false
+.full-width[
+# multi**vis**
+]
+.left-column[
+### features
+]
+.right-column[
+### web-based
+### modular
+### accessible
+]
+---
+name: how-survey-resources
+layout: false
+.full-width[
+# multi**vis**
+]
+.left-column[
+### features
+### uses
+]
+.right-column[
+### quick vis
+]
+---
+name: how-survey-resources
+layout: false
+.full-width[
+# multi**vis**
+]
+.left-column[
+### features
+### uses
+]
+.right-column[
+### quick vis
+### survey-based visualization research
+]
+---
+name: how-contribute
+.full-width[
+# opensource on [github](https://github.com/meganap/multivis/)
+]
+---
+name: how-contribute
+.full-width[
+# opensource on [github](https://github.com/meganap/multivis/)
+## licensed under MIT
+]
+---
+name: how-contribute
+.full-width[
+# opensource on [github](https://github.com/meganap/multivis/)
+## licensed under MIT
+## collaboration
+]
+---
+name: how-contribute
+.full-width[
+# opensource on [github](https://github.com/meganap/multivis/)
+## licensed under MIT
+## collaboration
+## feature requests & bug reports
+]
+---
+name: how-contribute
+class: center, middle
+.full-width[
+# questions ?
+![Thanks](./img/thanks.jpg)
+]
+
+    </textarea>
+    <script src="js/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
